@@ -37,5 +37,5 @@ class SWInstruction(I_BaseFunction):
         rt_bits = Int2Bits.convert(rt_value, size=32)
 
         local_memory.store(rs_address + offset_mem, rt_bits)
-        kwargs['logger'].trace(f"W {hex(program_counter)} line(# {hex(Bin2Int.convert(rt_bits, signed=False))})")
+        kwargs['logger'].trace(f"W {hex(program_counter)} line(# {hex(rs_address + offset_mem)})")
         return local_registers, program_counter + 4, local_memory, kwargs['coprocessor'].registers

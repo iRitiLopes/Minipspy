@@ -88,7 +88,7 @@ class SyscallInstruction(R_BaseFunction):
             relative_address = address - relative
             
             word = memory.load(relative_address)
-            logger.trace(f"R {hex(pc)} line(# {hex(Bin2Int.convert(word.data, signed=False))})")
+            logger.trace(f"R {hex(pc)} (line# {hex(relative_address)})")
 
             word_relative_data = word.data[:-8*relative]
             for x in range(len(word_relative_data), 0, -8):
@@ -96,7 +96,7 @@ class SyscallInstruction(R_BaseFunction):
                 string += char
             address = relative_address + 4
         word = memory.load(address=address)
-        logger.trace(f"R {hex(pc)} line(# {hex(Bin2Int.convert(word.data, signed=False))})")
+        logger.trace(f"R {hex(pc)} (line# {hex(address)})")
         while True:
             for x in range(len(word.data), 0, -8):
                 char = Bin2Chr.convert(word.data[x-8:x])
@@ -109,4 +109,4 @@ class SyscallInstruction(R_BaseFunction):
             else:
                 address = address + (4 - (address % 4))
             word = memory.load(address=address)
-            logger.trace(f"R {hex(pc)} line(# {hex(Bin2Int.convert(word.data, signed=False))})")
+            logger.trace(f"R {hex(pc)} (line# {hex(address)})")

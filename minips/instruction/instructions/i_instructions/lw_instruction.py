@@ -30,7 +30,7 @@ class LWInstruction(I_BaseFunction):
         rs_address = rs_register.to_unsigned_int()
 
         word = memory.load(rs_address + immediate_value).data
-        kwargs['logger'].trace(f"R {hex(program_counter)} line(# {hex(Bin2Int.convert(word, signed=False))})")
+        kwargs['logger'].trace(f"R {hex(program_counter)} (line# {hex(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers
