@@ -11,6 +11,11 @@ class Memory(object):
 
     def __init__(self) -> None:
         self.clean()
+        self.access_count = {
+            3: 0, # Identificador memoria
+            2: 0,
+            1: 0
+        }
 
     def clean(self) -> None:
         """
@@ -24,11 +29,13 @@ class Memory(object):
     def store(self, address, data) -> None:
         if self.__is_valid_address(address=address):
             self.mem_blocks[address] = Word(data)
+            self.access_count[3] += 1
         else:
             raise MemoryException("Not valid address")
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
+            self.access_count[3] += 1
             return self.mem_blocks.get(address, Word())
         else:
             raise MemoryException("Not valid address")

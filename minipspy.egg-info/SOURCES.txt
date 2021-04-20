@@ -6,6 +6,11 @@ minips/memory.py
 minips/registers.py
 minips/statistics.py
 minips/word.py
+minips/cache/__init__.py
+minips/cache/l1.py
+minips/cache/l1d.py
+minips/cache/l1i.py
+minips/cache/l2.py
 minips/coprocessor/__init__.py
 minips/coprocessor/registers.py
 minipspy.egg-info/PKG-INFO

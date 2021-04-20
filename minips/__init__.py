@@ -89,6 +89,7 @@ class Minips:
                 )
             self.statistics.increase_statistic(instruction)
             if self.program_counter == -1:
+                self.statistics.memory_statistics(self.memory)
                 self.statistics.finish()
                 self.statistics.show_statistics()
                 return
