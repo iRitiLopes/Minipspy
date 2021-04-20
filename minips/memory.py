@@ -1,3 +1,4 @@
+from helpers.bin2int import Bin2Int
 from minips.word import Word
 
 
@@ -35,8 +36,8 @@ class Memory(object):
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
-            self.access_count[3] += 1
-            return self.mem_blocks.get(address, Word())
+            data = self.mem_blocks.get(address, Word())
+            return data
         else:
             raise MemoryException("Not valid address")
 

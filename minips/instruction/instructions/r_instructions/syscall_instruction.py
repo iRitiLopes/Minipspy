@@ -1,3 +1,4 @@
+from helpers.bin2int import Bin2Int
 from helpers.bin2float import Bin2Float
 from helpers.float2bin import Float2Bits
 from minips.coprocessor import COProcessor
@@ -53,7 +54,7 @@ class SyscallInstruction(R_BaseFunction):
             print(Bin2Float.convert(concatenated, True), end='')
         elif v0_value == 4:
             a0_address = a0_register.to_signed_int()
-            string = self.__read_string(a0_address, memory=memory)
+            string = self.__read_string(a0_address, memory=memory, pc=program_counter, logger=kwargs['logger'])
             print(string, end='')
 
         elif v0_value == 5:
@@ -80,18 +81,22 @@ class SyscallInstruction(R_BaseFunction):
 
         return local_registers, new_pc + 4, new_memory, local_co_registers
 
-    def __read_string(self, address, memory: Memory):
+    def __read_string(self, address, memory: Memory, pc, logger):
         string = ""
         if address % 4 != 0:
             relative = address % 4
             relative_address = address - relative
+            
             word = memory.load(relative_address)
+            logger.trace(f"R {hex(pc)} (line# {hex(relative_address)})")
+
             word_relative_data = word.data[:-8*relative]
             for x in range(len(word_relative_data), 0, -8):
                 char = Bin2Chr.convert(word_relative_data[x-8:x])
                 string += char
             address = relative_address + 4
         word = memory.load(address=address)
+        logger.trace(f"R {hex(pc)} (line# {hex(address)})")
         while True:
             for x in range(len(word.data), 0, -8):
                 char = Bin2Chr.convert(word.data[x-8:x])
@@ -104,3 +109,4 @@ class SyscallInstruction(R_BaseFunction):
             else:
                 address = address + (4 - (address % 4))
             word = memory.load(address=address)
+            logger.trace(f"R {hex(pc)} (line# {hex(address)})")

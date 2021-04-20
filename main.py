@@ -1,7 +1,6 @@
 from minips import Minips
 from sys import argv
 
-
 def run():
     if len(argv) != 3:
         raise Exception(
@@ -15,6 +14,8 @@ def run():
         minips.decode()
     elif mode == 'run':
         minips.execute()
+    elif mode == 'trace':
+        minips.trace_mode()
     else:
         raise Exception("Invalid mode: Valid modes -> decode | run")
 
