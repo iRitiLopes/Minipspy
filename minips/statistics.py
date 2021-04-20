@@ -1,3 +1,4 @@
+from minips.memory import Memory
 from time import time
 
 
@@ -10,7 +11,12 @@ class Mipstatics:
             'FR': 0,
             'FI': 0,
             'timelapse_0': 0,
-            'timelapse_f': 0
+            'timelapse_f': 0,
+            "memory_access": 0,
+            "l1i_access": 0,
+            "l1d_access": 0,
+            "l2_access": 0,
+            "cycles": 0
         }
 
     def start(self):
@@ -31,6 +37,14 @@ class Mipstatics:
             4: 'FR'
         }
         self.statistics[instruction_mapper[instruction.instruction_type]] += 1
+        self.statistics["cycles"] += 1
+    
+    def memory_statistics(self, memory: Memory):
+        cycles = 0
+        memory_access = memory.access_count[3]
+        cycles += memory_access * 100
+        self.statistics["cycles"] += cycles
+        self.statistics["memory_access"] += memory_access
 
     def show_statistics(self):
         print("\n------------------------------------------")
@@ -45,4 +59,9 @@ class Mipstatics:
         print(f"\nTotal: {total}")
         print(f"Simulation time: {elapsed_time} sec")
         print(f"Average IPS: {total/elapsed_time}")
-        print("------------------------------------------")
+        print("------------------------------------------\n")
+
+        print(f"Cycles {self.statistics['cycles']}")
+        print(f"Memory Access: {self.statistics['memory_access']} | Latency per access: 100")
+        print(f"Cache L2 Access: {self.statistics['l2_access']} | Latency per access: 10")
+        print(f"Cache L1D Access: {self.statistics['l1d_access']} | Latency per access: 1")
