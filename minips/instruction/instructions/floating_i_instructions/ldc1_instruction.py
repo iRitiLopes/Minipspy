@@ -42,6 +42,9 @@ class LDC1Instruction(Floating_I_BaseFunction):
         word1 = memory.load(rs_address + offset).data
         word2 = memory.load(rs_address + offset + 4).data
 
+        kwargs['logger'].trace(f"R {hex(program_counter)} line(# {hex(Bin2Int.convert(word1, signed=False))})")
+        kwargs['logger'].trace(f"R {hex(program_counter)} line(# {hex(Bin2Int.convert(word2, signed=False))})")
+
         local_co_registers.set_register_value(self.ft_number, word1)
         local_co_registers.set_register_value(self.ft_number + 1, word2)
 

@@ -8,10 +8,12 @@ from minips.memory import Memory
 from minips.registers import Registers
 from minips.coprocessor import COProcessor
 from minips.instruction.factory import InstructionFactory
+from helpers.log import Log
 
 
 class Minips:
     def __init__(self) -> None:
+        self.log = Log()
         self.memory = Memory()
         self.registers = Registers()
         self.coprocessor = COProcessor()
@@ -80,19 +82,25 @@ class Minips:
     def execute(self):
         self.statistics.start()
         for instruction in self.read_instructions():
+            self.log.trace(f"I {hex(self.program_counter)} (line # {hex(Bin2Int.convert(instruction.word.data, signed=False))})")
             self.registers, self.program_counter, self.memory, self.coprocessor.registers = instruction\
                 .execute(
                     registers=self.registers,
                     program_counter=self.program_counter,
                     memory=self.memory,
                     coprocessor=self.coprocessor,
-                    instruction_factory=InstructionFactory()
+                    instruction_factory=InstructionFactory(),
+                    logger=self.log
                 )
             self.statistics.increase_statistic(instruction)
             if self.program_counter == -1:
                 self.statistics.finish()
                 self.statistics.show_statistics()
                 return
+    def trace_mode(self):
+        print("trace mode")
+        self.log = Log('trace')
+        self.execute()
 
     def read_instructions(self):
         actual_word = self.memory.load(self.program_counter)
