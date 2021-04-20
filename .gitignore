@@ -1,0 +1,6 @@
+__pycache__/
+.vscode/
+.metals/
+.pytest_cache/
+*.egg-info/
+minips.trace
