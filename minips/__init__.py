@@ -1,3 +1,4 @@
+from helpers.bin2int import Bin2Int
 from minips.statistics import Mipstatics
 from helpers.int2bin import Int2Bits
 from helpers.databyte2bin import DataByte2Bits
@@ -73,7 +74,7 @@ class Minips:
     def decode(self):
         for instruction in self.read_instructions():
             decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            print(decoded_instruction)
+            print(hex(self.program_counter), "\t", hex(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
             self.program_counter += 4
 
     def execute(self):
