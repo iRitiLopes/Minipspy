@@ -1,3 +1,5 @@
+from minips.instruction.instructions.floating_r_instructions.sub_double_instruction import SubDoubleInstruction
+from minips.instruction.instructions.floating_r_instructions.sub_single_instruction import SubSingleInstruction
 from minips.instruction.instructions.floating_r_instructions.mul_double_instruction import MulDoubleInstruction
 from minips.instruction.instructions.floating_r_instructions.mul_single_instruction import MulSingleInstruction
 from minips.instruction.instructions.floating_r_instructions.cvts_double_instruction import CVTSDoubleInstruction
@@ -34,6 +36,10 @@ class Floating_R_Instruction(BaseInstruction):
             '000000': {
                 '10000': AddSingleInstruction,
                 '10001': AddDoubleInstruction
+            },
+            '000000': {
+                '10000': SubSingleInstruction,
+                '10001': SubDoubleInstruction
             },
             '000110': {
                 '10000': MOVSingleInstruction,
@@ -76,6 +82,7 @@ class Floating_R_Instruction(BaseInstruction):
         )  # noqa: E501
 
     def execute(self, registers: Registers, program_counter, memory: Memory, *args, **kwargs) -> Tuple[Registers, int, Memory]:  # noqa: E501
+        print(self.word.data)
         base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct).get(self.fmt)
         return base_operation(self.word).execute(
             registers=registers,

@@ -18,6 +18,8 @@ class Mipstatics:
             "l2_access": 0,
             "cycles": 0
         }
+        self.monocycle_f = 8.4672
+        self.pipelined_f = 33.8688
 
     def start(self):
         self.__set_statistic('timelapse_0', time())
@@ -61,7 +63,26 @@ class Mipstatics:
         print(f"Average IPS: {total/elapsed_time}")
         print("------------------------------------------\n")
 
-        print(f"Cycles {self.statistics['cycles']}")
+        print("Simulated execution times for:")
+        print("------------------------------------------\n")
+        print("Monocycle:")
+        print(f"\tCycles {self.statistics['cycles']}")
+        print(f"\tFrequency: {self.monocycle_f} MHz")
+        monocycle_time = (self.statistics['cycles']/(self.monocycle_f*10e6))
+        print(f"\tEstimated execution time: {'%.5f' % monocycle_time} sec")
+        print(f"\tIPC: {total/self.statistics['cycles']}")
+
+        print("Pipelined:")
+        print(f"\tCycles {self.statistics['cycles']}")
+        print(f"\tFrequency: {self.pipelined_f} MHz")
+        pipeline_time = (self.statistics['cycles']/(self.pipelined_f*10e6))
+        print(f"\tEstimated execution time: {'%.5f' % pipeline_time} sec")
+        print(f"\tIPC: {total/self.statistics['cycles']}")
+
+        print("Speedup Monocycle/Pipeline: ", f"{'%.3f' % (monocycle_time/pipeline_time)}x")
+
+        print("\nMemory Info:")
+        print("------------------------------------------\n")
         print(f"Memory Access: {self.statistics['memory_access']} | Latency per access: 100")
         print(f"Cache L2 Access: {self.statistics['l2_access']} | Latency per access: 10")
         print(f"Cache L1D Access: {self.statistics['l1d_access']} | Latency per access: 1")

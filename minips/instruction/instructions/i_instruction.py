@@ -1,3 +1,4 @@
+from minips.instruction.instructions.i_instructions.bgez_instruction import BGEZInstruction
 from minips.instruction.instructions.i_instructions.lhu_instruction import LHUInstruction
 from minips.instruction.instructions.i_instructions.blez_instruction import BLEZInstruction
 from minips.instruction.instructions.i_instructions.lb_instruction import LBInstruction
@@ -44,6 +45,7 @@ class I_Instruction(BaseInstruction):
             '000100': BEQInstruction,
             '000101': BNEInstruction,
             '000110': BLEZInstruction,
+            '000001': BGEZInstruction,
             '100000': LBInstruction,
             '100100': {'name': 'LBU', 'funct': ''},
             '100101': LHUInstruction,

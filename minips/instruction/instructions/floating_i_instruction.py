@@ -1,3 +1,4 @@
+from minips.instruction.instructions.floating_i_instructions.swc1_instruction import SWC1Instruction
 from minips.instruction.instructions.floating_i_instructions.ldc1_instruction import LDC1Instruction
 from minips.instruction.instructions.floating_i_instructions.lwc1_instruction import LWC1Instruction
 from typing import Tuple
@@ -21,8 +22,7 @@ class Floating_I_Instruction(BaseInstruction):
         self.functions = {
             '110001': LWC1Instruction,
             '110101': LDC1Instruction,
-            '111001': '',
-            '111101': ''
+            '111001': SWC1Instruction
         }
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:
@@ -37,7 +37,7 @@ class Floating_I_Instruction(BaseInstruction):
         )  # noqa: E501
 
     def execute(self, registers: Registers, program_counter, memory: Memory, *args, **kwargs) -> Tuple[Registers, int, Memory]:  # noqa: E501
-        return self.functions.get(self.opcode)(self.word).execute(
+        return self.functions[self.opcode](self.word).execute(
             registers=registers,
             program_counter=program_counter,
             memory=memory,
