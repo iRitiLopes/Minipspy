@@ -14,7 +14,7 @@ class SLTIInstruction(I_BaseFunction):
         super().__init__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = Bin2Int.convert(self.imediate, False)
         rs_name = registers.get_register_name(self.rs_number)
         rt_name = registers.get_register_name(self.rt_number)
 
@@ -28,7 +28,7 @@ class SLTIInstruction(I_BaseFunction):
                 **kwargs):
         local_registers = registers
         rs_register = local_registers.get_register(self.rs_number)
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = Bin2Int.convert(self.imediate, False)
 
         rt = rs_register.to_signed_int() < immediate_value
         rt_bits = Int2Bits.convert(rt)

@@ -5,9 +5,9 @@ from minips.memory import Memory
 from minips.registers import Registers
 
 
-class LWInstruction(I_BaseFunction):
-    instruction_name = "LW"
-    funct_code = '100011'
+class LHUInstruction(I_BaseFunction):
+    instruction_name = "LHU"
+    funct_code = '100101'
 
     def __init__(self, word) -> None:
         super().__init__(word)
@@ -30,7 +30,7 @@ class LWInstruction(I_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rs_address = rs_register.to_unsigned_int()
 
-        word = memory.load(rs_address + immediate_value).data
+        word = memory.load(rs_address + immediate_value).data[16:].zfill(32)
         kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 

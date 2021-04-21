@@ -2,11 +2,16 @@ from minips import Minips
 from sys import argv
 
 def run():
-    if len(argv) != 3:
+    if len(argv) < 3 or len(argv) > 4:
         raise Exception(
-            "Invalid arguments: main.py <mode[decode, run]> <filepath>")
+            "Invalid arguments: main.py <mode[decode, run]> <Memorymode[1,2,3,4], optional> <filepath>")
     mode = argv[1]
-    filepath = argv[2]
+    mem_mode = 1
+    if len(argv) == 3:
+        filepath = argv[2]
+    else:
+        mem_mode = int(argv[2])
+        filepath = argv[3]
     minips = Minips()
     minips.load(filepath)
 

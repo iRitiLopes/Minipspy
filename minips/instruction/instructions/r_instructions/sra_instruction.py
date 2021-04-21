@@ -1,4 +1,3 @@
-from minips.instruction.instructions.r_instructions.nop_instruction import NopInstruction
 from helpers.bin2int import Bin2Int
 from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.r_instructions import R_BaseFunction
@@ -6,16 +5,14 @@ from minips.memory import Memory
 from minips.registers import Registers
 
 
-class SLLInstruction(R_BaseFunction):
-    instruction_name = "SLL"
-    funct_code = '000000'
+class SRAInstruction(R_BaseFunction):
+    instruction_name = "SRA"
+    funct_code = '000011'
 
     def __init__(self, word) -> None:
         super().__init__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
-        if self.rd_number == 0 and self.rs_number == 0:
-            return NopInstruction(self.word).decode(registers)
         rd_name = registers.get_register_name(self.rd_number)
         rt_name = registers.get_register_name(self.rt_number)
 
@@ -32,7 +29,9 @@ class SLLInstruction(R_BaseFunction):
         rt_register = local_registers.get_register(self.rt_number)
 
         s = self.shamt_value
-        rd_bits = rt_register.get_data()[s:] + '0'*s
+        bits = rt_register.get_data()
+
+        rd_bits = bits[0]*self.shamt_value + bits[:self.shamt_value]
 
         local_registers.set_register_value(self.rd_number, rd_bits)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

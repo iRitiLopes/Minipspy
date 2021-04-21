@@ -3,7 +3,6 @@ from minips.instruction.instructions.r_instructions import R_BaseFunction
 from minips.memory import Memory
 from minips.registers import Registers
 
-
 class AdduInstruction(R_BaseFunction):
     instruction_name = "ADDU"
     funct_code = '100001'

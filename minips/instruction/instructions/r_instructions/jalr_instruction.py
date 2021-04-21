@@ -2,7 +2,7 @@ from minips.instruction.instructions.r_instructions import R_BaseFunction
 from minips.memory import Memory
 from minips.registers import Registers
 from helpers.int2bin import Int2Bits
-
+from helpers.int2hex import Int2Hex
 
 class JalrInstruction(R_BaseFunction):
     instruction_name = "JALR"
@@ -28,6 +28,7 @@ class JalrInstruction(R_BaseFunction):
         new_pc = rs_register.to_unsigned_int()
 
         branch_delayed_word = memory.load(program_counter + 4)
+        kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")
         branch_delayed_instruction = kwargs['instruction_factory'].factory(branch_delayed_word)
         delayed_registers, delayed_pc, delayed_memory, coproc = branch_delayed_instruction.execute(registers=local_registers, program_counter=program_counter + 4, memory=memory, *args, **kwargs)
 

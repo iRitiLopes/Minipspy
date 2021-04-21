@@ -36,6 +36,7 @@ class Memory(object):
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
+            self.access_count[3] += 1
             data = self.mem_blocks.get(address, Word())
             return data
         else:

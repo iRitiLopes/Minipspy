@@ -7,7 +7,7 @@ from minips.instruction.instructions.floating_i_instructions import \
     Floating_I_BaseFunction
 from minips.memory import Memory
 from minips.registers import Registers
-
+from helpers.int2hex import Int2Hex
 
 class LDC1Instruction(Floating_I_BaseFunction):
     instruction_name = "LDC1"
@@ -42,8 +42,8 @@ class LDC1Instruction(Floating_I_BaseFunction):
         word1 = memory.load(rs_address + offset).data
         word2 = memory.load(rs_address + offset + 4).data
 
-        kwargs['logger'].trace(f"R {hex(program_counter)} (line# {hex(rs_address + offset)})")
-        kwargs['logger'].trace(f"R {hex(program_counter)} (line# {hex(rs_address + offset + 4)})")
+        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + offset)})")
+        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + offset + 4)})")
 
         local_co_registers.set_register_value(self.ft_number, word1)
         local_co_registers.set_register_value(self.ft_number + 1, word2)

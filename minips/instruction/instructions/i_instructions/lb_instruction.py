@@ -1,3 +1,4 @@
+from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from minips.instruction.instructions.i_instructions import I_BaseFunction
 from minips.memory import Memory
@@ -30,7 +31,7 @@ class LBInstruction(I_BaseFunction):
         rs_address = rs_register.to_unsigned_int()
 
         word = memory.load(rs_address + immediate_value).data[24:32].zfill(32)
-        kwargs['logger'].trace(f"R {hex(program_counter)} (line# {hex(rs_address + immediate_value)})")
+        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

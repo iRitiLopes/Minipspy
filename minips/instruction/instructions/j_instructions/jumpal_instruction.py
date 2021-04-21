@@ -1,3 +1,4 @@
+from helpers.int2hex import Int2Hex
 from helpers.int2bin import Int2Bits
 from minips.memory import Memory
 from minips.registers import Registers
@@ -28,6 +29,7 @@ class JumpalInstruction(J_BaseFunction):
         local_registers.set_register_value(31, ra_bits)
 
         branch_delayed_word = memory.load(program_counter + 4)
+        kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")
         branch_delayed_instruction = kwargs['instruction_factory'].factory(branch_delayed_word)
         delayed_registers, delayed_pc, delayed_memory, coproc = branch_delayed_instruction.execute(registers=local_registers, program_counter=program_counter + 4, memory=memory, *args, **kwargs)
 

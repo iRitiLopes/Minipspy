@@ -1,3 +1,4 @@
+from helpers.int2hex import Int2Hex
 from minips.memory import Memory
 from minips.registers import Registers
 from minips.instruction.instructions.j_instructions import J_BaseFunction
@@ -24,6 +25,7 @@ class JumpInstruction(J_BaseFunction):
         new_pc = (Bin2Int.convert(self.jump_address) * 4)
 
         branch_delayed_word = memory.load(program_counter + 4)
+        kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")
         branch_delayed_instruction = kwargs['instruction_factory'].factory(branch_delayed_word)
         delayed_registers, delayed_pc, delayed_memory, coproc = branch_delayed_instruction.execute(registers=registers, program_counter=program_counter + 4, memory=memory, *args, **kwargs)
 

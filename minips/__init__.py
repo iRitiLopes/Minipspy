@@ -1,3 +1,4 @@
+from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from minips.statistics import Mipstatics
 from helpers.int2bin import Int2Bits
@@ -82,7 +83,8 @@ class Minips:
     def execute(self):
         self.statistics.start()
         for instruction in self.read_instructions():
-            self.log.trace(f"I {hex(self.program_counter)} (line # {hex(Bin2Int.convert(instruction.word.data, signed=False))})")
+            self.log.trace(f"I {Int2Hex.convert(self.program_counter)} (line# {Int2Hex.convert(self.program_counter)})")
+            #print(instruction.decode(self.registers, coprocessor=self.coprocessor))
             self.registers, self.program_counter, self.memory, self.coprocessor.registers = instruction\
                 .execute(
                     registers=self.registers,
@@ -99,8 +101,11 @@ class Minips:
                 self.statistics.show_statistics()
                 return
     def trace_mode(self):
-        print("trace mode")
         self.log = Log('trace')
+        self.execute()
+    
+    def debug_mode(self):
+        self.log = Log('debug')
         self.execute()
 
     def read_instructions(self):

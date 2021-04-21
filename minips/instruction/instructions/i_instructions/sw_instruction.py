@@ -1,3 +1,4 @@
+from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.i_instructions import I_BaseFunction
@@ -37,5 +38,5 @@ class SWInstruction(I_BaseFunction):
         rt_bits = Int2Bits.convert(rt_value, size=32)
 
         local_memory.store(rs_address + offset_mem, rt_bits)
-        kwargs['logger'].trace(f"W {hex(program_counter)} line(# {hex(rs_address + offset_mem)})")
+        kwargs['logger'].trace(f"W {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + offset_mem)})")
         return local_registers, program_counter + 4, local_memory, kwargs['coprocessor'].registers

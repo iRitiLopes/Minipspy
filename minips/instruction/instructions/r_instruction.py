@@ -1,3 +1,4 @@
+from minips.instruction.instructions.r_instructions.sra_instruction import SRAInstruction
 from minips.instruction.instructions.r_instructions.xor_instruction import XorInstruction
 from minips.instruction.instructions.r_instructions.mfhi_instruction import MFHIInstruction
 from minips.instruction.instructions.r_instructions.div_instruction import DivInstruction
@@ -60,6 +61,7 @@ class R_Instruction(BaseInstruction):
             '101011': SLTUInstruction,
             '000000': SLLInstruction,
             '000010': SRLInstruction,
+            '000011': SRAInstruction,
             '100010': SubInstruction,
             '100011': SubuInstruction,
             '001100': SyscallInstruction,
