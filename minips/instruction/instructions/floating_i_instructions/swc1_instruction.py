@@ -19,7 +19,7 @@ class SWC1Instruction(Floating_I_BaseFunction):
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
         ft_name = coprocessor.registers.get_register_name(self.ft_number)
-        rs_number = Bin2Int.convert(self.base)
+        rs_number = Bin2Int.convert(self.base, False)
         rs_name = coprocessor.registers.get_register_name(rs_number)
         offset = Bin2Int.convert(self.offset)
 

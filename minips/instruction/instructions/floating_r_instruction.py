@@ -1,3 +1,4 @@
+from minips.instruction.instructions.floating_r_instructions.clts_single_instruction import CLTSingleInstruction
 from minips.instruction.instructions.floating_r_instructions.sub_double_instruction import SubDoubleInstruction
 from minips.instruction.instructions.floating_r_instructions.sub_single_instruction import SubSingleInstruction
 from minips.instruction.instructions.floating_r_instructions.mul_double_instruction import MulDoubleInstruction
@@ -32,7 +33,14 @@ class Floating_R_Instruction(BaseInstruction):
         self.large_funct = self.word.get_bits_between(10, 0)
         self.opcode = self.word.get_bits_between(31, 26)
         self.fmt = self.word.get_bits_between(25, 21)
+        self.cond = self.word.get_bits_between(3, 0)
         self.functions = {
+            '1100': {
+                '10000': CLTSingleInstruction
+            },
+            '0010': {
+                
+            },
             '000000': {
                 '10000': AddSingleInstruction,
                 '10001': AddDoubleInstruction
@@ -73,7 +81,7 @@ class Floating_R_Instruction(BaseInstruction):
         """
         Receive the registers to be able to translate the register numbers by the name of the registers  # noqa: E501
         """
-        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct).get(self.fmt)
+        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct).get(self.fmt) or self.function.get(self.cond).get(self.fmt)
         return base_operation(self.word).decode(
             registers=registers,
             coprocessor=coprocessor,
@@ -82,8 +90,7 @@ class Floating_R_Instruction(BaseInstruction):
         )  # noqa: E501
 
     def execute(self, registers: Registers, program_counter, memory: Memory, *args, **kwargs) -> Tuple[Registers, int, Memory]:  # noqa: E501
-        print(self.word.data)
-        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct).get(self.fmt)
+        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct, {}).get(self.fmt) or self.functions.get(self.cond).get(self.fmt)
         return base_operation(self.word).execute(
             registers=registers,
             program_counter=program_counter,
