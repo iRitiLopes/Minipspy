@@ -35,7 +35,7 @@ class LWC1Instruction(Floating_I_BaseFunction):
         local_co_registers = coprocessor.registers
         local_registers = registers
 
-        rs_number = Bin2Int.convert(self.base)
+        rs_number = Bin2Int.convert(self.base, False)
         rs_register = local_registers.get_register(rs_number)
         rs_address = rs_register.to_unsigned_int()
         offset = Bin2Int.convert(self.offset)

@@ -45,7 +45,7 @@ class Floating_R_Instruction(BaseInstruction):
                 '10000': AddSingleInstruction,
                 '10001': AddDoubleInstruction
             },
-            '000000': {
+            '000001': {
                 '10000': SubSingleInstruction,
                 '10001': SubDoubleInstruction
             },
