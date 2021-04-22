@@ -1,5 +1,9 @@
 from helpers.bin2int import Bin2Int
 from minips.word import Word
+from minips.cache.l1 import L1Cache
+from minips.cache.l1d import L1DCache
+from minips.cache.l1i import L1ICache
+from minips.cache.l2 import L2Cache
 
 
 class Memory(object):
@@ -10,13 +14,15 @@ class Memory(object):
     STACK_POINTER = 0x7fffeffc
     GLOBAL_POINTER = 0x10008000
 
-    def __init__(self) -> None:
+    def __init__(self, mem_mode) -> None:
         self.clean()
         self.access_count = {
             3: 0, # Identificador memoria
             2: 0,
             1: 0
         }
+        self.mem_mode = mem_mode
+        self.l1 = L1Cache()
 
     def clean(self) -> None:
         """
