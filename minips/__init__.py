@@ -77,7 +77,7 @@ class Minips:
     def decode(self):
         for instruction in self.read_instructions():
             decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            print(hex(self.program_counter), "\t", hex(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
+            print(hex(self.program_counter), "\t", Int2Hex.convert(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
             self.program_counter += 4
 
     def execute(self):

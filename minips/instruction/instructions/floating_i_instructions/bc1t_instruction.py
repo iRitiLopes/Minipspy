@@ -12,11 +12,12 @@ from minips.registers import Registers
 
 
 class BC1TInstruction(Floating_I_BaseFunction):
-    instruction_name = "BC1T"
+    instruction_name = "BC1"
     funct_code = '01000'
 
     def __init__(self, word) -> None:
         self.ft = word.get_bits_between(16,16)
+        self.instruction_name = self.instruction_name + 'T' if int(self.ft) == 1 else self.instruction_name + 'F'
         super().__init__(word)
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
