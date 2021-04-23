@@ -20,9 +20,9 @@ class AddSingleInstruction(Floating_R_BaseFunction):
         self.fs = self.word.get_bits_between(15, 11)
         self.fd = self.word.get_bits_between(10, 6)
 
-        self.ft_number = Bin2Int.convert(self.ft)
-        self.fs_number = Bin2Int.convert(self.fs)
-        self.fd_number = Bin2Int.convert(self.fd)
+        self.ft_number = Bin2Int.convert(self.ft, False)
+        self.fs_number = Bin2Int.convert(self.fs, False)
+        self.fd_number = Bin2Int.convert(self.fd, False)
 
     def decode(self, coprocessor: COProcessor, *args, **kwargs) -> str:
         fd_name = coprocessor.registers.get_register_name(self.fd_number)

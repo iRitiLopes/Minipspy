@@ -13,7 +13,7 @@ class Word(object):
         return self.data == ""
 
     def get_bits_between(self, a, b) -> str:
-        assert a > b
+        assert a >= b
         return self.data[len(self.data) - a - 1:len(self.data) - b]
 
     def __str__(self) -> str:
