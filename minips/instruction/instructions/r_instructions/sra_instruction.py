@@ -31,7 +31,7 @@ class SRAInstruction(R_BaseFunction):
         s = self.shamt_value
         bits = rt_register.get_data()
 
-        rd_bits = bits[0]*self.shamt_value + bits[:self.shamt_value]
+        rd_bits = bits[0]*self.shamt_value + bits[:32-self.shamt_value]
 
         local_registers.set_register_value(self.rd_number, rd_bits)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

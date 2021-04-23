@@ -12,7 +12,7 @@ def run():
     else:
         mem_mode = int(argv[2])
         filepath = argv[3]
-    minips = Minips()
+    minips = Minips(mem_mode=mem_mode)
     minips.load(filepath)
 
     if mode == 'decode':

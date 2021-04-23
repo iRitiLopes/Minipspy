@@ -28,6 +28,7 @@ class BEQInstruction(I_BaseFunction):
                 **kwargs):
         local_registers = registers
         local_memory = memory
+        local_co_registers = kwargs['coprocessor'].registers
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
         immediate_value = Bin2Int.convert(self.imediate)
@@ -42,5 +43,6 @@ class BEQInstruction(I_BaseFunction):
             delayed_registers, delayed_pc, delayed_memory, coproc = branch_delayed_instruction.execute(registers=local_registers, program_counter=program_counter + 4, memory=memory, *args, **kwargs)
             local_registers = delayed_registers
             local_memory = delayed_memory
+            local_co_registers = coproc
 
-        return local_registers, new_pc + 4, local_memory, kwargs['coprocessor'].registers
+        return local_registers, new_pc + 4, local_memory, local_co_registers

@@ -63,7 +63,11 @@ class Registers:
             29: Register("$f29"),
             30: Register("$f30"),
             31: Register("$f31"),
+            32: Register("$cc0")
         }
+    
+    def get_cc(self):
+        return self.registers.get(32)
 
     def get_register(self, num) -> Register:
         if self.__is_valid_register(num):
@@ -98,7 +102,7 @@ class Registers:
             )
 
     def __is_valid_register(self, num: int):
-        return num >= 0 and num <= 31
+        return num >= 0 and num <= 32
 
 
 class InvalidRegister(Exception):

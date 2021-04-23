@@ -1,3 +1,4 @@
+from minips.instruction.instructions.floating_i_instructions.bc1t_instruction import BC1TInstruction
 from minips.instruction.instructions.floating_r_instructions.clts_single_instruction import CLTSingleInstruction
 from minips.instruction.instructions.floating_r_instructions.sub_double_instruction import SubDoubleInstruction
 from minips.instruction.instructions.floating_r_instructions.sub_single_instruction import SubSingleInstruction
@@ -38,9 +39,7 @@ class Floating_R_Instruction(BaseInstruction):
             '1100': {
                 '10000': CLTSingleInstruction
             },
-            '0010': {
-                
-            },
+            '01000': BC1TInstruction,
             '000000': {
                 '10000': AddSingleInstruction,
                 '10001': AddDoubleInstruction
@@ -81,7 +80,11 @@ class Floating_R_Instruction(BaseInstruction):
         """
         Receive the registers to be able to translate the register numbers by the name of the registers  # noqa: E501
         """
-        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct).get(self.fmt) or self.function.get(self.cond).get(self.fmt)
+        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) \
+            or self.functions.get(self.funct, {}).get(self.fmt) \
+            or self.functions.get(self.cond, {}).get(self.fmt) \
+            or self.functions.get(self.fmt)
+        
         return base_operation(self.word).decode(
             registers=registers,
             coprocessor=coprocessor,
@@ -90,7 +93,10 @@ class Floating_R_Instruction(BaseInstruction):
         )  # noqa: E501
 
     def execute(self, registers: Registers, program_counter, memory: Memory, *args, **kwargs) -> Tuple[Registers, int, Memory]:  # noqa: E501
-        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) or self.functions.get(self.funct, {}).get(self.fmt) or self.functions.get(self.cond).get(self.fmt)
+        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) \
+            or self.functions.get(self.funct, {}).get(self.fmt) \
+            or self.functions.get(self.cond, {}).get(self.fmt) \
+            or self.functions.get(self.fmt)
         return base_operation(self.word).execute(
             registers=registers,
             program_counter=program_counter,

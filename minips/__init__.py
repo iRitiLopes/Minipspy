@@ -13,9 +13,9 @@ from helpers.log import Log
 
 
 class Minips:
-    def __init__(self) -> None:
+    def __init__(self, mem_mode) -> None:
         self.log = Log()
-        self.memory = Memory()
+        self.memory = Memory(mem_mode=mem_mode)
         self.registers = Registers()
         self.coprocessor = COProcessor()
         self.registers.set_register_value(
