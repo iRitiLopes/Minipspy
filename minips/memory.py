@@ -1,9 +1,10 @@
+from minips.cache.mapping.nvias import NVias
+from minips.cache.policy.lru import LRUAccess
+from minips.cache.l2 import L2Cache
+from minips.cache.l1splitted import L1Splitted
+from minips.cache.l1 import L1Cache
 from helpers.bin2int import Bin2Int
 from minips.word import Word
-from minips.cache.l1 import L1Cache
-from minips.cache.l1d import L1DCache
-from minips.cache.l1i import L1ICache
-from minips.cache.l2 import L2Cache
 
 
 class Memory(object):
@@ -14,15 +15,22 @@ class Memory(object):
     STACK_POINTER = 0x7fffeffc
     GLOBAL_POINTER = 0x10008000
 
-    def __init__(self, mem_mode) -> None:
+    def __init__(self, config) -> None:
         self.clean()
-        self.access_count = {
-            3: 0, # Identificador memoria
-            2: 0,
-            1: 0
-        }
-        self.mem_mode = mem_mode
-        self.l1 = L1Cache()
+        self.mem_mode = config
+        self.l1 = None
+        self.l2 = None
+        if config == 2:
+            self.l1 = L1Cache(size=1024, line_size=32)
+        elif config == 3:
+            self.l1 = L1Splitted(size=512, line_size=32)
+        elif config == 4:
+            self.l1 = L1Splitted(size=512, line_size=32, policy=LRUAccess())
+        elif config == 5:
+            self.l1 = L1Splitted(size=512, line_size=32, mode=NVias(n_vias=4))
+        elif config == 6:
+            self.l1 = L1Splitted(size=512, line_size=64, mode=NVias(n_vias=4))
+            self.l2 = L2Cache(size=2048, line_size=64, mode=NVias(n_vias=8))
 
     def clean(self) -> None:
         """
@@ -42,8 +50,13 @@ class Memory(object):
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
-            self.access_count[3] += 1
-            data = self.mem_blocks.get(address, Word())
+            if self.l1.hit(address):
+                return self.l1.load(address)
+            else:
+                self.access_count[3] += 1
+                data = self.mem_blocks.get(address, Word())
+                if self.l1.need_writeback(address):
+
             return data
         else:
             raise MemoryException("Not valid address")

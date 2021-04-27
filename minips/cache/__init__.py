@@ -1,41 +1,36 @@
+from minips.cache.l1splitted import L1Splitted
+from minips.cache.policy.lru import LRUAccess
+from minips.cache.mapping.nvias import NVias
+#from minips.cache.l1splitted import L1Splitted
+from minips.cache.l1 import L1Cache
+from minips.cache.l2 import L2Cache
 from minips.word import Word
 
-class CacheController:
-    def __init__(self) -> None:
-        self.dirty = 0
-        self.valid = 0
-        self.tag = None
-
-    def dirty_this(self):
-        self.dirty = 1
-    
-    def clean_this(self):
-        self.dirty = 0
-    
-    def valid_this(self):
-        self.valid = 1
-    
-    def invalid_this(self):
-        self.valid = 0
-    
-    def set_tag(self, tag):
-        self.tag = tag
-    
-    def compare_tag(self, tag):
-        return self.tag == tag
-    
-
 class Cache:
-    def __init__(self, size=1024) -> None:
-        self.size = size
-        self.cache = {x: Word("".zfill(32)) for x in range(0, size, 4)}
-        self.cache_control = {x: CacheController() for x in range(0, size, 4)}
+    def __init__(self, config=2) -> None:
+        self.l1 = None
+        self.l2 = None
+        self.instruction_address_upper_limit = 0X00800000 
+        if config == 2:
+            self.l1 = L1Cache(size=1024, line_size=32)
+        elif config == 3:
+            self.l1 = L1Splitted(size=512, line_size=32)
+        elif config == 4:
+            self.l1 = L1Splitted(size=512, line_size=32, policy=LRUAccess())
+        elif config == 5:
+            self.l1 = L1Splitted(size=512, line_size=32, mode=NVias(n_vias=4))
+        elif config == 6:
+            self.l1 = L1Splitted(size=512, line_size=64, mode=NVias(n_vias=4))
+            self.l2 = L2Cache(size=2048, line_size=64, mode=NVias(n_vias=8))
     
     def store(self, address, data) -> None:
         pass
 
     def load(self, address) -> Word:
-        pass
+        if address < self.instruction_address_upper_limit:
+            return self.l1.load(address, address_type=0)
+        else:
+            return self.l1.load(address, address_type=1)
 
     def __is_valid_address(self, address):
         return address in self.mem_blocks or address % 4 == 0
