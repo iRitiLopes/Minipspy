@@ -23,7 +23,12 @@ class Cache:
             self.l1 = L1Splitted(size=512, line_size=64, mode=NVias(n_vias=4))
             self.l2 = L2Cache(size=2048, line_size=64, mode=NVias(n_vias=8))
     
+    def need_writeback(address):
+        pass
+    
     def store(self, address, data) -> None:
+        if self.l1.need_writeback(address):
+            # TODO make writeback
         pass
 
     def load(self, address) -> Word:

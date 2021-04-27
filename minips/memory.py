@@ -50,13 +50,17 @@ class Memory(object):
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
-            if self.l1.hit(address):
+            if self.l1 and self.l1.hit(address):
                 return self.l1.load(address)
-            else:
-                self.access_count[3] += 1
-                data = self.mem_blocks.get(address, Word())
-                if self.l1.need_writeback(address):
+            elif self.l2 and self.l2.hit(address):
+                return self.l2.load(address)
+            self.access_count[3] += 1
+            data = self.mem_blocks.get(address, Word())
 
+            if self.l2 and self.l2.need_writeback(address):
+                # TODO writeback on mem -> L2
+                pass
+            
             return data
         else:
             raise MemoryException("Not valid address")
