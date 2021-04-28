@@ -21,6 +21,8 @@ def run():
         minips.execute()
     elif mode == 'trace':
         minips.trace_mode()
+    elif mode == 'debug':
+        minips.debug_mode()
     else:
         raise Exception("Invalid mode: Valid modes -> decode | run")
 

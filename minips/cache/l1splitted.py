@@ -2,7 +2,6 @@ from minips.cache.policy.random_access import RandomAccess
 from minips.cache.mapping.direct import DirectMapping
 from minips.cache.l1d import L1DCache
 from minips.cache.l1i import L1ICache
-from minips.cache import Cache
 from minips.word import Word
 
 class L1Splitted:

@@ -11,7 +11,7 @@ from minips.memory import Memory
 class SubSingleInstruction(Floating_R_BaseFunction):
     instruction_name = "SUB.S"
     funct_code = '000001'
-    fmt = '10000'
+    fmt = '100000'
 
     def __init__(self, word) -> None:
         super().__init__(word)

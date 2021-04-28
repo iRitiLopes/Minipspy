@@ -15,7 +15,7 @@ from helpers.log import Log
 class Minips:
     def __init__(self, mem_mode) -> None:
         self.log = Log()
-        self.memory = Memory(mem_mode=mem_mode)
+        self.memory = Memory(mem_mode=mem_mode, log=self.log)
         self.registers = Registers()
         self.coprocessor = COProcessor()
         self.registers.set_register_value(
@@ -53,7 +53,7 @@ class Minips:
         with open(path, 'rb') as f:
             mem_address = self.memory.TEXT_SECTION_START
             while (byte := f.read(4)):
-                self.memory.store(mem_address, Byte2Bits.convert(byte))
+                self.memory.init_store(mem_address, Byte2Bits.convert(byte))
                 mem_address = mem_address + 4
 
     def load_data(self, path):
@@ -62,7 +62,7 @@ class Minips:
         with open(path, 'rb') as f:
             mem_address = self.memory.DATA_SECTION_START
             while (byte := f.read(4)):
-                self.memory.store(mem_address, DataByte2Bits.convert(byte))
+                self.memory.init_store(mem_address, DataByte2Bits.convert(byte))
                 mem_address = mem_address + 4
 
     def load_data_rodata(self, path):
@@ -71,7 +71,7 @@ class Minips:
         with open(path, 'rb') as f:
             mem_address = self.memory.RODATA_SECION_START
             while (byte := f.read(4)):
-                self.memory.store(mem_address, DataByte2Bits.convert(byte))
+                self.memory.init_store(mem_address, DataByte2Bits.convert(byte))
                 mem_address = mem_address + 4
 
     def decode(self):

@@ -17,9 +17,7 @@ class L1Cache:
     
     def hit(self, address, *args, **kwargs):
         block = self.block_index(address)
-        if not self.cache_control[block].compare_tag(address):
-            return False
-        return True
+        return self.cache_control[block].valid == 1 and self.cache_control[block].compare_tag(address)
     
     def load(self, address, *args, **kwargs):
         block = self.block_index(address)
@@ -27,9 +25,7 @@ class L1Cache:
 
     def need_writeback(self, address, *args, **kwargs):
         block_id = self.block_index(address)
-        if not self.hit(address):
-            return self.cache_control[block_id].dirty and self.cache_control[block_id].valid
-        return False
+        return not self.cache_control[block_id].compare_tag(address)
     
     def writeback(self, address, *args, **kwargs):
         block_id = self.block_index(address)
@@ -40,10 +36,12 @@ class L1Cache:
     
     def store(self, address, data, *aegs, **kwargs):
         block_index = self.block_index(address)
+        if address == self.cache_control[block_index].address:
+            print(" storing: ", address, data, self.cache_control[block_index].__dict__)
         if not self.hit(address):
             self.cache_control[block_index].valid_this()
             self.cache_control[block_index].clean_this()
-            self.cache_control[block_index].set_tag(self.tag(address))
+            self.cache_control[block_index].set_tag(address)
             self.cache_control[block_index].set_address(address)
             self.cache[block_index] = Word(data)
         else:

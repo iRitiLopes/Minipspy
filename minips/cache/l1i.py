@@ -1,10 +1,9 @@
 from minips.cache.policy.random_access import RandomAccess
 from minips.cache.mapping.direct import DirectMapping
-from minips.cache import Cache
 from minips.word import Word
-from minips.cache import CacheController
+from minips.cache.controller import CacheController
 
-class L1ICache(Cache):
+class L1ICache:
     def __init__(self, size=512, line_size=32, mode=DirectMapping(), policy=RandomAccess()) -> None:
         super().__init__(size=size)
         self.mode = mode
