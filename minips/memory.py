@@ -1,9 +1,4 @@
-from minips.cache.mapping.nvias import NVias
-from minips.cache.policy.lru import LRUAccess
-from minips.cache.l2 import L2Cache
-from minips.cache.l1splitted import L1Splitted
-from minips.cache.l1 import L1Cache
-from helpers.bin2int import Bin2Int
+from minips.cache import Cache
 from minips.word import Word
 
 
@@ -20,17 +15,7 @@ class Memory(object):
         self.mem_mode = config
         self.l1 = None
         self.l2 = None
-        if config == 2:
-            self.l1 = L1Cache(size=1024, line_size=32)
-        elif config == 3:
-            self.l1 = L1Splitted(size=512, line_size=32)
-        elif config == 4:
-            self.l1 = L1Splitted(size=512, line_size=32, policy=LRUAccess())
-        elif config == 5:
-            self.l1 = L1Splitted(size=512, line_size=32, mode=NVias(n_vias=4))
-        elif config == 6:
-            self.l1 = L1Splitted(size=512, line_size=64, mode=NVias(n_vias=4))
-            self.l2 = L2Cache(size=2048, line_size=64, mode=NVias(n_vias=8))
+        self.cache = Cache()
 
     def clean(self) -> None:
         """
@@ -43,24 +28,36 @@ class Memory(object):
 
     def store(self, address, data) -> None:
         if self.__is_valid_address(address=address):
-            self.mem_blocks[address] = Word(data)
-            self.access_count[3] += 1
+            if self.cache.hit(address):
+                self.cache.store(address, data)
+            elif self.cache.need_writeback(address):
+                    self.__writeback(address)
         else:
             raise MemoryException("Not valid address")
+    
+    def __writeback(self, address):
+        wb_data, wb_address = self.cache.writeback(address)
+        self.__store(wb_address, wb_data)
+    
+    def __load(self, address) -> Word:
+        self.access_count[3] += 1
+        data = self.mem_blocks.get(address, Word())
+        return data
+
+    def __store(self, address, data):
+        self.mem_blocks[address] = Word(data)
+        self.access_count[3] += 1
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
-            if self.l1 and self.l1.hit(address):
-                return self.l1.load(address)
-            elif self.l2 and self.l2.hit(address):
-                return self.l2.load(address)
-            self.access_count[3] += 1
-            data = self.mem_blocks.get(address, Word())
-
-            if self.l2 and self.l2.need_writeback(address):
-                # TODO writeback on mem -> L2
-                pass
-            
+            if self.mem_mode == 1:
+                return self.__load(address)
+            if self.cache.hit(address):
+                data = self.cache.load(address)
+            else:
+                data = self.__load(address)
+                if self.cache.need_writeback(address):
+                    self.__writeback(address)
             return data
         else:
             raise MemoryException("Not valid address")

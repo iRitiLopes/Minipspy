@@ -5,7 +5,7 @@ from minips.cache.l1i import L1ICache
 from minips.cache import Cache
 from minips.word import Word
 
-class L1Splitted(Cache):
+class L1Splitted:
     def __init__(self, size=512, line_size=32, mode=DirectMapping(), policy=RandomAccess()) -> None:
         super().__init__(size=size)
         self.mode = mode

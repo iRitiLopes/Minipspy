@@ -15,29 +15,36 @@ class L1Cache:
         self.cache_control = {x: CacheController() for x in range(self.num_blocks)}
 
     
-    def hit(self, address):
+    def hit(self, address, *args, **kwargs):
         block = self.block_index(address)
         if not self.cache_control[block].compare_tag(address):
             return False
         return True
     
-    def load(self, address):
+    def load(self, address, *args, **kwargs):
         block = self.block_index(address)
         return self.cache[block]
 
-    def need_writeback(self, address):
+    def need_writeback(self, address, *args, **kwargs):
         block_id = self.block_index(address)
         if not self.hit(address):
-            if self.cache_control[block_id].dirty and self.cache_control[block_id]:
-                return True
+            return self.cache_control[block_id].dirty and self.cache_control[block_id].valid
         return False
     
-    def store(self, address, data):
+    def writeback(self, address, *args, **kwargs):
+        block_id = self.block_index(address)
+        wb_address = self.cache_control[block_id].address
+        wb_data = self.cache[block_id]
+        return wb_data, wb_address
+
+    
+    def store(self, address, data, *aegs, **kwargs):
         block_index = self.block_index(address)
         if not self.hit(address):
             self.cache_control[block_index].valid_this()
             self.cache_control[block_index].clean_this()
             self.cache_control[block_index].set_tag(self.tag(address))
+            self.cache_control[block_index].set_address(address)
             self.cache[block_index] = Word(data)
         else:
             self.cache_control[block_index].dirty_this()

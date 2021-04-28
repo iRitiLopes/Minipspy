@@ -23,13 +23,27 @@ class Cache:
             self.l1 = L1Splitted(size=512, line_size=64, mode=NVias(n_vias=4))
             self.l2 = L2Cache(size=2048, line_size=64, mode=NVias(n_vias=8))
     
-    def need_writeback(address):
-        pass
+    def hit(self, address):
+        if address < self.instruction_address_upper_limit:
+            return self.l1.hit(address, address_type=0)
+        else:
+            return self.l1.hit(address, return_type=1)
+
+    def writeback(self, address):
+        if address < self.instruction_address_upper_limit:
+            return self.l1.writeback(address, address_type=0)
+        return self.l1.writeback(address, address_type=1)
+    
+    def need_writeback(self, address):
+        if address < self.instruction_address_upper_limit:
+            return self.l1.need_writeback(address, address_type=0)
+        return self.l1.need_writeback(address, address_type=1)
     
     def store(self, address, data) -> None:
-        if self.l1.need_writeback(address):
-            # TODO make writeback
-        pass
+        if address < self.instruction_address_upper_limit:
+            self.l1.store(address, data, address_type=0)
+        else:
+            self.l1.store(address, data, address_type=1)
 
     def load(self, address) -> Word:
         if address < self.instruction_address_upper_limit:

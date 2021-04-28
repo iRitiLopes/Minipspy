@@ -3,6 +3,7 @@ class CacheController:
         self.dirty = 0
         self.valid = 0
         self.tag = None
+        self.address = None
 
     def dirty_this(self):
         self.dirty = 1
@@ -18,6 +19,9 @@ class CacheController:
     
     def set_tag(self, tag):
         self.tag = tag
+    
+    def set_address(self, address):
+        self.address = address
     
     def compare_tag(self, tag):
         return self.tag == tag
