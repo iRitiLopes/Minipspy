@@ -20,6 +20,9 @@ class Register:
 
     def get_data(self):
         return TwoComp.two_complement(self.value.data, 32)
+    
+    def get_data_unsigned(self):
+        return self.value.data
 
 
 class Registers:
