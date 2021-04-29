@@ -30,7 +30,7 @@ class BNEInstruction(I_BaseFunction):
         local_memory = memory
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
-        immediate_value = TwoComp.two_complement(self.imediate, 15)
+        immediate_value = self.imediate
         new_pc = program_counter
         if rs_register.get_data() != rt_register.get_data():
             new_pc = new_pc + immediate_value * 4

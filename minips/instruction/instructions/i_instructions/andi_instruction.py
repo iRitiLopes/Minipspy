@@ -30,7 +30,6 @@ class AndiInstruction(I_BaseFunction):
         immediate_value = self.imediate
 
         rt_value = rs_register.get_data() & immediate_value
-        rt_bits = Int2Bits.convert(rt_value)
 
-        local_registers.set_register_value(self.rt_number, rt_bits)
+        local_registers.set_register_value(self.rt_number, rt_value)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

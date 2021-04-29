@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.r_instructions import R_BaseFunction
 from minips.memory import Memory
@@ -26,7 +27,7 @@ class AdduInstruction(R_BaseFunction):
         local_registers = registers
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
-        
+
         rd = rs_register.get_data() + rt_register.get_data()
 
         local_registers.set_register_value(self.rd_number, rd)

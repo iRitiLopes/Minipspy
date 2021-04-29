@@ -2,7 +2,7 @@ class Word(object):
     word_size = 32
     empty = 0x00000000
 
-    def __init__(self, data="") -> None:
+    def __init__(self, data=0) -> None:
         self.data = data
         pass
 

@@ -24,8 +24,8 @@ class JalrInstruction(R_BaseFunction):
                 **kwargs):
         rs_register = registers.get_register(self.rs_number)
         local_registers = registers
-        local_registers.set_register_value(self.rd_number, Int2Bits.convert(program_counter + 8))
-        new_pc = rs_register.to_unsigned_int()
+        local_registers.set_register_value(self.rd_number, program_counter + 8)
+        new_pc = rs_register.get_data()
 
         branch_delayed_word = memory.load(program_counter + 4)
         kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")

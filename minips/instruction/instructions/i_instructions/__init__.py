@@ -14,7 +14,7 @@ class I_BaseFunction:
         self.op_code = self.word.get_opcode()
         self.rs = self.word.get_k_bits_from(5, 21)
         self.rt = self.word.get_k_bits_from(5, 16)
-        self.imediate =  self.word.get_k_bits_from(15, 0)
+        self.imediate =  TwoComp.two_complement(self.word.get_k_bits_from(16, 0), 16)
         self.rs_number = self.rs
         self.rt_number = self.rt
 

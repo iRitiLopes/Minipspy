@@ -55,7 +55,7 @@ class R_Instruction(BaseInstruction):
             0x24: AndInstruction,
             0x08: JRInstruction,
             '100111': NorInstruction,
-            '100101': OrInstruction,
+            0x25: OrInstruction,
             '100110': XorInstruction,
             0x2a: SLTInstruction,
             0x2b: SLTUInstruction,
@@ -66,10 +66,10 @@ class R_Instruction(BaseInstruction):
             '100011': SubuInstruction,
             0xc: SyscallInstruction,
             '001101': NopInstruction,
-            '001001': JalrInstruction,
-            '011000': MultInstruction,
+            0x9: JalrInstruction,
+            0x18: MultInstruction,
             '011010': DivInstruction,
-            '010010': MFLOInstruction,
+            0x12: MFLOInstruction,
             '010000': MFHIInstruction,
         }
 

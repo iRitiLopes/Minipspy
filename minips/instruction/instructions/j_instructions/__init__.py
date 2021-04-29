@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from typing import Tuple
 from minips.registers import Registers
 
@@ -9,7 +10,7 @@ class J_BaseFunction:
     def __init__(self, word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.jump_address = self.word.get_k_bits_from(26, 0)
+        self.jump_address = TwoComp.two_complement(self.word.get_k_bits_from(26, 0), 26)
 
     def decode(self, *args, **kwargs) -> str:
         pass

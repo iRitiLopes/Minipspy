@@ -1,3 +1,4 @@
+from helpers.bin2int import Bin2Int
 from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.r_instructions import R_BaseFunction
 from minips.memory import Memory
@@ -27,10 +28,10 @@ class MultInstruction(R_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
 
-        result = rs_register.to_signed_int() * rt_register.to_signed_int()
+        result = rs_register.get_data() * rt_register.get_data()
         result = Int2Bits.convert(result, size=64)
-        hi = result[0:32]
-        lo = result[32:64]
+        hi = Bin2Int.convert(result[0:32])
+        lo = Bin2Int.convert(result[32:64])
 
         local_registers.set_hi_value(hi)
         local_registers.set_lo_value(lo)

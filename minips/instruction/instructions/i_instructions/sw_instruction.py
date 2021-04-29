@@ -16,9 +16,8 @@ class SWInstruction(I_BaseFunction):
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rt_name = registers.get_register_name(self.rt_number)
         rs_name = registers.get_register_name(self.rs_number)
-        immediate_value = Bin2Int.convert(self.imediate)
 
-        return f"{self.instruction_name} {rt_name}, {immediate_value}({rs_name})"  # noqa: E501
+        return f"{self.instruction_name} {rt_name}, {self.imediate}({rs_name})"  # noqa: E501
 
     def execute(self,
                 registers: Registers,

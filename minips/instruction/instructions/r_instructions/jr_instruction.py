@@ -22,7 +22,7 @@ class JRInstruction(R_BaseFunction):
                 *args,
                 **kwargs):
         rs_register = registers.get_register(self.rs_number)
-        new_pc = rs_register.to_unsigned_int()
+        new_pc = rs_register.get_data()
 
         branch_delayed_word = memory.load(program_counter + 4)
         kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")

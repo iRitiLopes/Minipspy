@@ -28,9 +28,8 @@ class SLTIInstruction(I_BaseFunction):
                 **kwargs):
         local_registers = registers
         rs_register = local_registers.get_register(self.rs_number)
-        immediate_value = Bin2Int.convert(self.imediate, False)
+        immediate_value =  self.imediate
 
-        rt = rs_register.to_signed_int() < immediate_value
-        rt_bits = Int2Bits.convert(rt)
-        local_registers.set_register_value(self.rt_number, rt_bits)
+        rt = rs_register.get_data() < immediate_value
+        local_registers.set_register_value(self.rt_number, rt)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers
