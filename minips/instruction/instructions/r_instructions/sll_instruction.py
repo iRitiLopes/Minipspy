@@ -32,7 +32,7 @@ class SLLInstruction(R_BaseFunction):
         rt_register = local_registers.get_register(self.rt_number)
 
         s = self.shamt_value
-        rd_bits = rt_register.get_data()[s:] + '0'*s
+        rd_bits = rt_register.get_data() << s
 
         local_registers.set_register_value(self.rd_number, rd_bits)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

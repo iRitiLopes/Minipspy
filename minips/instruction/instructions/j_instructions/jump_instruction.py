@@ -22,7 +22,7 @@ class JumpInstruction(J_BaseFunction):
                 memory: Memory,
                 *args,
                 **kwargs):
-        new_pc = (Bin2Int.convert(self.jump_address) * 4)
+        new_pc = (self.jump_address * 4)
 
         branch_delayed_word = memory.load(program_counter + 4)
         kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")

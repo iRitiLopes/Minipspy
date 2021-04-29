@@ -7,14 +7,13 @@ class Word(object):
         pass
 
     def get_opcode(self):
-        return self.get_bits_between(31, 26)
+        return self.get_k_bits_from(6, 26)
 
     def is_empty(self):
         return self.data == ""
 
-    def get_bits_between(self, a, b) -> str:
-        assert a >= b
-        return self.data[len(self.data) - a - 1:len(self.data) - b]
+    def get_k_bits_from(self, k, from_idx) -> str:
+        return ( ((1 << k) - 1)  &  (self.data >> (from_idx) ) )
 
     def __str__(self) -> str:
         return self.data

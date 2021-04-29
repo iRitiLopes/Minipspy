@@ -1,3 +1,4 @@
+from minips.word import Word
 from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from minips.statistics import Mipstatics
@@ -18,17 +19,14 @@ class Minips:
         self.memory = Memory(mem_mode=mem_mode)
         self.registers = Registers()
         self.coprocessor = COProcessor()
-        self.registers.set_register_value(
-            0,
-            Int2Bits.convert(0)
-        )
+        self.registers.registers[0].value = Word(0x0)
         self.registers.set_register_value(
             28,
-            Int2Bits.convert(self.memory.GLOBAL_POINTER)
+            self.memory.GLOBAL_POINTER
         )
         self.registers.set_register_value(
             29,
-            Int2Bits.convert(self.memory.STACK_POINTER)
+            self.memory.STACK_POINTER
         )
         self.program_counter = self.memory.TEXT_SECTION_START
         self.statistics = Mipstatics()

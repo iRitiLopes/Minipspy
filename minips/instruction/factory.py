@@ -10,9 +10,9 @@ from minips.word import Word
 
 
 class InstructionFactory:
-    r_opcode = '000000'
-    jump_opcode = '000010'
-    jump_al_opcode = '000011'
+    r_opcode = 0x0
+    jump_opcode = 0x2
+    jump_al_opcode = 0x3
     floating_r_opcode = '010001'
     floating_i_instructions = ['110001', '110101', '111001', '111101']
 

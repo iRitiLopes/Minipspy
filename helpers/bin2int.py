@@ -1,7 +1,6 @@
 class Bin2Int:
     @staticmethod
     def convert(bin, signed=True):
-        #bin = bin.zfill(32)
         if not bin:
             return 0
         if signed:

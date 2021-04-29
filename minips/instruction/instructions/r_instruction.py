@@ -48,23 +48,23 @@ class R_Instruction(BaseInstruction):
         super().__init__(word)
         self.word = word
         self.instruction_type = 1
-        self.funct = self.word.get_bits_between(5, 0)
+        self.funct = self.word.get_k_bits_from(6, 0)
         self.functions = {
-            '100000': AddInstruction,
-            '100001': AdduInstruction,
-            '100100': AndInstruction,
-            '001000': JRInstruction,
+            0x20: AddInstruction,
+            0x21: AdduInstruction,
+            0x24: AndInstruction,
+            0x08: JRInstruction,
             '100111': NorInstruction,
             '100101': OrInstruction,
             '100110': XorInstruction,
-            '101010': SLTInstruction,
-            '101011': SLTUInstruction,
-            '000000': SLLInstruction,
+            0x2a: SLTInstruction,
+            0x2b: SLTUInstruction,
+            0x00: SLLInstruction,
             '000010': SRLInstruction,
             '000011': SRAInstruction,
             '100010': SubInstruction,
             '100011': SubuInstruction,
-            '001100': SyscallInstruction,
+            0xc: SyscallInstruction,
             '001101': NopInstruction,
             '001001': JalrInstruction,
             '011000': MultInstruction,

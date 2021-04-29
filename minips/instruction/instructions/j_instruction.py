@@ -16,10 +16,10 @@ class J_Instruction(BaseInstruction):
         self.word = word
         self.instruction_type = 2
         self.op_code = self.word.get_opcode()
-        self.jump_address = self.word.get_bits_between(25, 0)
+        self.jump_address = self.word.get_k_bits_from(26, 0)
         self.functions = {
-            '000010': JumpInstruction,
-            '000011': JumpalInstruction,
+            0x2: JumpInstruction,
+            0x3: JumpalInstruction,
         }
 
     def decode(self, *args, **kwargs):

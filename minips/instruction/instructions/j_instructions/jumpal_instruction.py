@@ -23,7 +23,7 @@ class JumpalInstruction(J_BaseFunction):
                 memory: Memory,
                 *args,
                 **kwargs):
-        new_pc_address = (Bin2Int.convert(self.jump_address) * 4)
+        new_pc_address = (self.jump_address * 4)
         local_registers = registers
         ra_bits = Int2Bits.convert(program_counter + 8)
         local_registers.set_register_value(31, ra_bits)

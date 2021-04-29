@@ -27,10 +27,8 @@ class AddiInstruction(I_BaseFunction):
                 **kwargs):
         local_registers = registers
         rs_register = local_registers.get_register(self.rs_number)
-        immediate_value = Bin2Int.convert(self.imediate, signed=True)
+        immediate_value = self.imediate
+        rt_value = rs_register.get_data() + immediate_value
 
-        rt_value = rs_register.to_signed_int() + immediate_value
-        rt_bits = Int2Bits.convert(rt_value)
-
-        local_registers.set_register_value(self.rt_number, rt_bits)
+        local_registers.set_register_value(self.rt_number, rt_value)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

@@ -10,15 +10,15 @@ class R_BaseFunction:
 
     def __init__(self, word) -> None:
         self.word = word
-        self.rs = self.word.get_bits_between(25, 21)
-        self.rt = self.word.get_bits_between(20, 16)
-        self.rd = self.word.get_bits_between(15, 11)
-        self.shamt = self.word.get_bits_between(10, 6)
-        self.funct = self.word.get_bits_between(5, 0)
-        self.rs_number = Bin2Int.convert(self.rs, signed=False)
-        self.rt_number = Bin2Int.convert(self.rt, signed=False)
-        self.rd_number = Bin2Int.convert(self.rd, signed=False)
-        self.shamt_value = Bin2Int.convert(self.shamt, signed=False)
+        self.rs = self.word.get_k_bits_from(5, 21)
+        self.rt = self.word.get_k_bits_from(5, 16)
+        self.rd = self.word.get_k_bits_from(5, 11)
+        self.shamt = self.word.get_k_bits_from(5, 6)
+        self.funct = self.word.get_k_bits_from(6, 0)
+        self.rs_number = self.rs
+        self.rt_number = self.rt
+        self.rd_number = self.rd
+        self.shamt_value = self.shamt
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

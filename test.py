@@ -4,7 +4,7 @@ import cProfile, pstats
 if __name__ == "__main__":
     profiler = cProfile.Profile()
     minips = Minips(mem_mode=1)
-    minips.load('./examples/21.mandelbrot')
+    minips.load('./examples/example')
     profiler.enable()
     minips.execute()
     profiler.disable()

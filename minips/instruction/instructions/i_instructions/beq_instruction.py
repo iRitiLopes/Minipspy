@@ -31,10 +31,10 @@ class BEQInstruction(I_BaseFunction):
         local_co_registers = kwargs['coprocessor'].registers
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
 
         new_pc = program_counter
-        if rs_register.to_signed_int() == rt_register.to_signed_int():
+        if rs_register.get_data() == rt_register.get_data():
             new_pc = new_pc + immediate_value * 4
 
             branch_delayed_word = memory.load(program_counter + 4)

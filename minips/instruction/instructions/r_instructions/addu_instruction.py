@@ -27,8 +27,7 @@ class AdduInstruction(R_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
         
-        rd = rs_register.to_unsigned_int() + rt_register.to_unsigned_int()
-        rd_bits = Int2Bits.convert(rd)
+        rd = rs_register.get_data() + rt_register.get_data()
 
-        local_registers.set_register_value(self.rd_number, rd_bits)
+        local_registers.set_register_value(self.rd_number, rd)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

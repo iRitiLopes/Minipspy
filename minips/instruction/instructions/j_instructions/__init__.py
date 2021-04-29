@@ -9,7 +9,7 @@ class J_BaseFunction:
     def __init__(self, word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.jump_address = self.word.get_bits_between(25, 0)
+        self.jump_address = self.word.get_k_bits_from(26, 0)
 
     def decode(self, *args, **kwargs) -> str:
         pass

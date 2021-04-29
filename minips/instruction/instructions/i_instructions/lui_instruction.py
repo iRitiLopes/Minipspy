@@ -25,8 +25,7 @@ class LuiInstruction(I_BaseFunction):
                 *args,
                 **kwargs):
         local_registers = registers
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
         rt = immediate_value * 2**16
-        rt_bits = Int2Bits.convert(rt)
-        local_registers.set_register_value(self.rt_number, rt_bits)
+        local_registers.set_register_value(self.rt_number, rt)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers
