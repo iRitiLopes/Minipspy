@@ -82,8 +82,8 @@ class Minips:
         self.statistics.start()
         for instruction in self.read_instructions():
             self.log.trace(f"I {Int2Hex.convert(self.program_counter)} (line# {Int2Hex.convert(self.program_counter)})")
-            #decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            #print(hex(self.program_counter), "\t", hex(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
+            decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
+            print(hex(self.program_counter), "\t", hex(instruction.word.data), "\t\t",  decoded_instruction)
             self.registers, self.program_counter, self.memory, self.coprocessor.registers = instruction\
                 .execute(
                     registers=self.registers,

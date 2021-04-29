@@ -41,7 +41,7 @@ class I_Instruction(BaseInstruction):
         self.functions = {
             0x8: AddiInstruction,
             0x9: AddiuInstruction,
-            0xe: AndiInstruction,
+            0xc: AndiInstruction,
             0x4: BEQInstruction,
             0x5: BNEInstruction,
             '000110': BLEZInstruction,
@@ -51,14 +51,14 @@ class I_Instruction(BaseInstruction):
             '100101': LHUInstruction,
             '110000': {'name': 'LL', 'funct': ''},
             0xf: LuiInstruction,
-            '100011': LWInstruction,
+            0x23: LWInstruction,
             0xd: OriInstruction,
             0xa: SLTIInstruction,
             '001011': {'name': 'SLTIU', 'funct': ''},
             '101000': {'name': 'SB', 'funct': ''},
             '111000': {'name': 'SC', 'funct': ''},
             '101001': {'name': 'SH', 'funct': ''},
-            '101011': SWInstruction
+            0x2b: SWInstruction
         }
 
     def decode(self, registers: Registers, *args, **kwargs):

@@ -14,7 +14,7 @@ class JumpalInstruction(J_BaseFunction):
         super().__init__(word)
 
     def decode(self, *args, **kwargs) -> str:
-        jump_address = Bin2Int.convert(self.jump_address)
+        jump_address = self.jump_address
         return f"{self.instruction_name} {jump_address * 4}"
 
     def execute(self,

@@ -27,8 +27,7 @@ class SRLInstruction(R_BaseFunction):
         local_registers = registers
         rt_register = local_registers.get_register(self.rt_number)
 
-        rd = rt_register.to_signed_int() >> self.shamt_value
-        rd_bits = Int2Bits.convert(rd)
+        rd = rt_register.get_data() >> self.shamt_value
 
-        local_registers.set_register_value(self.rd_number, rd_bits)
+        local_registers.set_register_value(self.rd_number, rd)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

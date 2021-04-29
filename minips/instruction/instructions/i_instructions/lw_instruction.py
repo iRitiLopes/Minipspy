@@ -26,9 +26,9 @@ class LWInstruction(I_BaseFunction):
                 *args,
                 **kwargs):
         local_registers = registers
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
         rs_register = local_registers.get_register(self.rs_number)
-        rs_address = rs_register.to_unsigned_int()
+        rs_address = rs_register.get_data()
 
         word = memory.load(rs_address + immediate_value).data
         kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")

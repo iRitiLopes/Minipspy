@@ -29,14 +29,13 @@ class SWInstruction(I_BaseFunction):
         local_registers = registers
         local_memory = memory
 
-        offset_mem = Bin2Int.convert(self.imediate)
+        offset_mem = self.imediate
         rs_register = local_registers.get_register(self.rs_number)
-        rs_address = rs_register.to_unsigned_int()
+        rs_address = rs_register.get_data()
 
         rt_register = local_registers.get_register(self.rt_number)
-        rt_value = rt_register.to_unsigned_int()
-        rt_bits = Int2Bits.convert(rt_value, size=32)
+        rt_value = rt_register.get_data()
 
-        local_memory.store(rs_address + offset_mem, rt_bits)
+        local_memory.store(rs_address + offset_mem, rt_value)
         kwargs['logger'].trace(f"W {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + offset_mem)})")
         return local_registers, program_counter + 4, local_memory, kwargs['coprocessor'].registers
