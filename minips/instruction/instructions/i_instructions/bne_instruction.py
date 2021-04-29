@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from minips.instruction.instructions.i_instructions import I_BaseFunction
@@ -29,7 +30,7 @@ class BNEInstruction(I_BaseFunction):
         local_memory = memory
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
-        immediate_value = self.imediate
+        immediate_value = TwoComp.negate(self.imediate)
 
         new_pc = program_counter
         if rs_register.get_data() != rt_register.get_data():
