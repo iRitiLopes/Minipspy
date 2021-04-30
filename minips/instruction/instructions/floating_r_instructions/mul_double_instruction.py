@@ -1,6 +1,5 @@
 from helpers.bin2float import Bin2Float
 from helpers.bin2int import Bin2Int
-from helpers.float2bin import Float2Bits
 from helpers.int2bin import Int2Bits
 from minips.coprocessor import COProcessor
 from minips.instruction.instructions.floating_r_instructions import \

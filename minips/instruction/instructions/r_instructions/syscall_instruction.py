@@ -1,7 +1,7 @@
+from helpers.float2int import Float2Int
 from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from helpers.bin2float import Bin2Float
-from helpers.float2bin import Float2Bits
 from minips.coprocessor import COProcessor
 from helpers.bin2chr import Bin2Chr
 from helpers.int2bin import Int2Bits
@@ -63,11 +63,11 @@ class SyscallInstruction(R_BaseFunction):
             local_registers.set_register_value(self.v0, read)
         elif v0_value == 6:
             read = float(input())
-            read_bit = Float2Bits.convert(read)
+            read_bit = Float2Int.convert(read)
             local_co_registers.set_register_value(self.f0, read_bit)
         elif v0_value == 7:
             read = float(input())
-            read_bit = Float2Bits.convert(read, doubled=True)
+            read_bit = Float2Int.convert(read, doubled=True)
             read_bit_high = read_bit[0:32]
             read_bit_low = read_bit[32:64]
 

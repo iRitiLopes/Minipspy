@@ -13,8 +13,8 @@ class InstructionFactory:
     r_opcode = 0x0
     jump_opcode = 0x2
     jump_al_opcode = 0x3
-    floating_r_opcode = '010001'
-    floating_i_instructions = ['110001', '110101', '111001', '111101']
+    floating_r_opcode = 0x11
+    floating_i_instructions = [0x31, 0x35, 0x39, 0x3d]
 
     def factory(self, word: Word) -> BaseInstruction:
         op_code = word.get_opcode()

@@ -1,8 +1,8 @@
 from atexit import register
+from minips.word import Word
 from helpers.int2hex import Int2Hex
 from helpers.bin2float import Bin2Float
 from helpers.bin2int import Bin2Int
-from helpers.float2bin import Float2Bits
 from helpers.int2bin import Int2Bits
 from minips.coprocessor import COProcessor
 from minips.instruction.instructions.floating_i_instructions import \
@@ -15,13 +15,13 @@ class BC1TInstruction(Floating_I_BaseFunction):
     instruction_name = "BC1"
     funct_code = '01000'
 
-    def __init__(self, word) -> None:
-        self.ft = word.get_bits_between(16,16)
+    def __init__(self, word: Word) -> None:
+        self.ft = word.get_k_bits_from(1,16)
         self.instruction_name = self.instruction_name + 'T' if int(self.ft) == 1 else self.instruction_name + 'F'
         super().__init__(word)
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
-        offset = Bin2Int.convert(self.offset)
+        offset = self.offset
 
         return f"{self.instruction_name} {offset}"
 
@@ -36,7 +36,7 @@ class BC1TInstruction(Floating_I_BaseFunction):
         local_registers = registers
         local_memory = memory
 
-        offset = Bin2Int.convert(self.offset)
+        offset = self.offset
         cc_register = local_co_registers.get_cc()
         cc_value = cc_register.to_unsigned_int()
         new_pc = program_counter

@@ -1,4 +1,3 @@
-from helpers.float2bin import Float2Bits
 from minips.registers import Registers
 from minips.coprocessor import COProcessor
 from helpers.bin2int import Bin2Int
@@ -15,14 +14,14 @@ class CLTSingleInstruction(Floating_R_BaseFunction):
 
     def __init__(self, word) -> None:
         super().__init__(word)
-        self.fmt = self.word.get_bits_between(25, 21)
-        self.ft = self.word.get_bits_between(20, 16)
-        self.fs = self.word.get_bits_between(15, 11)
-        self.fd = self.word.get_bits_between(10, 6)
+        self.fmt = self.word.get_k_bits_from(5, 21)
+        self.ft = self.word.get_k_bits_from(5, 16)
+        self.fs = self.word.get_k_bits_from(5, 11)
+        self.fd = self.word.get_k_bits_from(5, 6)
 
-        self.ft_number = Bin2Int.convert(self.ft, False)
-        self.fs_number = Bin2Int.convert(self.fs, False)
-        self.fd_number = Bin2Int.convert(self.fd, False)
+        self.ft_number = self.ft
+        self.fs_number = self.fs
+        self.fd_number = self.fd
 
     def decode(self, coprocessor: COProcessor, *args, **kwargs) -> str:
         fd_name = coprocessor.registers.get_register_name(self.fd_number)
@@ -47,7 +46,5 @@ class CLTSingleInstruction(Floating_R_BaseFunction):
         else:
             cc = 0
 
-        cc_bin = Int2Bits.convert(cc)
-
-        local_registers.set_register_value(32, cc_bin)
+        local_registers.set_register_value(32, cc)
         return registers, program_counter + 4, memory, local_registers

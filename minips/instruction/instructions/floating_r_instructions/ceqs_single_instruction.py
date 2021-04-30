@@ -1,4 +1,3 @@
-from helpers.float2bin import Float2Bits
 from minips.registers import Registers
 from minips.coprocessor import COProcessor
 from helpers.bin2int import Bin2Int

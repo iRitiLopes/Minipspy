@@ -15,14 +15,11 @@ class Floating_I_Instruction(BaseInstruction):
         super().__init__(word)
         self.word = word
         self.instruction_type = 3
-        self.funct = self.word.get_bits_between(5, 0)
-        self.large_funct = self.word.get_bits_between(10, 0)
-        self.opcode = self.word.get_bits_between(31, 26)
-        self.fmt = self.word.get_bits_between(25, 21)
+        self.opcode = self.word.get_k_bits_from(6, 26)
         self.functions = {
-            '110001': LWC1Instruction,
-            '110101': LDC1Instruction,
-            '111001': SWC1Instruction
+            0x31: LWC1Instruction,
+            0x35: LDC1Instruction,
+            0x39: SWC1Instruction
         }
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:

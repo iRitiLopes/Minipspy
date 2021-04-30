@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from helpers.bin2int import Bin2Int
 from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.r_instructions import R_BaseFunction
@@ -29,9 +30,10 @@ class SRAInstruction(R_BaseFunction):
         rt_register = local_registers.get_register(self.rt_number)
 
         s = self.shamt_value
-        bits = rt_register.get_data()
-
+        rt = rt_register.get_data()
+        bits = Int2Bits.convert(rt)
         rd_bits = bits[0]*self.shamt_value + bits[:32-self.shamt_value]
+        rd = Bin2Int.convert(rd_bits)
 
-        local_registers.set_register_value(self.rd_number, rd_bits)
+        local_registers.set_register_value(self.rd_number, rd)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers
