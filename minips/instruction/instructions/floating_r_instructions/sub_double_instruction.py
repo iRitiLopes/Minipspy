@@ -6,6 +6,7 @@ from minips.instruction.instructions.floating_r_instructions import \
     Floating_R_BaseFunction
 from minips.memory import Memory
 from minips.registers import Registers
+from helpers.float2bin import Float2Bin
 
 
 class SubDoubleInstruction(Floating_R_BaseFunction):
@@ -46,13 +47,13 @@ class SubDoubleInstruction(Floating_R_BaseFunction):
         ft_register = local_registers.get_register(self.ft_number)
         ft1_register = local_registers.get_register(self.ft_number + 1)
 
-        fs = Bin2Float.convert(fs1_register.get_data() + fs_register.get_data(), True)
-        ft = Bin2Float.convert(ft1_register.get_data() + ft_register.get_data(), True)
-        rd = fs - ft
-
-        fd_bin = Float2Bits.convert(rd, doubled=True)
-        fd_bin_higher = fd_bin[0:32]
-        fd_bin_lower = fd_bin[32:64]
+        fs = Bin2Float.convert(Int2Bits.convert(fs1_register.to_signed_int()) + Int2Bits.convert(fs_register.to_signed_int()), True)
+        ft = Bin2Float.convert(Int2Bits.convert(ft1_register.to_signed_int()) + Int2Bits.convert(ft_register.to_signed_int()), True)
+        
+        fd = fs - ft
+        fd_bin = Float2Bin.convert(fd, doubled=True)
+        fd_bin_higher = Bin2Int.convert(fd_bin[0:32])
+        fd_bin_lower = Bin2Int.convert(fd_bin[32:64])
 
         local_registers.set_register_value(self.fd_number + 1, fd_bin_higher)
         local_registers.set_register_value(self.fd_number, fd_bin_lower)
