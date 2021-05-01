@@ -36,8 +36,8 @@ class L1Cache:
     
     def store(self, address, data, *aegs, **kwargs):
         block_index = self.block_index(address)
-        if address == self.cache_control[block_index].address:
-            print(" storing: ", address, data, self.cache_control[block_index].__dict__)
+        # if address == self.cache_control[block_index].address:
+        #     print(" storing: ", address, data, self.cache_control[block_index].__dict__)
         if not self.hit(address):
             self.cache_control[block_index].valid_this()
             self.cache_control[block_index].clean_this()
