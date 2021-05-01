@@ -1,3 +1,5 @@
+from helpers.twocomplement import TwoComp
+from minips.word import Word
 from helpers.bin2int import Bin2Int
 from minips.memory import Memory
 from typing import Tuple
@@ -8,13 +10,14 @@ class Floating_I_BaseFunction:
     instruction_name = ""
     funct_code = ""
 
-    def __init__(self, word) -> None:
+    def __call__(self, word: Word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.base = self.word.get_bits_between(25, 21)
-        self.ft = self.word.get_bits_between(20, 16)
-        self.offset = self.word.get_bits_between(15, 0)
-        self.ft_number = Bin2Int.convert(self.ft, signed=False)
+        self.base = self.word.get_k_bits_from(5, 21)
+        self.ft = self.word.get_k_bits_from(5, 16)
+        self.offset = TwoComp.two_complement(self.word.get_k_bits_from(16, 0), 16)
+        self.ft_number = self.ft
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

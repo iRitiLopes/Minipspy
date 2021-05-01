@@ -10,11 +10,14 @@ class JumpalInstruction(J_BaseFunction):
     instruction_name = "JAL"
     funct_code = '000011'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, *args, **kwargs) -> str:
-        jump_address = Bin2Int.convert(self.jump_address)
+        jump_address = self.jump_address
         return f"{self.instruction_name} {jump_address * 4}"
 
     def execute(self,
@@ -23,9 +26,9 @@ class JumpalInstruction(J_BaseFunction):
                 memory: Memory,
                 *args,
                 **kwargs):
-        new_pc_address = (Bin2Int.convert(self.jump_address) * 4)
+        new_pc_address = (self.jump_address * 4)
         local_registers = registers
-        ra_bits = Int2Bits.convert(program_counter + 8)
+        ra_bits = program_counter + 8
         local_registers.set_register_value(31, ra_bits)
 
         branch_delayed_word = memory.load(program_counter + 4)

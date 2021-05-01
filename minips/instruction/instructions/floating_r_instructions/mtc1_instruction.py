@@ -1,4 +1,3 @@
-from helpers.float2bin import Float2Bits
 from helpers.bin2float import Bin2Float
 from minips.registers import Registers
 from minips.coprocessor import COProcessor
@@ -14,14 +13,15 @@ class MTC1Instruction(Floating_R_BaseFunction):
     funct_code = '00000000000'
     fmt = '00100'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
-        self.fmt = self.word.get_bits_between(25, 21)
-        self.rt = self.word.get_bits_between(20, 16)
-        self.fs = self.word.get_bits_between(15, 11)
+    def __call__(self, word) -> None:
+        super().__call__(word)
+        self.fmt = self.word.get_k_bits_from(5, 21)
+        self.rt = self.word.get_k_bits_from(5, 16)
+        self.fs = self.word.get_k_bits_from(5, 11)
 
-        self.rt_number = Bin2Int.convert(self.rt, False)
-        self.fs_number = Bin2Int.convert(self.fs, False)
+        self.rt_number = self.rt
+        self.fs_number = self.fs
+        return self
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
         fs_name = coprocessor.registers.get_register_name(self.fs_number)

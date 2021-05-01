@@ -9,12 +9,12 @@ class LuiInstruction(I_BaseFunction):
     instruction_name = "LUI"
     funct_code = '001111'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word):
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rt_name = registers.get_register_name(self.rt_number)
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
 
         return f"{self.instruction_name} {rt_name}, {immediate_value}"  # noqa: E501
 
@@ -25,8 +25,7 @@ class LuiInstruction(I_BaseFunction):
                 *args,
                 **kwargs):
         local_registers = registers
-        immediate_value = Bin2Int.convert(self.imediate)
-        rt = immediate_value * 2**16
-        rt_bits = Int2Bits.convert(rt)
-        local_registers.set_register_value(self.rt_number, rt_bits)
+        immediate_value = self.word.get_k_bits_from(16, 0)
+        rt = immediate_value << 16
+        local_registers.set_register_value(self.rt_number, rt)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

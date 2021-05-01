@@ -56,7 +56,7 @@ class Memory(object):
     
     def __load(self, address) -> Word:
         self.access_count[3] += 1
-        data = self.mem_blocks.get(address, Word())
+        data = self.mem_blocks.get(address, Word(data=None))
         return data
     
     def init_store(self, address, data):

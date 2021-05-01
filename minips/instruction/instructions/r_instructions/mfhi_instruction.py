@@ -8,8 +8,11 @@ class MFHIInstruction(R_BaseFunction):
     instruction_name = "MFHI"
     funct_code = '010000'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rd_name = registers.get_register_name(self.rd_number)
@@ -24,5 +27,6 @@ class MFHIInstruction(R_BaseFunction):
                 **kwargs):
         local_registers = registers
         hi_register = local_registers.get_hi()
-        local_registers.set_register_value(self.rd_number, hi_register.get_data())
+        local_registers.set_register_value(self.rd_number, hi_register.to_signed_int())
+
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

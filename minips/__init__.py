@@ -1,3 +1,4 @@
+from minips.word import Word
 from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from minips.statistics import Mipstatics
@@ -18,17 +19,14 @@ class Minips:
         self.memory = Memory(mem_mode=mem_mode, log=self.log)
         self.registers = Registers()
         self.coprocessor = COProcessor()
-        self.registers.set_register_value(
-            0,
-            Int2Bits.convert(0)
-        )
+        self.registers.registers[0].value = Word(0x0)
         self.registers.set_register_value(
             28,
-            Int2Bits.convert(self.memory.GLOBAL_POINTER)
+            self.memory.GLOBAL_POINTER
         )
         self.registers.set_register_value(
             29,
-            Int2Bits.convert(self.memory.STACK_POINTER)
+            self.memory.STACK_POINTER
         )
         self.program_counter = self.memory.TEXT_SECTION_START
         self.statistics = Mipstatics()
@@ -77,7 +75,7 @@ class Minips:
     def decode(self):
         for instruction in self.read_instructions():
             decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            print(hex(self.program_counter), "\t", hex(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
+            print(hex(self.program_counter), "\t", Int2Hex.convert(instruction.word.data), "\t\t",  decoded_instruction)
             self.program_counter += 4
 
     def execute(self):
@@ -85,7 +83,7 @@ class Minips:
         for instruction in self.read_instructions():
             self.log.trace(f"I {Int2Hex.convert(self.program_counter)} (line# {Int2Hex.convert(self.program_counter)})")
             #decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            #print(hex(self.program_counter), "\t", hex(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
+            #print(hex(self.program_counter), "\t", hex(instruction.word.data), "\t\t",  decoded_instruction)
             self.registers, self.program_counter, self.memory, self.coprocessor.registers = instruction\
                 .execute(
                     registers=self.registers,

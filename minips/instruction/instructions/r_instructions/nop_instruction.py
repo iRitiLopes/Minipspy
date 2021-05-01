@@ -7,8 +7,11 @@ class NopInstruction(R_BaseFunction):
     instruction_name = "nop"
     funct_code = '001101'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         return "nop"

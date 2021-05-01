@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from helpers.bin2str import Bin2Str
 from minips.word import Word
 from helpers.bin2int import Bin2Int
@@ -9,17 +10,19 @@ class Register:
         self.value = value
 
     def to_signed_int(self):
-        return Bin2Int.convert(self.value.data)
+        return TwoComp.two_complement(self.value.data, 32)
 
     def to_unsigned_int(self):
-        return Bin2Int.convert(self.value.data, signed=False)
+        return TwoComp.unsigned(self.value.data, 32)
 
     def to_string(self):
         Bin2Str.convert(self.value.data)
 
     def get_data(self):
-        return self.value.data
-
+        return TwoComp.two_complement(self.value.data, 32)
+    
+    def get_data_unsigned(self):
+        return TwoComp.unsigned(self.value.data, 32)
 
 class Registers:
     def __init__(self):

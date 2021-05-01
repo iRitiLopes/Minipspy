@@ -10,13 +10,13 @@ class BGEZInstruction(I_BaseFunction):
     instruction_name = "BGEZ"
     funct_code = '000001'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word):
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
         rt_name = registers.get_register_name(self.rt_number)
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
 
         return f"{self.instruction_name} {rt_name}, {rs_name}, {immediate_value}"  # noqa: E501
 
@@ -30,7 +30,7 @@ class BGEZInstruction(I_BaseFunction):
         local_memory = memory
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
 
         new_pc = program_counter
         if rs_register.to_signed_int() >= rt_register.to_signed_int():

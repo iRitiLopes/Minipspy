@@ -1,5 +1,4 @@
 from helpers.bin2int import Bin2Int
-from helpers.float2bin import Float2Bits
 from helpers.int2bin import Int2Bits
 from minips.coprocessor import COProcessor
 from minips.instruction.instructions.floating_r_instructions import \
@@ -13,14 +12,15 @@ class MOVDoubleInstruction(Floating_R_BaseFunction):
     funct_code = '000110'
     fmt = ''
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
-        self.fmt = self.word.get_bits_between(25, 21)
-        self.fs = self.word.get_bits_between(15, 11)
-        self.fd = self.word.get_bits_between(10, 6)
+    def __call__(self, word) -> None:
+        super().__call__(word)
+        self.fmt = self.word.get_k_bits_from(5, 21)
+        self.fs = self.word.get_k_bits_from(5, 11)
+        self.fd = self.word.get_k_bits_from(5, 6)
 
-        self.fs_number = Bin2Int.convert(self.fs)
-        self.fd_number = Bin2Int.convert(self.fd)
+        self.fs_number = self.fs
+        self.fd_number = self.fd
+        return self
 
     def decode(self, coprocessor: COProcessor, *args, **kwargs) -> str:
         fd_name = coprocessor.registers.get_register_name(self.fd_number)

@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from helpers.int2hex import Int2Hex
 from minips.memory import Memory
 from minips.registers import Registers
@@ -9,11 +10,14 @@ class JumpInstruction(J_BaseFunction):
     instruction_name = "J"
     funct_code = '000010'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, *args, **kwargs) -> str:
-        jump_address = Bin2Int.convert(self.jump_address)
+        jump_address = self.jump_address
         return f"{self.instruction_name} {jump_address * 4}"
 
     def execute(self,
@@ -22,7 +26,7 @@ class JumpInstruction(J_BaseFunction):
                 memory: Memory,
                 *args,
                 **kwargs):
-        new_pc = (Bin2Int.convert(self.jump_address) * 4)
+        new_pc = (self.jump_address * 4)
 
         branch_delayed_word = memory.load(program_counter + 4)
         kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")

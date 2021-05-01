@@ -1,3 +1,4 @@
+from helpers.bin2int import Bin2Int
 from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.r_instructions import R_BaseFunction
 from minips.memory import Memory
@@ -8,8 +9,11 @@ class MultInstruction(R_BaseFunction):
     instruction_name = "MULT"
     funct_code = '011000'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
@@ -29,8 +33,8 @@ class MultInstruction(R_BaseFunction):
 
         result = rs_register.to_signed_int() * rt_register.to_signed_int()
         result = Int2Bits.convert(result, size=64)
-        hi = result[0:32]
-        lo = result[32:64]
+        hi = Bin2Int.convert(result[0:32])
+        lo = Bin2Int.convert(result[32:64])
 
         local_registers.set_hi_value(hi)
         local_registers.set_lo_value(lo)
