@@ -8,8 +8,11 @@ class JalrInstruction(R_BaseFunction):
     instruction_name = "JALR"
     funct_code = "001001"
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
@@ -25,7 +28,7 @@ class JalrInstruction(R_BaseFunction):
         rs_register = registers.get_register(self.rs_number)
         local_registers = registers
         local_registers.set_register_value(self.rd_number, program_counter + 8)
-        new_pc = rs_register.get_data()
+        new_pc = rs_register.to_unsigned_int()
 
         branch_delayed_word = memory.load(program_counter + 4)
         kwargs['logger'].trace(f"I {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(program_counter + 4)})")

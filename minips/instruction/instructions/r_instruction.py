@@ -44,34 +44,37 @@ from minips.word import Word
 
 class R_Instruction(BaseInstruction):
 
-    def __init__(self, word: Word) -> None:
-        super().__init__(word)
-        self.word = word
+    def __init__(self) -> None:
+        super().__init__()
         self.instruction_type = 1
-        self.funct = self.word.get_k_bits_from(6, 0)
         self.functions = {
-            0x20: AddInstruction,
-            0x21: AdduInstruction,
-            0x24: AndInstruction,
-            0x08: JRInstruction,
-            '100111': NorInstruction,
-            0x25: OrInstruction,
-            '100110': XorInstruction,
-            0x2a: SLTInstruction,
-            0x2b: SLTUInstruction,
-            0x00: SLLInstruction,
-            0x02: SRLInstruction,
-            0x03: SRAInstruction,
-            '100010': SubInstruction,
-            '100011': SubuInstruction,
-            0xc: SyscallInstruction,
-            '001101': NopInstruction,
-            0x9: JalrInstruction,
-            0x18: MultInstruction,
-            '011010': DivInstruction,
-            0x12: MFLOInstruction,
-            '010000': MFHIInstruction,
+            0x20: AddInstruction(),
+            0x21: AdduInstruction(),
+            0x24: AndInstruction(),
+            0x08: JRInstruction(),
+            0X27: NorInstruction(),
+            0x25: OrInstruction(),
+            0X26: XorInstruction(),
+            0x2a: SLTInstruction(),
+            0x2b: SLTUInstruction(),
+            0x00: SLLInstruction(),
+            0x02: SRLInstruction(),
+            0x03: SRAInstruction(),
+            0x22: SubInstruction(),
+            0x23: SubuInstruction(),
+            0x0c: SyscallInstruction(),
+            0x0d: NopInstruction(),
+            0x09: JalrInstruction(),
+            0x18: MultInstruction(),
+            0x1a: DivInstruction(),
+            0x12: MFLOInstruction(),
+            0X10: MFHIInstruction(),
         }
+    def __call__(self, word):
+        super().__call__(word)
+        self.funct = self.word.get_k_bits_from(6, 0)
+        return self
+    
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         """

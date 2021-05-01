@@ -26,55 +26,58 @@ from minips.word import Word
 
 class Floating_R_Instruction(BaseInstruction):
 
-    def __init__(self, word: Word) -> None:
-        super().__init__(word)
-        self.word = word
+    def __init__(self) -> None:
+        super().__init__()
         self.instruction_type = 4
+        self.functions_extra = {
+            0x0: {
+                0x0: MFC1Instruction(),
+                0x4: MTC1Instruction(),
+            }
+        }
+        self.functions_cond = {
+            0xc: {
+                0x10: CLTSingleInstruction()
+            },
+        }
+        self.functions = {
+            0x8: BC1TInstruction(),
+            0x0: {
+                0x10: AddSingleInstruction(),
+                0x11: AddDoubleInstruction()
+            },
+            0x1: {
+                0x10: SubSingleInstruction(),
+                0x11: SubDoubleInstruction()
+            },
+            0x6: {
+                0x10: MOVSingleInstruction(),
+                0x11: MOVDoubleInstruction()
+            },
+            0x21: {
+                0x14: CVTDWordInstruction(),
+            },
+            0x20: {
+                0x11: CVTSDoubleInstruction(),
+            },
+            0x2: {
+                0x10: MulSingleInstruction(),
+                0x11: MulDoubleInstruction(),
+            },
+            0x3: {
+                0x11: DivDoubleInstruction()
+            },
+
+        }
+    
+    def __call__(self, word):
+        super().__call__(word)
         self.funct = self.word.get_k_bits_from(6, 0)
         self.large_funct = self.word.get_k_bits_from(11, 0)
         self.opcode = self.word.get_k_bits_from(6, 26)
         self.fmt = self.word.get_k_bits_from(5, 21)
         self.cond = self.word.get_k_bits_from(4, 0)
-        self.functions_extra = {
-            0x0: {
-                0x0: MFC1Instruction,
-                0x4: MTC1Instruction,
-            }
-        }
-        self.functions_cond = {
-            0xc: {
-                0x10: CLTSingleInstruction
-            },
-        }
-        self.functions = {
-            0x8: BC1TInstruction,
-            0x0: {
-                0x10: AddSingleInstruction,
-                0x11: AddDoubleInstruction
-            },
-            0x1: {
-                0x10: SubSingleInstruction,
-                0x11: SubDoubleInstruction
-            },
-            0x6: {
-                0x10: MOVSingleInstruction,
-                0x11: MOVDoubleInstruction
-            },
-            0x21: {
-                0x14: CVTDWordInstruction,
-            },
-            0x20: {
-                0x11: CVTSDoubleInstruction,
-            },
-            0x2: {
-                0x10: MulSingleInstruction,
-                0x11: MulDoubleInstruction,
-            },
-            0x3: {
-                0x11: DivDoubleInstruction
-            },
-
-        }
+        return self
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:
         """

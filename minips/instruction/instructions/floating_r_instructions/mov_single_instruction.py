@@ -12,14 +12,15 @@ class MOVSingleInstruction(Floating_R_BaseFunction):
     funct_code = '000110'
     fmt = ''
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word) -> None:
+        super().__call__(word)
         self.fmt = self.word.get_k_bits_from(5, 21)
         self.fs = self.word.get_k_bits_from(5, 11)
         self.fd = self.word.get_k_bits_from(5, 6)
 
         self.fs_number = self.fs
         self.fd_number = self.fd
+        return self
 
     def decode(self, coprocessor: COProcessor, *args, **kwargs) -> str:
         fd_name = coprocessor.registers.get_register_name(self.fd_number)

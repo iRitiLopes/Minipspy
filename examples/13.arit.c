@@ -42,7 +42,6 @@ int main() {
     for (int i = -5; i <= 5; i ++) {
         p_int(square(i));
         p_char(' ');
-        p_int(1);
     }
 
     p_str("\nPrimos: "); // String armazenada em .rodata

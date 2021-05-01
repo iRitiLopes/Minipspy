@@ -9,7 +9,7 @@ class Floating_R_BaseFunction:
     instruction_name = ""
     funct_code = ""
 
-    def __init__(self, word: Word) -> None:
+    def __call__(self, word: Word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
         self.fmt = self.word.get_k_bits_from(5, 21)
@@ -20,6 +20,7 @@ class Floating_R_BaseFunction:
         self.ft_number = self.ft
         self.fs_number = self.fs
         self.fd_number = self.fd
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

@@ -10,8 +10,8 @@ class BLEZInstruction(I_BaseFunction):
     instruction_name = "BLEZ"
     funct_code = '000110'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word):
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
@@ -33,7 +33,7 @@ class BLEZInstruction(I_BaseFunction):
         immediate_value = self.imediate
 
         new_pc = program_counter
-        if rs_register.get_data() <= rt_register.get_data():
+        if rs_register.to_signed_int() <= rt_register.to_signed_int():
             new_pc = new_pc + immediate_value * 4
 
             branch_delayed_word = memory.load(program_counter + 4)

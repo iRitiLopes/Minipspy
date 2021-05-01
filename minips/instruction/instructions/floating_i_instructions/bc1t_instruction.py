@@ -15,10 +15,11 @@ class BC1TInstruction(Floating_I_BaseFunction):
     instruction_name = "BC1"
     funct_code = '01000'
 
-    def __init__(self, word: Word) -> None:
+    def __call__(self, word: Word) -> None:
         self.ft = word.get_k_bits_from(1,16)
         self.instruction_name = self.instruction_name + 'T' if int(self.ft) == 1 else self.instruction_name + 'F'
-        super().__init__(word)
+        super().__call__(word)
+        return self
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
         offset = self.offset

@@ -8,8 +8,11 @@ class SLTInstruction(R_BaseFunction):
     instruction_name = "SLT"
     funct_code = '101010'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rd_name = registers.get_register_name(self.rd_number)
@@ -28,6 +31,6 @@ class SLTInstruction(R_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
 
-        rd = rs_register.get_data() < rt_register.get_data()
+        rd = rs_register.to_signed_int() < rt_register.to_signed_int()
         local_registers.set_register_value(self.rd_number, rd)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

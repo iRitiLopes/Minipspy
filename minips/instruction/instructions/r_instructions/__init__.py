@@ -7,8 +7,8 @@ from minips.registers import Registers
 class R_BaseFunction:
     instruction_name = ""
     funct_code = ""
-
-    def __init__(self, word) -> None:
+    
+    def __call__(self, word) -> None:
         self.word = word
         self.rs = self.word.get_k_bits_from(5, 21)
         self.rt = self.word.get_k_bits_from(5, 16)
@@ -19,6 +19,7 @@ class R_BaseFunction:
         self.rt_number = self.rt
         self.rd_number = self.rd
         self.shamt_value = self.shamt
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

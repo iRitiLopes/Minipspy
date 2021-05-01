@@ -10,8 +10,8 @@ class SWInstruction(I_BaseFunction):
     instruction_name = "SW"
     funct_code = '101011'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word):
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rt_name = registers.get_register_name(self.rt_number)

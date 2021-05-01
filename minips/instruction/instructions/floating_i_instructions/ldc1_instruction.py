@@ -12,14 +12,14 @@ class LDC1Instruction(Floating_I_BaseFunction):
     instruction_name = "LDC1"
     funct_code = '110101'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
         ft_name = coprocessor.registers.get_register_name(self.ft_number)
-        rs_number = Bin2Int.convert(self.base)
+        rs_number = self.base
         rs_name = registers.get_register_name(rs_number)
-        offset = Bin2Int.convert(self.offset)
+        offset = self.offset
 
         return f"{self.instruction_name} {ft_name}, {offset}({rs_name})"
 
@@ -33,10 +33,10 @@ class LDC1Instruction(Floating_I_BaseFunction):
         local_co_registers = coprocessor.registers
         local_registers = registers
 
-        rs_number = Bin2Int.convert(self.base)
+        rs_number = self.base
         rs_register = local_registers.get_register(rs_number)
-        rs_address = rs_register.to_unsigned_int()
-        offset = Bin2Int.convert(self.offset)
+        rs_address = rs_register.get_data_unsigned()
+        offset = self.offset
 
         word1 = memory.load(rs_address + offset).data
         word2 = memory.load(rs_address + offset + 4).data

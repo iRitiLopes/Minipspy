@@ -10,8 +10,11 @@ class JumpInstruction(J_BaseFunction):
     instruction_name = "J"
     funct_code = '000010'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, *args, **kwargs) -> str:
         jump_address = self.jump_address

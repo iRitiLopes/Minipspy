@@ -10,9 +10,9 @@ class Word(object):
         return self.get_k_bits_from(6, 26)
 
     def is_empty(self):
-        return self.data == ""
+        return self.data is None
 
-    def get_k_bits_from(self, k, from_idx) -> str:
+    def get_k_bits_from(self, k, from_idx) -> int:
         return ( ((1 << k) - 1)  &  (self.data >> (from_idx) ) )
 
     def __str__(self) -> str:

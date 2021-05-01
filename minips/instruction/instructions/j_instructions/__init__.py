@@ -7,10 +7,11 @@ class J_BaseFunction:
     instruction_name = ""
     funct_code = ""
 
-    def __init__(self, word) -> None:
+    def __call__(self, word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
         self.jump_address = TwoComp.two_complement(self.word.get_k_bits_from(26, 0), 26)
+        return self
 
     def decode(self, *args, **kwargs) -> str:
         pass

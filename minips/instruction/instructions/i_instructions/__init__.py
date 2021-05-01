@@ -9,7 +9,10 @@ class I_BaseFunction:
     instruction_name = ""
     funct_code = ""
 
-    def __init__(self, word) -> None:
+    def __init__(self) -> None:
+        pass
+
+    def __call__(self, word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
         self.rs = self.word.get_k_bits_from(5, 21)
@@ -17,6 +20,7 @@ class I_BaseFunction:
         self.imediate =  TwoComp.two_complement(self.word.get_k_bits_from(16, 0), 16)
         self.rs_number = self.rs
         self.rt_number = self.rt
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

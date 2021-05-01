@@ -10,16 +10,23 @@ from minips.word import Word
 
 
 class InstructionFactory:
-    r_opcode = 0x0
-    jump_opcode = 0x2
-    jump_al_opcode = 0x3
-    floating_r_opcode = 0x11
-    floating_i_instructions = [0x31, 0x35, 0x39, 0x3d]
+    i_inst = I_Instruction()
+    instructions = {
+        0x0: R_Instruction(),
+        0x2: J_Instruction(),
+        0x3: J_Instruction(),
+        0x11: Floating_R_Instruction(),
+        0x31: Floating_I_Instruction(),
+        0x35: Floating_I_Instruction(),
+        0x39: Floating_I_Instruction(),
+        0x3d: Floating_I_Instruction()
+    }
 
     def factory(self, word: Word) -> BaseInstruction:
         op_code = word.get_opcode()
         if word.is_empty():
             raise Exception("Empty instruction")
+        return self.instructions.get(op_code, self.i_inst)(word)
         if op_code == self.r_opcode:
             return R_Instruction(word)
         elif op_code == self.jump_opcode or op_code == self.jump_al_opcode:

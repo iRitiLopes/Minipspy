@@ -9,8 +9,11 @@ class MultInstruction(R_BaseFunction):
     instruction_name = "MULT"
     funct_code = '011000'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
@@ -28,7 +31,7 @@ class MultInstruction(R_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rt_register = local_registers.get_register(self.rt_number)
 
-        result = rs_register.get_data() * rt_register.get_data()
+        result = rs_register.to_signed_int() * rt_register.to_signed_int()
         result = Int2Bits.convert(result, size=64)
         hi = Bin2Int.convert(result[0:32])
         lo = Bin2Int.convert(result[32:64])

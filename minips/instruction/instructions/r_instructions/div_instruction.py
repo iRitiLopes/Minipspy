@@ -8,8 +8,11 @@ class DivInstruction(R_BaseFunction):
     instruction_name = "DIV"
     funct_code = '011010'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
@@ -29,8 +32,8 @@ class DivInstruction(R_BaseFunction):
 
         result_lo = rs_register.to_signed_int() // rt_register.to_signed_int()
         result_hi = rs_register.to_signed_int() % rt_register.to_signed_int()
-        lo = Int2Bits.convert(result_lo)
-        hi = Int2Bits.convert(result_hi)
+        lo = result_lo
+        hi = result_hi
 
         local_registers.set_hi_value(hi)
         local_registers.set_lo_value(lo)

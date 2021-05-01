@@ -13,16 +13,17 @@ class SubDoubleInstruction(Floating_R_BaseFunction):
     funct_code = '000001'
     fmt = '10001'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word) -> None:
+        super().__call__(word)
         self.fmt = self.word.get_bits_between(25, 21)
         self.ft = self.word.get_bits_between(20, 16)
         self.fs = self.word.get_bits_between(15, 11)
         self.fd = self.word.get_bits_between(10, 6)
 
-        self.ft_number = Bin2Int.convert(self.ft)
-        self.fs_number = Bin2Int.convert(self.fs)
-        self.fd_number = Bin2Int.convert(self.fd)
+        self.ft_number = self.ft
+        self.fs_number = self.fs
+        self.fd_number = self.fd
+        return self
 
     def decode(self, coprocessor: COProcessor, *args, **kwargs) -> str:
         fd_name = coprocessor.registers.get_register_name(self.fd_number)

@@ -1,3 +1,5 @@
+from helpers.float2bin import Float2Bin
+from helpers.int2float import Int2Float
 from helpers.float2int import Float2Int
 from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
@@ -14,14 +16,17 @@ class SyscallInstruction(R_BaseFunction):
     instruction_name = "SYSCALL"
     funct_code = '001100'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __init__(self) -> None:
+        super().__init__()
         self.v0 = 2
         self.a0 = 4
         self.f0 = 0
         self.f1 = 1
         self.f12 = 12
         self.f13 = 13
+    
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         return "SYSCALL"
@@ -51,8 +56,10 @@ class SyscallInstruction(R_BaseFunction):
         elif v0_value == 2:
             print(f12_register.to_single_precision(), end='')
         elif v0_value == 3:
-            concatenated = f13_register.get_data() + f12_register.get_data()
-            print(Bin2Float.convert(concatenated, True), end='')
+            f13_b = Int2Bits.convert(f13_register.get_data())
+            f12_b = Int2Bits.convert(f12_register.get_data())
+            f = f13_b + f12_b
+            print(Bin2Float.convert(f, True), end='')
         elif v0_value == 4:
             a0_address = a0_register.get_data()
             string = self.__read_string(a0_address, memory=memory, pc=program_counter, logger=kwargs['logger'])
@@ -67,9 +74,9 @@ class SyscallInstruction(R_BaseFunction):
             local_co_registers.set_register_value(self.f0, read_bit)
         elif v0_value == 7:
             read = float(input())
-            read_bit = Float2Int.convert(read, doubled=True)
-            read_bit_high = read_bit[0:32]
-            read_bit_low = read_bit[32:64]
+            read_bit = Float2Bin.convert(read, True)
+            read_bit_high = Bin2Int.convert(read_bit[0:32])
+            read_bit_low = Bin2Int.convert(read_bit[32:64])
 
             local_co_registers.set_register_value(self.f1, read_bit_high)
             local_co_registers.set_register_value(self.f0, read_bit_low)

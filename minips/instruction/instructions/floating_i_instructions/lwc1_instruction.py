@@ -13,8 +13,8 @@ class LWC1Instruction(Floating_I_BaseFunction):
     instruction_name = "LWC1"
     funct_code = '110001'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word) -> None:
+        return super().__call__(word)
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
         ft_name = coprocessor.registers.get_register_name(self.ft_number)

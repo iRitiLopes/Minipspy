@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from minips.instruction.instructions.r_instructions import R_BaseFunction
 from helpers.bin2int import Bin2Int
 from helpers.int2bin import Int2Bits
@@ -10,11 +11,11 @@ class SLTIInstruction(I_BaseFunction):
     instruction_name = "SLTI"
     funct_code = '001010'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word):
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
-        immediate_value = Bin2Int.convert(self.imediate, False)
+        immediate_value = self.imediate
         rs_name = registers.get_register_name(self.rs_number)
         rt_name = registers.get_register_name(self.rt_number)
 
