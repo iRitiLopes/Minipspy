@@ -30,6 +30,7 @@ class Minips:
         )
         self.program_counter = self.memory.TEXT_SECTION_START
         self.statistics = Mipstatics()
+        self.factory = InstructionFactory()
 
     def get_memory(self) -> Memory:
         return self.memory
@@ -90,7 +91,7 @@ class Minips:
                     program_counter=self.program_counter,
                     memory=self.memory,
                     coprocessor=self.coprocessor,
-                    instruction_factory=InstructionFactory(),
+                    instruction_factory=self.factory,
                     logger=self.log
                 )
             self.statistics.increase_statistic(instruction)
@@ -110,6 +111,6 @@ class Minips:
     def read_instructions(self):
         actual_word = self.memory.load(self.program_counter)
         while not actual_word.is_empty():
-            instruction = InstructionFactory().factory(actual_word)
+            instruction = self.factory.factory(actual_word)
             yield instruction
             actual_word = self.memory.load(self.program_counter)

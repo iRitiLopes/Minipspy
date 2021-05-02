@@ -13,9 +13,10 @@ class Floating_I_BaseFunction:
     def __call__(self, word: Word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.base = self.word.get_k_bits_from(5, 21)
-        self.ft = self.word.get_k_bits_from(5, 16)
-        self.offset = TwoComp.two_complement(self.word.get_k_bits_from(16, 0), 16)
+        self.base = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.ft = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.offset_raw = ( ((1 << 16) - 1)  &  (self.word.data >> (0) ) )
+        self.offset = TwoComp.two_complement(self.offset_raw, 16) 
         self.ft_number = self.ft
         return self
 

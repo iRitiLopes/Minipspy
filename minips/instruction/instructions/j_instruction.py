@@ -22,7 +22,7 @@ class J_Instruction(BaseInstruction):
     def __call__(self, word):
         super().__call__(word)
         self.op_code = self.word.get_opcode()
-        self.jump_address = self.word.get_k_bits_from(26, 0)
+        self.jump_address = ( ((1 << 26) - 1)  &  (self.word.data >> (0) ) )
         return self
 
     def decode(self, *args, **kwargs):

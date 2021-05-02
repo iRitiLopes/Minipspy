@@ -36,9 +36,10 @@ class SLLInstruction(R_BaseFunction):
 
         s = self.shamt_value
         rt = rt_register.to_signed_int()
-        bits = Int2Bits.convert(rt)
-        rd_bits =  bits[self.shamt_value:] + '0'*self.shamt_value
-        rd = Bin2Int.convert(rd_bits, False)
-        
+        # bits = Int2Bits.convert(rt)
+        # rd_bits =  bits[self.shamt_value:] + '0'*self.shamt_value
+        # rd = Bin2Int.convert(rd_bits, False)
+        rd = (rt << s)
+        rd = ( ((1 << 32) - 1)  &  (rd >> (0) ) )
         local_registers.set_register_value(self.rd_number, rd)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

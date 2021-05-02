@@ -7,7 +7,7 @@ class Word(object):
         pass
 
     def get_opcode(self):
-        return self.get_k_bits_from(6, 26)
+        return ( ((1 << 6) - 1)  &  (self.data >> (26) ) )
 
     def is_empty(self):
         return self.data is None

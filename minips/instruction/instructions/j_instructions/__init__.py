@@ -10,7 +10,8 @@ class J_BaseFunction:
     def __call__(self, word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.jump_address = TwoComp.two_complement(self.word.get_k_bits_from(26, 0), 26)
+        self.address_raw = ( ((1 << 26) - 1)  &  (self.word.data >> (0) ) )
+        self.jump_address = TwoComp.two_complement(self.address_raw, 26)
         return self
 
     def decode(self, *args, **kwargs) -> str:

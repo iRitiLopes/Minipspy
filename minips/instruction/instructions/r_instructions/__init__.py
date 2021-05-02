@@ -10,11 +10,11 @@ class R_BaseFunction:
     
     def __call__(self, word) -> None:
         self.word = word
-        self.rs = self.word.get_k_bits_from(5, 21)
-        self.rt = self.word.get_k_bits_from(5, 16)
-        self.rd = self.word.get_k_bits_from(5, 11)
-        self.shamt = self.word.get_k_bits_from(5, 6)
-        self.funct = self.word.get_k_bits_from(6, 0)
+        self.rs = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.rt = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.rd = ( ((1 << 5) - 1)  &  (self.word.data >> (11) ) )
+        self.shamt = ( ((1 << 5) - 1)  &  (self.word.data >> (6) ) )
+        self.funct = ( ((1 << 6) - 1)  &  (self.word.data >> (0) ) )
         self.rs_number = self.rs
         self.rt_number = self.rt
         self.rd_number = self.rd

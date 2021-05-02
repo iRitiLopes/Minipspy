@@ -22,7 +22,7 @@ class Floating_I_Instruction(BaseInstruction):
     
     def __call__(self, word):
         super().__call__(word)
-        self.opcode = self.word.get_k_bits_from(6, 26)
+        self.opcode = ( ((1 << 6) - 1)  &  (self.word.data >> (26) ) )
         return self
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:

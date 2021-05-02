@@ -31,7 +31,8 @@ class LBInstruction(I_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rs_address = rs_register.get_data_unsigned()
 
-        word = memory.load(rs_address + immediate_value).get_k_bits_from(8, 0)
+        word = memory.load(rs_address + immediate_value)
+        word = ( ((1 << 8) - 1)  &  (word >> (0) ) )
 
         kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)

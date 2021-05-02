@@ -25,7 +25,7 @@ class LuiInstruction(I_BaseFunction):
                 *args,
                 **kwargs):
         local_registers = registers
-        immediate_value = self.word.get_k_bits_from(16, 0)
+        immediate_value = ( ((1 << 16) - 1)  &  (self.word.data >> (0) ) )
         rt = immediate_value << 16
         local_registers.set_register_value(self.rt_number, rt)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

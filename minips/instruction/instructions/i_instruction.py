@@ -61,9 +61,9 @@ class I_Instruction(BaseInstruction):
     def __call__(self, word):
         super().__call__(word)
         self.op_code = self.word.get_opcode()
-        self.rs = self.word.get_k_bits_from(5, 21)
-        self.rt = self.word.get_k_bits_from(5, 16)
-        self.imediate = self.word.get_k_bits_from(16, 0)
+        self.rs = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.rt = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.imediate = ( ((1 << 16) - 1)  &  (self.word.data >> (0) ) )
         return self
 
     def decode(self, registers: Registers, *args, **kwargs):

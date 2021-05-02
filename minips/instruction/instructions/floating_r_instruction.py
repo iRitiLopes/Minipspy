@@ -72,11 +72,11 @@ class Floating_R_Instruction(BaseInstruction):
     
     def __call__(self, word):
         super().__call__(word)
-        self.funct = self.word.get_k_bits_from(6, 0)
-        self.large_funct = self.word.get_k_bits_from(11, 0)
-        self.opcode = self.word.get_k_bits_from(6, 26)
-        self.fmt = self.word.get_k_bits_from(5, 21)
-        self.cond = self.word.get_k_bits_from(4, 0)
+        self.funct = ( ((1 << 6) - 1)  &  (self.word.data >> (0) ) )
+        self.large_funct = ( ((1 << 11) - 1)  &  (self.word.data >> (0) ) )
+        self.opcode = ( ((1 << 6) - 1)  &  (self.word.data >> (26) ) )
+        self.fmt = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.cond = ( ((1 << 4) - 1)  &  (self.word.data >> (0) ) )
         return self
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:

@@ -72,7 +72,7 @@ class R_Instruction(BaseInstruction):
         }
     def __call__(self, word):
         super().__call__(word)
-        self.funct = self.word.get_k_bits_from(6, 0)
+        self.funct = ( ((1 << 6) - 1)  &  (self.word.data >> (0) ) )
         return self
     
 

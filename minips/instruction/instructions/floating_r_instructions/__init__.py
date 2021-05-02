@@ -12,10 +12,10 @@ class Floating_R_BaseFunction:
     def __call__(self, word: Word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.fmt = self.word.get_k_bits_from(5, 21)
-        self.ft = self.word.get_k_bits_from(5, 16)
-        self.fs = self.word.get_k_bits_from(5, 11)
-        self.fd = self.word.get_k_bits_from(5, 6)
+        self.fmt = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.ft = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.fs = ( ((1 << 5) - 1)  &  (self.word.data >> (11) ) )
+        self.fd = ( ((1 << 5) - 1)  &  (self.word.data >> (6) ) )
 
         self.ft_number = self.ft
         self.fs_number = self.fs

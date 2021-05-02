@@ -31,7 +31,9 @@ class LHInstruction(I_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rs_address = rs_register.get_data_unsigned()
 
-        word = TwoComp.two_complement(memory.load(rs_address + immediate_value * 4).get_k_bits_from(16, 0), 16)
+        word = memory.load(rs_address + immediate_value * 4)
+        word = ( ((1 << 16) - 1)  &  (word >> (0) ) )
+        word = TwoComp.two_complement(word, 16)
         kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 

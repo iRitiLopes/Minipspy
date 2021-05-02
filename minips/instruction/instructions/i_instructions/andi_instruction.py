@@ -15,7 +15,7 @@ class AndiInstruction(I_BaseFunction):
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rs_name = registers.get_register_name(self.rs_number)
         rt_name = registers.get_register_name(self.rt_number)
-        immediate_value = self.word.get_k_bits_from(16, 0)
+        immediate_value = ( ((1 << 16) - 1)  &  (self.word.data >> (0) ) )
 
         return f"{self.instruction_name} {rt_name}, {rs_name}, {immediate_value}"  # noqa: E501
 
@@ -27,7 +27,7 @@ class AndiInstruction(I_BaseFunction):
                 **kwargs):
         local_registers = registers
         rs_register = local_registers.get_register(self.rs_number)
-        immediate_value = self.word.get_k_bits_from(16, 0)
+        immediate_value = ( ((1 << 16) - 1)  &  (self.word.data >> (0) ) )
 
         rt_value = rs_register.to_unsigned_int() & immediate_value
 
