@@ -103,7 +103,7 @@ class Registers:
         if self.__is_valid_register(num):
             if num == 0:
                 return
-            self.registers[num].value = Word(value)
+            self.registers[num].value = Word((value or 0))
         else:
             raise InvalidRegister(
                 "Invalid Register, there only 32 valid registers"
