@@ -21,7 +21,7 @@ class Memory(object):
         self.mem_mode = mem_mode
         self.l1 = None
         self.l2 = None
-        self.cache = Cache()
+        self.cache = Cache(config=mem_mode)
 
     def clean(self) -> None:
         """

@@ -13,7 +13,7 @@ class Cache:
         self.instruction_address_upper_limit = 0X00800000 
         if config == 2:
             self.l1 = L1Cache(size=1024, line_size=32)
-        elif config == 2:
+        elif config == 3:
             self.l1 = L1Splitted(size=512, line_size=32)
         elif config == 4:
             self.l1 = L1Splitted(size=512, line_size=32, policy=LRUAccess())
