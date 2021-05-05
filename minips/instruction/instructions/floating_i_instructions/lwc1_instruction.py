@@ -40,6 +40,6 @@ class LWC1Instruction(Floating_I_BaseFunction):
         offset = self.offset
 
         word = memory.load(rs_address + offset).data
-        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + offset)})")
+        kwargs['logger'].trace(f"R {hex(program_counter)} (line# {hex(rs_address + offset)})")
         local_co_registers.set_register_value(self.ft_number, word)
         return local_registers, program_counter + 4, memory, local_co_registers

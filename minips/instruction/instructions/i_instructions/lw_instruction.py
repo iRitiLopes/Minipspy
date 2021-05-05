@@ -31,7 +31,6 @@ class LWInstruction(I_BaseFunction):
         rs_address = rs_register.get_data()
 
         word = memory.load(rs_address + immediate_value).data
-        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

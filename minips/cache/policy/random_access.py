@@ -1,3 +1,4 @@
+from random import randint
 class RandomAccess:
-    def __init__(self) -> None:
-        pass
+    def run(self, from_n, to_n, *args, **kwargs):
+        return randint(from_n, to_n)

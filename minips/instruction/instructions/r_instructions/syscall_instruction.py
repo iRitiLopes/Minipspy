@@ -96,7 +96,6 @@ class SyscallInstruction(R_BaseFunction):
             
             word = memory.load(relative_address)
             word = Int2Bits.convert(word.data)
-            logger.trace(f"R {Int2Hex.convert(pc)} (line# {Int2Hex.convert(relative_address)})")
 
             word_relative_data = word[:-8*relative]
             for x in range(len(word_relative_data), 0, -8):
@@ -105,7 +104,6 @@ class SyscallInstruction(R_BaseFunction):
             address = relative_address + 4
         word = memory.load(address=address)
         d = Int2Bits.convert(word.data)
-        logger.trace(f"R {Int2Hex.convert(pc)} (line# {Int2Hex.convert(address)})")
         while True:
             for x in range(len(d), 0, -8):
                 char = Bin2Chr.convert(d[x-8:x])
@@ -119,4 +117,3 @@ class SyscallInstruction(R_BaseFunction):
                 address = address + (4 - (address % 4))
             word = memory.load(address=address)
             d = Int2Bits.convert(word.data)
-            logger.trace(f"R {Int2Hex.convert(pc)} (line# {Int2Hex.convert(address)})")

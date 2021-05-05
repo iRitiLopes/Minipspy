@@ -34,30 +34,52 @@ class Memory(object):
 
     def store(self, address, data) -> None:
         if self.__is_valid_address(address=address):
+            self.log.trace(f"W {hex(address)} (line# {hex(self.cache.l1_line(address))})")
             if self.mem_mode == 1:
                 self.log.debug(f" mem store: {address} {data}")
                 return self.__store(address, data)
-            if self.cache.hit(address):
-                self.log.debug(f" l1 store: {address} {data}")
-                self.cache.store(address, data)
-            elif self.cache.need_writeback(address):
-                self.__writeback(address)
-                self.log.debug(f" l1 store writeback: {address} {data}")
-                self.cache.store(address, data)
+            self.log.debug(f"\tL1: write: {hex(self.cache.l1_line(address))}")
+            hit, via = self.cache.hit(address)
+
+            if hit:
+                self.cache.store(address, data, via=via)
             else:
-                self.log.debug(f" l1 store: {address} {data}")
-                self.cache.store(address, data)
+                self.log.debug(f"\tL1: Miss")
+                self.log.debug(f"\t\tRAM: read line# {hex(self.cache.l1_line(address))}")
+                self.__store(address, data)
+                data_line = self.__load_line(address, self.cache.l1.line_size)
+                self.log.debug(f"\t\tRAM: Hit")
+                self.log.debug(f"\tL1: Replace to include line# {hex(self.cache.l1_line(address))}")
+                need_writeback, via = self.cache.need_writeback(address)
+                self.log.debug("\tL1: Random replacement policy. Way#0")
+                if need_writeback:
+                    self.__writeback(address, via)
+                else:
+                    self.log.debug(f"\tL1: Line clean/invalid. No need to write back.")
+                self.cache.store_line(address, data_line, via)
         else:
             raise MemoryException("Not valid address")
     
-    def __writeback(self, address):
-        wb_data, wb_address = self.cache.writeback(address)
-        self.__store(wb_address, wb_data.data)
+    def __writeback(self, address, via):
+        wb_data, wb_address = self.cache.writeback(address, via=via)
+        self.log.debug(f"\t\tRAM: write: {hex(address)}")
+        self.log.debug(f"\t\tRAM: Hit")
+        for idx_offset, data in enumerate(wb_data):
+            self.__store(wb_address + idx_offset * 4, data.data)
     
     def __load(self, address) -> Word:
         self.access_count[3] += 1
-        data = self.mem_blocks.get(address, Word(data=None))
+        data = self.mem_blocks.get(address, Word())
         return data
+    
+    def __load_line(self, line, line_size):
+        line = (line // line_size) * line_size
+        data_line = []
+        for offset in range(0, line_size, 4):
+            data = self.mem_blocks.get(line + offset, Word()).data
+            data_line.append(data)
+        return data_line
+            
     
     def init_store(self, address, data):
         return self.__store(address, data)
@@ -67,23 +89,42 @@ class Memory(object):
 
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
-            if self.mem_mode == 1:
-                self.log.debug(f" mem load: {address} {self.mem_blocks.get(address)}")
-                return self.__load(address)
-            if self.cache.hit(address):
-                data = self.cache.load(address)
-                self.access_count[1] += 1
-                self.log.debug(f" l1 load: {address} {data.data}")
+            if address >= self.TEXT_SECTION_START and address < self.RODATA_SECION_START:
+                self.log.trace(f"I {hex(address)} (line# { hex(self.cache.l1_line(address))} )")
             else:
+                self.log.trace(f"R {hex(address)} (line# { hex(self.cache.l1_line(address))} )")
+            if self.mem_mode == 1:
                 data = self.__load(address)
-                self.log.debug(f" miss mem load: {address} {self.mem_blocks.get(address)}")
-                if self.cache.need_writeback(address):
-                    self.log.debug(" writebacking")
-                    self.__writeback(address)
-                self.cache.store(address, data.data)
+            else:
+                data = self.__load_from_cache(address)
             return data
+
         else:
             raise MemoryException("Not valid address")
+    
+    def __load_from_cache(self, address):
+        self.log.debug(f"\tL1: read line# {hex(self.cache.l1_line(address))}")
+        hit, via = self.cache.hit(address)
+        if hit:
+            data = self.cache.load(address, via)
+            self.access_count[1] += 1
+            self.log.debug(f"\tL1: Hit")
+        else:
+            self.log.debug(f"\tL1: Miss")
+            data = self.__load(address)
+            data_line = self.__load_line(address, self.cache.l1.line_size)
+            self.log.debug(f"\t\tRAM: read line# {hex(self.cache.l1_line(address))}")
+            self.log.debug(f"\t\tRAM: Hit")
+            self.log.debug(f"\tL1: Replace to include line# {hex(self.cache.l1_line(address))}")
+            need_writeback, via = self.cache.need_writeback(address)
+            self.log.debug("\tL1: Random replacement policy. Way#0")
+
+            if need_writeback:
+                self.__writeback(address, via)
+            else:
+                self.log.debug(f"\tL1: Line clean/invalid. No need to write back.")
+            self.cache.store_line(address, data_line, via=via)
+        return data
 
     def __is_valid_address(self, address):
         return address in self.mem_blocks or address % 4 == 0

@@ -34,7 +34,6 @@ class LHUInstruction(I_BaseFunction):
         word = memory.load(rs_address + immediate_value * 4)
         word = ( ((1 << 16) - 1)  &  (word >> (0) ) )
         word = TwoComp.unsigned(word, 16)
-        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

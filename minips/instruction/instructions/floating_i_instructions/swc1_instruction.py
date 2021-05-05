@@ -45,5 +45,5 @@ class SWC1Instruction(Floating_I_BaseFunction):
         offset = self.offset
 
         local_memory.store(address + offset, ft_bin)
-        kwargs['logger'].trace(f"W {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(address + offset)})")
+        kwargs['logger'].trace(f"W {hex(program_counter)} (line# {hex(address + offset)})")
         return local_registers, program_counter + 4, local_memory, local_co_registers

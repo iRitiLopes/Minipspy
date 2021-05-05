@@ -76,13 +76,12 @@ class Minips:
     def decode(self):
         for instruction in self.read_instructions():
             decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            print(hex(self.program_counter), "\t", Int2Hex.convert(instruction.word.data), "\t\t",  decoded_instruction)
+            print(hex(self.program_counter), "\t", hex(instruction.word.data), "\t\t",  decoded_instruction)
             self.program_counter += 4
 
     def execute(self):
         self.statistics.start()
         for instruction in self.read_instructions():
-            self.log.trace(f"I {Int2Hex.convert(self.program_counter)} (line# {Int2Hex.convert(self.program_counter)})")
             #decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
             #print(hex(self.program_counter), "\t", hex(instruction.word.data), "\t\t",  decoded_instruction)
             self.registers, self.program_counter, self.memory, self.coprocessor.registers = instruction\

@@ -36,5 +36,4 @@ class SWInstruction(I_BaseFunction):
         rt_value = rt_register.get_data()
 
         local_memory.store(rs_address + offset_mem, rt_value)
-        kwargs['logger'].trace(f"W {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + offset_mem)})")
         return local_registers, program_counter + 4, local_memory, kwargs['coprocessor'].registers

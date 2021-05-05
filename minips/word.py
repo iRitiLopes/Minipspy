@@ -16,4 +16,4 @@ class Word(object):
         return ( ((1 << k) - 1)  &  (self.data >> (from_idx) ) )
 
     def __str__(self) -> str:
-        return hex(self.data)
+        return hex(self.data if self.data else 0)

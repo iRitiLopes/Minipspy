@@ -1,7 +1,9 @@
+from functools import cache
 from minips.cache.mapping.direct import DirectMapping
 from minips.cache.policy.random_access import RandomAccess
-from minips.word import Word
-from minips.cache.controller import CacheController
+from minips.cache.controller import CacheData
+import math
+
 
 class L1Cache:
     def __init__(self, size=1024, line_size=32, mode=DirectMapping(), policy=RandomAccess()) -> None:
@@ -9,48 +11,91 @@ class L1Cache:
         self.line_size = line_size
         self.mode = mode
         self.policy = policy
-        self.set_size = self.line_size * self.mode.n_vias
-        self.num_blocks = self.size // self.set_size
-        self.cache = {x: Word("".zfill(32)) for x in range(self.num_blocks)}
-        self.cache_control = {x: CacheController() for x in range(self.num_blocks)}
+        self.n_vias = self.mode.n_vias
+        self.num_words = self.line_size
+        self.block_size = self.line_size * self.mode.n_vias
+        self.num_blocks = self.size // self.block_size
+        self.nbits_byte_offset = math.floor(math.log2(self.num_words))
+        self.nbits_block_offset = math.floor(math.log2(self.num_blocks))
+        self.nbits_tag = 32 - (self.nbits_block_offset + self.nbits_byte_offset)
+        self.cache: dict[int, list[list[CacheData]]] = {
+            x: [[CacheData(data=None, tag=0, address=0)]*(self.num_words // 4)]*self.n_vias
+            for x in range(self.num_blocks)
+        }
 
-    
+
     def hit(self, address, *args, **kwargs):
-        block = self.block_index(address)
-        return self.cache_control[block].valid == 1 and self.cache_control[block].compare_tag(address)
-    
-    def load(self, address, *args, **kwargs):
-        block = self.block_index(address)
-        return self.cache[block]
+        block_idx = self.block_index(address)
+        line_idx = self.byte_index(address)
+        block = self.cache[block_idx]
+        for via_idx, via in enumerate(block):
+            if via[line_idx].valid and via[line_idx].compare_tag(self.tag(address)):
+                return True, via_idx
+        return False, -1
 
-    def need_writeback(self, address, *args, **kwargs):
-        block_id = self.block_index(address)
-        return not self.cache_control[block_id].compare_tag(address)
-    
-    def writeback(self, address, *args, **kwargs):
-        block_id = self.block_index(address)
-        wb_address = self.cache_control[block_id].address
-        wb_data = self.cache[block_id]
-        return wb_data, wb_address
+    def load(self, address, via, *args, **kwargs):
+        block_idx = self.block_index(address)
+        byte_idx = self.byte_index(address)
+        self.cache[block_idx][via][byte_idx].set_time()
+        return self.cache[block_idx][via][byte_idx].data
 
-    
+    def need_writeback(self, address, *args, **kwargs) -> bool:
+        block_idx = self.block_index(address)
+        byte_idx = self.byte_index(address)
+        block = self.cache[block_idx]
+        
+        hit, via = self.hit(address)
+
+        if hit:
+            return False, via
+        else:
+            via = self.policy.run(from_n=0 , to_n=self.n_vias - 1, block=block)
+            for word in block[via]:
+                if word.valid and word.is_dirty():
+                    return True, via
+            return False, via
+
+    def writeback(self, address, via, *args, **kwargs):
+        block_idx = self.block_index(address)
+        cache_line = self.cache[block_idx][via]
+        return cache_line, block_idx * 2**self.line_size
+
+    def parse_address(self, address):
+        byte_offset = (((1 << self.nbits_byte_offset) - 1) & (address >> (0)))
+        block_offset = (((1 << self.nbits_block_offset) - 1) &
+                        (address >> (self.nbits_byte_offset)))
+        tag = (((1 << self.nbits_tag) - 1) & (address >>
+               (self.nbits_block_offset + self.nbits_byte_offset)))
+        return tag, block_offset, byte_offset
+
     def store(self, address, data, *aegs, **kwargs):
         block_index = self.block_index(address)
-        # if address == self.cache_control[block_index].address:
-        #     print(" storing: ", address, data, self.cache_control[block_index].__dict__)
-        if not self.hit(address):
-            self.cache_control[block_index].valid_this()
-            self.cache_control[block_index].clean_this()
-            self.cache_control[block_index].set_tag(address)
-            self.cache_control[block_index].set_address(address)
-            self.cache[block_index] = Word(data)
+        byte_idx = self.byte_index(address)
+        block = self.cache[block_index]
+        tag = self.tag(address)
+        
+        hit, via = self.hit(address)
+        if hit:
+            block[via][byte_idx] = CacheData(data=data, tag=tag, address=address)
+            block[via][byte_idx].valid_this()
+            block[via][byte_idx].dirty_this()
+            block[via][byte_idx].set_time()
         else:
-            self.cache_control[block_index].dirty_this()
-            self.cache[block_index] = Word(data)
+            via = kwargs['via']
+            block[via][byte_idx] = CacheData(data=data, tag=tag, address=address)
+            block[via][byte_idx].valid_this()
 
+    def byte_index(self, address):
+        return (((1 << self.nbits_byte_offset) - 1) & (address >> (0))) // 4
 
     def block_index(self, address):
-        return (address // self.line_size) % self.num_blocks
+        return (((1 << self.nbits_block_offset) - 1) & (address >> (self.nbits_byte_offset)))
     
+    def cache_index(self, address):
+        pass
+    
+    def block_address(self, address):
+        return address // self.line_size
+
     def tag(self, address):
-        return (address // self.line_size) // self.num_blocks
+        return (((1 << self.nbits_tag) - 1) & (address >> (self.nbits_block_offset + self.nbits_byte_offset)))
