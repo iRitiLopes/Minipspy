@@ -1,7 +1,7 @@
 import struct
 
 
-class Float2Bits:
+class Float2Bin:
     @staticmethod
     def convert(f_num, doubled=False):
         double_mask = 0b1111111111111111111111111111111111111111111111111111111111111111

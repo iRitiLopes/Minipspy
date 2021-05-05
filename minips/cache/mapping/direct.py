@@ -1,3 +1,3 @@
 class DirectMapping:
     def __init__(self):
-        pass
+        self.n_vias = 1

@@ -1,0 +1,902 @@
+I 0x400000 (line# 0x20000 )
+	L1: read line# 0x20000
+	L1: Miss
+		RAM: read line# 0x20000
+		RAM: Hit
+	L1: Replace to include line# 0x20000
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400004 (line# 0x20000 )
+	L1: read line# 0x20000
+	L1: Hit
+I 0x400854 (line# 0x20042 )
+	L1: read line# 0x20042
+	L1: Miss
+		RAM: read line# 0x20042
+		RAM: Hit
+	L1: Replace to include line# 0x20042
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400858 (line# 0x20042 )
+	L1: read line# 0x20042
+	L1: Hit
+W 0x7fffeff8 (line# 0x3ffff7f)
+	L1: write: 0x3ffff7f
+	L1: Miss
+		RAM: read line# 0x3ffff7f
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7f
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x40085c (line# 0x20042 )
+	L1: read line# 0x20042
+	L1: Hit
+W 0x7fffeff4 (line# 0x3ffff7f)
+	L1: write: 0x3ffff7f
+I 0x400860 (line# 0x20043 )
+	L1: read line# 0x20043
+	L1: Miss
+		RAM: read line# 0x20043
+		RAM: Hit
+	L1: Replace to include line# 0x20043
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400864 (line# 0x20043 )
+	L1: read line# 0x20043
+	L1: Hit
+I 0x400868 (line# 0x20043 )
+	L1: read line# 0x20043
+	L1: Hit
+I 0x4003b8 (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Miss
+		RAM: read line# 0x2001d
+		RAM: Hit
+	L1: Replace to include line# 0x2001d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003bc (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Hit
+W 0x7fffefd8 (line# 0x3ffff7e)
+	L1: write: 0x3ffff7e
+	L1: Miss
+		RAM: read line# 0x3ffff7e
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003c0 (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Miss
+		RAM: read line# 0x2001e
+		RAM: Hit
+	L1: Replace to include line# 0x2001e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+W 0x7fffefd4 (line# 0x3ffff7e)
+	L1: write: 0x3ffff7e
+	L1: Miss
+		RAM: read line# 0x3ffff7e
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003c4 (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Miss
+		RAM: read line# 0x2001e
+		RAM: Hit
+	L1: Replace to include line# 0x2001e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003c8 (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Hit
+I 0x4003cc (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Hit
+I 0x4003d0 (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Hit
+I 0x4001b8 (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Miss
+		RAM: read line# 0x2000d
+		RAM: Hit
+	L1: Replace to include line# 0x2000d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4001bc (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+W 0x7fffefb0 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+	L1: Miss
+		RAM: read line# 0x3ffff7d
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4001c0 (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Miss
+		RAM: read line# 0x2000e
+		RAM: Hit
+	L1: Replace to include line# 0x2000e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4001c4 (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+W 0x7fffefb4 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x4001c8 (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+R 0x7fffefb4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x4001cc (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+I 0x4001d0 (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+I 0x4001d4 (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+I 0x4001d8 (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+I 0x4001dc (line# 0x2000e )
+	L1: read line# 0x2000e
+	L1: Hit
+I 0x4001e0 (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Miss
+		RAM: read line# 0x2000f
+		RAM: Hit
+	L1: Replace to include line# 0x2000f
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4001e4 (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+I 0x4001e8 (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+I 0x4001ec (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+I 0x4001f0 (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+I 0x4001f4 (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+I 0x4001f8 (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+W 0x7fffefa4 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x4001fc (line# 0x2000f )
+	L1: read line# 0x2000f
+	L1: Hit
+R 0x7fffefb4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400200 (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Miss
+		RAM: read line# 0x20010
+		RAM: Hit
+	L1: Replace to include line# 0x20010
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400204 (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+I 0x400208 (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+I 0x40020c (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+I 0x400210 (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+W 0x7fffefa8 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x400214 (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+R 0x7fffefa4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400218 (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+I 0x40021c (line# 0x20010 )
+	L1: read line# 0x20010
+	L1: Hit
+I 0x400220 (line# 0x20011 )
+	L1: read line# 0x20011
+	L1: Miss
+		RAM: read line# 0x20011
+		RAM: Hit
+	L1: Replace to include line# 0x20011
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400224 (line# 0x20011 )
+	L1: read line# 0x20011
+	L1: Hit
+R 0x7fffefa4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400228 (line# 0x20011 )
+	L1: read line# 0x20011
+	L1: Hit
+I 0x40022c (line# 0x20011 )
+	L1: read line# 0x20011
+	L1: Hit
+I 0x400238 (line# 0x20011 )
+	L1: read line# 0x20011
+	L1: Hit
+I 0x40023c (line# 0x20011 )
+	L1: read line# 0x20011
+	L1: Hit
+W 0x10028000 (line# 0x801400)
+	L1: write: 0x801400
+	L1: Miss
+		RAM: read line# 0x801400
+		RAM: Hit
+	L1: Replace to include line# 0x801400
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400240 (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Miss
+		RAM: read line# 0x20012
+		RAM: Hit
+	L1: Replace to include line# 0x20012
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+R 0x7fffefa8 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400244 (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Hit
+I 0x400248 (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Hit
+I 0x40024c (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Hit
+I 0x400250 (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Hit
+R 0x7fffefa8 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400254 (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Hit
+I 0x400258 (line# 0x20012 )
+	L1: read line# 0x20012
+	L1: Hit
+I 0x400264 (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Miss
+		RAM: read line# 0x20013
+		RAM: Hit
+	L1: Replace to include line# 0x20013
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400268 (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Hit
+W 0x10028004 (line# 0x801400)
+	L1: write: 0x801400
+I 0x40026c (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Hit
+I 0x400270 (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Hit
+I 0x400274 (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Hit
+R 0x7fffefb0 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400278 (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Hit
+I 0x40027c (line# 0x20013 )
+	L1: read line# 0x20013
+	L1: Hit
+I 0x400280 (line# 0x20014 )
+	L1: read line# 0x20014
+	L1: Miss
+		RAM: read line# 0x20014
+		RAM: Hit
+	L1: Replace to include line# 0x20014
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003d4 (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Hit
+W 0x7fffefcc (line# 0x3ffff7e)
+	L1: write: 0x3ffff7e
+	L1: Miss
+		RAM: read line# 0x3ffff7e
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003d8 (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Miss
+		RAM: read line# 0x2001e
+		RAM: Hit
+	L1: Replace to include line# 0x2001e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003dc (line# 0x2001e )
+	L1: read line# 0x2001e
+	L1: Hit
+I 0x4004d4 (line# 0x20026 )
+	L1: read line# 0x20026
+	L1: Miss
+		RAM: read line# 0x20026
+		RAM: Hit
+	L1: Replace to include line# 0x20026
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+R 0x7fffefcc (line# 0x3ffff7e )
+	L1: read line# 0x3ffff7e
+	L1: Miss
+		RAM: read line# 0x3ffff7e
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7e
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4004d8 (line# 0x20026 )
+	L1: read line# 0x20026
+	L1: Hit
+I 0x4004dc (line# 0x20026 )
+	L1: read line# 0x20026
+	L1: Hit
+I 0x4004e0 (line# 0x20027 )
+	L1: read line# 0x20027
+	L1: Miss
+		RAM: read line# 0x20027
+		RAM: Hit
+	L1: Replace to include line# 0x20027
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4004e4 (line# 0x20027 )
+	L1: read line# 0x20027
+	L1: Hit
+I 0x4003e0 (line# 0x2001f )
+	L1: read line# 0x2001f
+	L1: Miss
+		RAM: read line# 0x2001f
+		RAM: Hit
+	L1: Replace to include line# 0x2001f
+	L1: Random replacement policy. Way#0
+		RAM: write: 0x4003e0
+		RAM: Hit
+W 0x7fffefd0 (line# 0x3ffff7e)
+	L1: write: 0x3ffff7e
+I 0x4003e4 (line# 0x2001f )
+	L1: read line# 0x2001f
+	L1: Hit
+I 0x4003e8 (line# 0x2001f )
+	L1: read line# 0x2001f
+	L1: Hit
+I 0x4004b0 (line# 0x20025 )
+	L1: read line# 0x20025
+	L1: Miss
+		RAM: read line# 0x20025
+		RAM: Hit
+	L1: Replace to include line# 0x20025
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+R 0x7fffefd0 (line# 0x3ffff7e )
+	L1: read line# 0x3ffff7e
+	L1: Hit
+I 0x4004b4 (line# 0x20025 )
+	L1: read line# 0x20025
+	L1: Hit
+I 0x4004b8 (line# 0x20025 )
+	L1: read line# 0x20025
+	L1: Hit
+I 0x4004bc (line# 0x20025 )
+	L1: read line# 0x20025
+	L1: Hit
+I 0x4004c0 (line# 0x20026 )
+	L1: read line# 0x20026
+	L1: Hit
+I 0x4003ec (line# 0x2001f )
+	L1: read line# 0x2001f
+	L1: Hit
+I 0x4003f0 (line# 0x2001f )
+	L1: read line# 0x2001f
+	L1: Hit
+I 0x4003f4 (line# 0x2001f )
+	L1: read line# 0x2001f
+	L1: Hit
+I 0x400310 (line# 0x20018 )
+	L1: read line# 0x20018
+	L1: Miss
+		RAM: read line# 0x20018
+		RAM: Hit
+	L1: Replace to include line# 0x20018
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400314 (line# 0x20018 )
+	L1: read line# 0x20018
+	L1: Hit
+W 0x7fffefb0 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x400318 (line# 0x20018 )
+	L1: read line# 0x20018
+	L1: Hit
+W 0x7fffefac (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x40031c (line# 0x20018 )
+	L1: read line# 0x20018
+	L1: Hit
+I 0x400320 (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Miss
+		RAM: read line# 0x20019
+		RAM: Hit
+	L1: Replace to include line# 0x20019
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+W 0x7fffefb4 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x400324 (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+I 0x400328 (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+I 0x4000d0 (line# 0x20006 )
+	L1: read line# 0x20006
+	L1: Miss
+		RAM: read line# 0x20006
+		RAM: Hit
+	L1: Replace to include line# 0x20006
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4000d4 (line# 0x20006 )
+	L1: read line# 0x20006
+	L1: Hit
+W 0x7fffef88 (line# 0x3ffff7c)
+	L1: write: 0x3ffff7c
+	L1: Miss
+		RAM: read line# 0x3ffff7c
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7c
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4000d8 (line# 0x20006 )
+	L1: read line# 0x20006
+	L1: Hit
+I 0x4000dc (line# 0x20006 )
+	L1: read line# 0x20006
+	L1: Hit
+I 0x4000e0 (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Miss
+		RAM: read line# 0x20007
+		RAM: Hit
+	L1: Replace to include line# 0x20007
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+R 0x10028000 (line# 0x801400 )
+	L1: read line# 0x801400
+	L1: Hit
+I 0x4000e4 (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x4000e8 (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x4000ec (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x4000f0 (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x4000f4 (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x4000f8 (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x4000fc (line# 0x20007 )
+	L1: read line# 0x20007
+	L1: Hit
+I 0x400100 (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Miss
+		RAM: read line# 0x20008
+		RAM: Hit
+	L1: Replace to include line# 0x20008
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400104 (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+I 0x400108 (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+I 0x40010c (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+I 0x400110 (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+I 0x400114 (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+I 0x400118 (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+I 0x40011c (line# 0x20008 )
+	L1: read line# 0x20008
+	L1: Hit
+R 0x10028000 (line# 0x801400 )
+	L1: read line# 0x801400
+	L1: Hit
+I 0x400120 (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Miss
+		RAM: read line# 0x20009
+		RAM: Hit
+	L1: Replace to include line# 0x20009
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400124 (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+I 0x400128 (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+I 0x40012c (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+I 0x400130 (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+W 0x10028000 (line# 0x801400)
+	L1: write: 0x801400
+I 0x400134 (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+I 0x400138 (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+R 0x10028004 (line# 0x801400 )
+	L1: read line# 0x801400
+	L1: Hit
+I 0x40013c (line# 0x20009 )
+	L1: read line# 0x20009
+	L1: Hit
+I 0x400140 (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Miss
+		RAM: read line# 0x2000a
+		RAM: Hit
+	L1: Replace to include line# 0x2000a
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400144 (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x400148 (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x40014c (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x400150 (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x400154 (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x400158 (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x40015c (line# 0x2000a )
+	L1: read line# 0x2000a
+	L1: Hit
+I 0x400160 (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Miss
+		RAM: read line# 0x2000b
+		RAM: Hit
+	L1: Replace to include line# 0x2000b
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400164 (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+I 0x400168 (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+I 0x40016c (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+R 0x10028004 (line# 0x801400 )
+	L1: read line# 0x801400
+	L1: Hit
+I 0x400170 (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+I 0x400174 (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+I 0x400178 (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+I 0x40017c (line# 0x2000b )
+	L1: read line# 0x2000b
+	L1: Hit
+I 0x400180 (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Miss
+		RAM: read line# 0x2000c
+		RAM: Hit
+	L1: Replace to include line# 0x2000c
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+W 0x10028004 (line# 0x801400)
+	L1: write: 0x801400
+I 0x400184 (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+I 0x400188 (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+R 0x10028000 (line# 0x801400 )
+	L1: read line# 0x801400
+	L1: Hit
+I 0x40018c (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+I 0x400190 (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+I 0x400194 (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+I 0x400198 (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+R 0x10028004 (line# 0x801400 )
+	L1: read line# 0x801400
+	L1: Hit
+I 0x40019c (line# 0x2000c )
+	L1: read line# 0x2000c
+	L1: Hit
+I 0x4001a0 (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+I 0x4001a4 (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+I 0x4001a8 (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+R 0x7fffef88 (line# 0x3ffff7c )
+	L1: read line# 0x3ffff7c
+	L1: Hit
+I 0x4001ac (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+I 0x4001b0 (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+I 0x4001b4 (line# 0x2000d )
+	L1: read line# 0x2000d
+	L1: Hit
+I 0x40032c (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+I 0x400330 (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+W 0x7fffefa4 (line# 0x3ffff7d)
+	L1: write: 0x3ffff7d
+I 0x400334 (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+R 0x7fffefa4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x400338 (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+I 0x40033c (line# 0x20019 )
+	L1: read line# 0x20019
+	L1: Hit
+I 0x400340 (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Miss
+		RAM: read line# 0x2001a
+		RAM: Hit
+	L1: Replace to include line# 0x2001a
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400344 (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+I 0x400348 (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+R 0x7fffefa4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x40034c (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+I 0x400350 (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+I 0x400354 (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+I 0x400358 (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+I 0x40035c (line# 0x2001a )
+	L1: read line# 0x2001a
+	L1: Hit
+R 0x800020 (line# 0x40001 )
+	L1: read line# 0x40001
+	L1: Miss
+		RAM: read line# 0x40001
+		RAM: Hit
+	L1: Replace to include line# 0x40001
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+R 0x40035c (line# 0x800020)
+I 0x400360 (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Miss
+		RAM: read line# 0x2001b
+		RAM: Hit
+	L1: Replace to include line# 0x2001b
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400364 (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+R 0x800024 (line# 0x40001 )
+	L1: read line# 0x40001
+	L1: Hit
+R 0x400364 (line# 0x800024)
+I 0x400368 (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+I 0x40036c (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+I 0x400370 (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+I 0x400374 (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+R 0x800028 (line# 0x40001 )
+	L1: read line# 0x40001
+	L1: Hit
+R 0x400374 (line# 0x800028)
+I 0x400378 (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+I 0x40037c (line# 0x2001b )
+	L1: read line# 0x2001b
+	L1: Hit
+R 0x80002c (line# 0x40001 )
+	L1: read line# 0x40001
+	L1: Hit
+R 0x40037c (line# 0x80002c)
+I 0x400380 (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Miss
+		RAM: read line# 0x2001c
+		RAM: Hit
+	L1: Replace to include line# 0x2001c
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x400384 (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+I 0x400388 (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+R 0x7fffefb4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Hit
+I 0x40038c (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+I 0x400390 (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+I 0x400394 (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+I 0x400398 (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+I 0x40039c (line# 0x2001c )
+	L1: read line# 0x2001c
+	L1: Hit
+I 0x4003a0 (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Miss
+		RAM: read line# 0x2001d
+		RAM: Hit
+	L1: Replace to include line# 0x2001d
+	L1: Random replacement policy. Way#0
+		RAM: write: 0x4003a0
+		RAM: Hit
+I 0x4003a4 (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Hit
+R 0x7fffefb0 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Miss
+		RAM: read line# 0x3ffff7d
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003a8 (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Miss
+		RAM: read line# 0x2001d
+		RAM: Hit
+	L1: Replace to include line# 0x2001d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+R 0x7fffefac (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Miss
+		RAM: read line# 0x3ffff7d
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003ac (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Miss
+		RAM: read line# 0x2001d
+		RAM: Hit
+	L1: Replace to include line# 0x2001d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.
+I 0x4003b0 (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Hit
+I 0x4003b4 (line# 0x2001d )
+	L1: read line# 0x2001d
+	L1: Hit
+R 0x7fffefb4 (line# 0x3ffff7d )
+	L1: read line# 0x3ffff7d
+	L1: Miss
+		RAM: read line# 0x3ffff7d
+		RAM: Hit
+	L1: Replace to include line# 0x3ffff7d
+	L1: Random replacement policy. Way#0
+	L1: Line clean/invalid. No need to write back.

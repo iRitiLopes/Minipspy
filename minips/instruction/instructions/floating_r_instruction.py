@@ -26,65 +26,68 @@ from minips.word import Word
 
 class Floating_R_Instruction(BaseInstruction):
 
-    def __init__(self, word: Word) -> None:
-        super().__init__(word)
-        self.word = word
+    def __init__(self) -> None:
+        super().__init__()
         self.instruction_type = 4
-        self.funct = self.word.get_bits_between(5, 0)
-        self.large_funct = self.word.get_bits_between(10, 0)
-        self.opcode = self.word.get_bits_between(31, 26)
-        self.fmt = self.word.get_bits_between(25, 21)
-        self.cond = self.word.get_bits_between(3, 0)
-        self.functions = {
-            '1100': {
-                '10000': CLTSingleInstruction
-            },
-            '01000': BC1TInstruction,
-            '000000': {
-                '10000': AddSingleInstruction,
-                '10001': AddDoubleInstruction
-            },
-            '000001': {
-                '10000': SubSingleInstruction,
-                '10001': SubDoubleInstruction
-            },
-            '000110': {
-                '10000': MOVSingleInstruction,
-                '10001': MOVDoubleInstruction
-            },
-            '100001': {
-                '10100': CVTDWordInstruction,
-                '10001': '',
-                '10010': ''
-            },
-            '100000': {
-                '10100': '',
-                '10001': CVTSDoubleInstruction,
-                '10010': ''
-            },
-            '000010': {
-                '10000': MulSingleInstruction,
-                '10001': MulDoubleInstruction,
-            },
-            '000011': {
-                '10000': '',
-                '10001': DivDoubleInstruction
-            },
-            '00000000000': {
-                '00000': MFC1Instruction,
-                '00100': MTC1Instruction,
+        self.functions_extra = {
+            0x0: {
+                0x0: MFC1Instruction(),
+                0x4: MTC1Instruction(),
             }
         }
+        self.functions_cond = {
+            0xc: {
+                0x10: CLTSingleInstruction()
+            },
+        }
+        self.functions = {
+            0x8: BC1TInstruction(),
+            0x0: {
+                0x10: AddSingleInstruction(),
+                0x11: AddDoubleInstruction()
+            },
+            0x1: {
+                0x10: SubSingleInstruction(),
+                0x11: SubDoubleInstruction()
+            },
+            0x6: {
+                0x10: MOVSingleInstruction(),
+                0x11: MOVDoubleInstruction()
+            },
+            0x21: {
+                0x14: CVTDWordInstruction(),
+            },
+            0x20: {
+                0x11: CVTSDoubleInstruction(),
+            },
+            0x2: {
+                0x10: MulSingleInstruction(),
+                0x11: MulDoubleInstruction(),
+            },
+            0x3: {
+                0x11: DivDoubleInstruction()
+            },
+
+        }
+    
+    def __call__(self, word):
+        super().__call__(word)
+        self.funct = ( ((1 << 6) - 1)  &  (self.word.data >> (0) ) )
+        self.large_funct = ( ((1 << 11) - 1)  &  (self.word.data >> (0) ) )
+        self.opcode = ( ((1 << 6) - 1)  &  (self.word.data >> (26) ) )
+        self.fmt = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.cond = ( ((1 << 4) - 1)  &  (self.word.data >> (0) ) )
+        return self
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:
         """
         Receive the registers to be able to translate the register numbers by the name of the registers  # noqa: E501
         """
-        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) \
+        base_operation = self.functions_extra.get(self.large_funct, {}).get(self.fmt) \
             or self.functions.get(self.funct, {}).get(self.fmt) \
-            or self.functions.get(self.cond, {}).get(self.fmt) \
+            or self.functions_cond.get(self.cond, {}).get(self.fmt) \
             or self.functions.get(self.fmt)
-        
+
         return base_operation(self.word).decode(
             registers=registers,
             coprocessor=coprocessor,
@@ -93,9 +96,9 @@ class Floating_R_Instruction(BaseInstruction):
         )  # noqa: E501
 
     def execute(self, registers: Registers, program_counter, memory: Memory, *args, **kwargs) -> Tuple[Registers, int, Memory]:  # noqa: E501
-        base_operation = self.functions.get(self.large_funct,{}).get(self.fmt) \
+        base_operation = self.functions_extra.get(self.large_funct, {}).get(self.fmt) \
             or self.functions.get(self.funct, {}).get(self.fmt) \
-            or self.functions.get(self.cond, {}).get(self.fmt) \
+            or self.functions_cond.get(self.cond, {}).get(self.fmt) \
             or self.functions.get(self.fmt)
         return base_operation(self.word).execute(
             registers=registers,

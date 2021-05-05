@@ -13,14 +13,15 @@ class MFC1Instruction(Floating_R_BaseFunction):
     funct_code = '00000000000'
     fmt = '00000'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
-        self.fmt = self.word.get_bits_between(25, 21)
-        self.rt = self.word.get_bits_between(20, 16)
-        self.fs = self.word.get_bits_between(15, 11)
+    def __call__(self, word) -> None:
+        super().__call__(word)
+        self.fmt = self.word.get_k_bits_from(5, 21)
+        self.rt = self.word.get_k_bits_from(5, 16)
+        self.fs = self.word.get_k_bits_from(5, 11)
 
-        self.rt_number = Bin2Int.convert(self.rt)
-        self.fs_number = Bin2Int.convert(self.fs)
+        self.rt_number = self.rt
+        self.fs_number = self.fs
+        return self
 
     def decode(self, registers: Registers, coprocessor: COProcessor, *args, **kwargs) -> str:
         fs_name = coprocessor.registers.get_register_name(self.fs_number)
@@ -39,7 +40,7 @@ class MFC1Instruction(Floating_R_BaseFunction):
         local_co_registers = coprocessor.registers
 
         fs_register = local_co_registers.get_register(self.fs_number)
-        rt_bin = fs_register.get_data()
+        rt_bin = fs_register.to_signed_int()
 
         local_registers.set_register_value(self.rt_number, rt_bin)
         return local_registers, program_counter + 4, memory, local_co_registers

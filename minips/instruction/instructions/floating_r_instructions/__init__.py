@@ -1,3 +1,4 @@
+from minips.word import Word
 from helpers.bin2int import Bin2Int
 from minips.memory import Memory
 from typing import Tuple
@@ -8,17 +9,18 @@ class Floating_R_BaseFunction:
     instruction_name = ""
     funct_code = ""
 
-    def __init__(self, word) -> None:
+    def __call__(self, word: Word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.fmt = self.word.get_bits_between(25, 21)
-        self.ft = self.word.get_bits_between(20, 16)
-        self.fs = self.word.get_bits_between(15, 11)
-        self.fd = self.word.get_bits_between(10, 6)
+        self.fmt = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.ft = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.fs = ( ((1 << 5) - 1)  &  (self.word.data >> (11) ) )
+        self.fd = ( ((1 << 5) - 1)  &  (self.word.data >> (6) ) )
 
-        self.ft_number = Bin2Int.convert(self.ft)
-        self.fs_number = Bin2Int.convert(self.fs)
-        self.fd_number = Bin2Int.convert(self.fd)
+        self.ft_number = self.ft
+        self.fs_number = self.fs
+        self.fd_number = self.fd
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

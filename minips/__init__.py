@@ -1,3 +1,4 @@
+from minips.word import Word
 from helpers.int2hex import Int2Hex
 from helpers.bin2int import Bin2Int
 from minips.statistics import Mipstatics
@@ -15,23 +16,21 @@ from helpers.log import Log
 class Minips:
     def __init__(self, mem_mode) -> None:
         self.log = Log()
-        self.memory = Memory(mem_mode=mem_mode)
+        self.memory = Memory(mem_mode=mem_mode, log=self.log)
         self.registers = Registers()
         self.coprocessor = COProcessor()
-        self.registers.set_register_value(
-            0,
-            Int2Bits.convert(0)
-        )
+        self.registers.registers[0].value = Word(0x0)
         self.registers.set_register_value(
             28,
-            Int2Bits.convert(self.memory.GLOBAL_POINTER)
+            self.memory.GLOBAL_POINTER
         )
         self.registers.set_register_value(
             29,
-            Int2Bits.convert(self.memory.STACK_POINTER)
+            self.memory.STACK_POINTER
         )
         self.program_counter = self.memory.TEXT_SECTION_START
         self.statistics = Mipstatics()
+        self.factory = InstructionFactory()
 
     def get_memory(self) -> Memory:
         return self.memory
@@ -53,7 +52,7 @@ class Minips:
         with open(path, 'rb') as f:
             mem_address = self.memory.TEXT_SECTION_START
             while (byte := f.read(4)):
-                self.memory.store(mem_address, Byte2Bits.convert(byte))
+                self.memory.init_store(mem_address, Byte2Bits.convert(byte))
                 mem_address = mem_address + 4
 
     def load_data(self, path):
@@ -62,7 +61,7 @@ class Minips:
         with open(path, 'rb') as f:
             mem_address = self.memory.DATA_SECTION_START
             while (byte := f.read(4)):
-                self.memory.store(mem_address, DataByte2Bits.convert(byte))
+                self.memory.init_store(mem_address, DataByte2Bits.convert(byte))
                 mem_address = mem_address + 4
 
     def load_data_rodata(self, path):
@@ -71,28 +70,27 @@ class Minips:
         with open(path, 'rb') as f:
             mem_address = self.memory.RODATA_SECION_START
             while (byte := f.read(4)):
-                self.memory.store(mem_address, DataByte2Bits.convert(byte))
+                self.memory.init_store(mem_address, DataByte2Bits.convert(byte))
                 mem_address = mem_address + 4
 
     def decode(self):
         for instruction in self.read_instructions():
             decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            print(hex(self.program_counter), "\t", Int2Hex.convert(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
+            print(hex(self.program_counter), "\t", hex(instruction.word.data), "\t\t",  decoded_instruction)
             self.program_counter += 4
 
     def execute(self):
         self.statistics.start()
         for instruction in self.read_instructions():
-            self.log.trace(f"I {Int2Hex.convert(self.program_counter)} (line# {Int2Hex.convert(self.program_counter)})")
             #decoded_instruction = instruction.decode(self.registers, coprocessor=self.coprocessor)
-            #print(hex(self.program_counter), "\t", hex(Bin2Int.convert(instruction.word.data, signed=False)), "\t\t",  decoded_instruction)
+            #print(hex(self.program_counter), "\t", hex(instruction.word.data), "\t\t",  decoded_instruction)
             self.registers, self.program_counter, self.memory, self.coprocessor.registers = instruction\
                 .execute(
                     registers=self.registers,
                     program_counter=self.program_counter,
                     memory=self.memory,
                     coprocessor=self.coprocessor,
-                    instruction_factory=InstructionFactory(),
+                    instruction_factory=self.factory,
                     logger=self.log
                 )
             self.statistics.increase_statistic(instruction)
@@ -112,6 +110,6 @@ class Minips:
     def read_instructions(self):
         actual_word = self.memory.load(self.program_counter)
         while not actual_word.is_empty():
-            instruction = InstructionFactory().factory(actual_word)
+            instruction = self.factory.factory(actual_word)
             yield instruction
             actual_word = self.memory.load(self.program_counter)

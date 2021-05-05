@@ -1,3 +1,4 @@
+from helpers.twocomplement import TwoComp
 from helpers.bin2int import Bin2Int
 from minips.memory import Memory
 from typing import Tuple
@@ -8,14 +9,18 @@ class I_BaseFunction:
     instruction_name = ""
     funct_code = ""
 
-    def __init__(self, word) -> None:
+    def __init__(self) -> None:
+        pass
+
+    def __call__(self, word) -> None:
         self.word = word
         self.op_code = self.word.get_opcode()
-        self.rs = self.word.get_bits_between(25, 21)
-        self.rt = self.word.get_bits_between(20, 16)
-        self.imediate = self.word.get_bits_between(15, 0)
-        self.rs_number = Bin2Int.convert(self.rs, signed=False)
-        self.rt_number = Bin2Int.convert(self.rt, signed=False)
+        self.rs = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.rt = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.imediate =  TwoComp.two_complement(( ((1 << 16) - 1)  &  (self.word.data >> (0) ) ), 16) 
+        self.rs_number = self.rs
+        self.rt_number = self.rt
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

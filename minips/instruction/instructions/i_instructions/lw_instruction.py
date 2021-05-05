@@ -9,13 +9,13 @@ class LWInstruction(I_BaseFunction):
     instruction_name = "LW"
     funct_code = '100011'
 
-    def __init__(self, word) -> None:
-        super().__init__(word)
+    def __call__(self, word):
+        return super().__call__(word)
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         rt_name = registers.get_register_name(self.rt_number)
         rs_name = registers.get_register_name(self.rs_number)
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
 
         return f"{self.instruction_name} {rt_name}, {immediate_value}({rs_name})"  # noqa: E501
 
@@ -26,12 +26,11 @@ class LWInstruction(I_BaseFunction):
                 *args,
                 **kwargs):
         local_registers = registers
-        immediate_value = Bin2Int.convert(self.imediate)
+        immediate_value = self.imediate
         rs_register = local_registers.get_register(self.rs_number)
-        rs_address = rs_register.to_unsigned_int()
+        rs_address = rs_register.get_data()
 
         word = memory.load(rs_address + immediate_value).data
-        kwargs['logger'].trace(f"R {Int2Hex.convert(program_counter)} (line# {Int2Hex.convert(rs_address + immediate_value)})")
         local_registers.set_register_value(self.rt_number, word)
 
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers

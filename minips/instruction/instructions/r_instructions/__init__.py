@@ -7,18 +7,19 @@ from minips.registers import Registers
 class R_BaseFunction:
     instruction_name = ""
     funct_code = ""
-
-    def __init__(self, word) -> None:
+    
+    def __call__(self, word) -> None:
         self.word = word
-        self.rs = self.word.get_bits_between(25, 21)
-        self.rt = self.word.get_bits_between(20, 16)
-        self.rd = self.word.get_bits_between(15, 11)
-        self.shamt = self.word.get_bits_between(10, 6)
-        self.funct = self.word.get_bits_between(5, 0)
-        self.rs_number = Bin2Int.convert(self.rs, signed=False)
-        self.rt_number = Bin2Int.convert(self.rt, signed=False)
-        self.rd_number = Bin2Int.convert(self.rd, signed=False)
-        self.shamt_value = Bin2Int.convert(self.shamt, signed=False)
+        self.rs = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.rt = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.rd = ( ((1 << 5) - 1)  &  (self.word.data >> (11) ) )
+        self.shamt = ( ((1 << 5) - 1)  &  (self.word.data >> (6) ) )
+        self.funct = ( ((1 << 6) - 1)  &  (self.word.data >> (0) ) )
+        self.rs_number = self.rs
+        self.rt_number = self.rt
+        self.rd_number = self.rd
+        self.shamt_value = self.shamt
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs) -> str:
         pass

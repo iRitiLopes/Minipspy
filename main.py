@@ -12,15 +12,23 @@ def run():
     else:
         mem_mode = int(argv[2])
         filepath = argv[3]
-    minips = Minips(mem_mode=mem_mode)
-    minips.load(filepath)
 
     if mode == 'decode':
+        minips = Minips(mem_mode=1)
+        minips.load(filepath)
         minips.decode()
     elif mode == 'run':
+        minips = Minips(mem_mode=mem_mode)
+        minips.load(filepath)
         minips.execute()
     elif mode == 'trace':
+        minips = Minips(mem_mode=mem_mode)
+        minips.load(filepath)
         minips.trace_mode()
+    elif mode == 'debug':
+        minips = Minips(mem_mode=mem_mode)
+        minips.load(filepath)
+        minips.debug_mode()
     else:
         raise Exception("Invalid mode: Valid modes -> decode | run")
 

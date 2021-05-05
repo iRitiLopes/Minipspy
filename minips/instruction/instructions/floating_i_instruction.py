@@ -11,19 +11,19 @@ from minips.word import Word
 
 class Floating_I_Instruction(BaseInstruction):
 
-    def __init__(self, word: Word) -> None:
-        super().__init__(word)
-        self.word = word
+    def __init__(self) -> None:
+        super().__init__()
         self.instruction_type = 3
-        self.funct = self.word.get_bits_between(5, 0)
-        self.large_funct = self.word.get_bits_between(10, 0)
-        self.opcode = self.word.get_bits_between(31, 26)
-        self.fmt = self.word.get_bits_between(25, 21)
         self.functions = {
-            '110001': LWC1Instruction,
-            '110101': LDC1Instruction,
-            '111001': SWC1Instruction
+            0x31: LWC1Instruction(),
+            0x35: LDC1Instruction(),
+            0x39: SWC1Instruction()
         }
+    
+    def __call__(self, word):
+        super().__call__(word)
+        self.opcode = ( ((1 << 6) - 1)  &  (self.word.data >> (26) ) )
+        return self
 
     def decode(self, registers: Registers, coprocessor, *args, **kwargs) -> str:
         """

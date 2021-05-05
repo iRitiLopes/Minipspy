@@ -44,9 +44,11 @@ class Mipstatics:
     def memory_statistics(self, memory: Memory):
         cycles = 0
         memory_access = memory.access_count[3]
+        l1_access = memory.access_count[1]
         cycles += memory_access * 100
         self.statistics["cycles"] += cycles
         self.statistics["memory_access"] += memory_access
+        self.statistics["l1d_access"] += l1_access
 
     def show_statistics(self):
         print("\n------------------------------------------")

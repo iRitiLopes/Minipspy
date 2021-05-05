@@ -11,16 +11,19 @@ from minips.word import Word
 
 
 class J_Instruction(BaseInstruction):
-    def __init__(self, word: Word) -> None:
-        super().__init__(word)
-        self.word = word
+    def __init__(self) -> None:
+        super().__init__()
         self.instruction_type = 2
-        self.op_code = self.word.get_opcode()
-        self.jump_address = self.word.get_bits_between(25, 0)
         self.functions = {
-            '000010': JumpInstruction,
-            '000011': JumpalInstruction,
+            0x2: JumpInstruction(),
+            0x3: JumpalInstruction(),
         }
+    
+    def __call__(self, word):
+        super().__call__(word)
+        self.op_code = self.word.get_opcode()
+        self.jump_address = ( ((1 << 26) - 1)  &  (self.word.data >> (0) ) )
+        return self
 
     def decode(self, *args, **kwargs):
         return self.functions[self.op_code](self.word).decode(*args, **kwargs)

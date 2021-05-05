@@ -1,3 +1,4 @@
+from minips.instruction.instructions.i_instructions.lh_instruction import LHInstruction
 from minips.instruction.instructions.i_instructions.bgez_instruction import BGEZInstruction
 from minips.instruction.instructions.i_instructions.lhu_instruction import LHUInstruction
 from minips.instruction.instructions.i_instructions.blez_instruction import BLEZInstruction
@@ -30,36 +31,40 @@ from minips.word import Word
 
 
 class I_Instruction(BaseInstruction):
-    def __init__(self, word: Word) -> None:
-        super().__init__(word)
-        self.word = word
+    def __init__(self) -> None:
+        super().__init__()
         self.instruction_type = 0
-        self.op_code = self.word.get_opcode()
-        self.rs = self.word.get_bits_between(25, 21)
-        self.rt = self.word.get_bits_between(20, 16)
-        self.imediate = self.word.get_bits_between(15, 0)
         self.functions = {
-            '001000': AddiInstruction,
-            '001001': AddiuInstruction,
-            '001100': AndiInstruction,
-            '000100': BEQInstruction,
-            '000101': BNEInstruction,
-            '000110': BLEZInstruction,
-            '000001': BGEZInstruction,
-            '100000': LBInstruction,
+            0x8: AddiInstruction(),
+            0x9: AddiuInstruction(),
+            0xc: AndiInstruction(),
+            0x4: BEQInstruction(),
+            0x5: BNEInstruction(),
+            0x6: BLEZInstruction(),
+            0x1: BGEZInstruction(),
+            0x20: LBInstruction(),
             '100100': {'name': 'LBU', 'funct': ''},
-            '100101': LHUInstruction,
+            0x25: LHUInstruction(),
+            0x21: LHInstruction(),
             '110000': {'name': 'LL', 'funct': ''},
-            '001111': LuiInstruction,
-            '100011': LWInstruction,
-            '001101': OriInstruction,
-            '001010': SLTIInstruction,
+            0xf: LuiInstruction(),
+            0x23: LWInstruction(),
+            0xd: OriInstruction(),
+            0xa: SLTIInstruction(),
             '001011': {'name': 'SLTIU', 'funct': ''},
             '101000': {'name': 'SB', 'funct': ''},
             '111000': {'name': 'SC', 'funct': ''},
             '101001': {'name': 'SH', 'funct': ''},
-            '101011': SWInstruction
+            0x2b: SWInstruction()
         }
+    
+    def __call__(self, word):
+        super().__call__(word)
+        self.op_code = self.word.get_opcode()
+        self.rs = ( ((1 << 5) - 1)  &  (self.word.data >> (21) ) )
+        self.rt = ( ((1 << 5) - 1)  &  (self.word.data >> (16) ) )
+        self.imediate = ( ((1 << 16) - 1)  &  (self.word.data >> (0) ) )
+        return self
 
     def decode(self, registers: Registers, *args, **kwargs):
         return self.functions[self.op_code](self.word).decode(registers, *args, **kwargs)  # noqa: E501

@@ -7,7 +7,7 @@
 #pragma GCC optimize 0
 
 #define SEED 42
-#define N 32
+#define N 16
 
 #define MAX_VAL 10
 

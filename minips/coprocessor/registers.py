@@ -1,3 +1,5 @@
+from helpers.twocomplement import TwoComp
+from helpers.int2float import Int2Float
 from helpers.bin2int import Bin2Int
 from helpers.bin2float import Bin2Float
 from helpers.bin2str import Bin2Str
@@ -10,16 +12,16 @@ class Register:
         self.value = value
 
     def to_signed_int(self):
-        return Bin2Int.convert(self.value.data)
-
+        return TwoComp.two_complement(self.value.data, 32)
+    
     def to_unsigned_int(self):
-        return Bin2Int.convert(self.value.data, signed=False)
+        return self.value.data
 
     def to_single_precision(self):
-        return Bin2Float.convert(self.get_data())
+        return Int2Float.convert(self.get_data())
 
     def to_double_precision(self):
-        return Bin2Float.convert(self.get_data(), doubled=True)
+        return Int2Float.convert(self.get_data(), doubled=True)
 
     def to_string(self):
         Bin2Str.convert(self.value.data)
