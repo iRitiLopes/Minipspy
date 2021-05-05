@@ -34,7 +34,7 @@ class Memory(object):
 
     def store(self, address, data) -> None:
         if self.__is_valid_address(address=address):
-            self.log.trace(f"W {hex(address)} (line# {hex(self.cache.l1_line(address))})")
+            self.log.trace(f"W {hex(address)} (line# {hex(address // 32)})")
             if self.mem_mode == 1:
                 self.log.debug(f" mem store: {address} {data}")
                 return self.__store(address, data)
@@ -90,9 +90,9 @@ class Memory(object):
     def load(self, address) -> Word:
         if self.__is_valid_address(address=address):
             if address >= self.TEXT_SECTION_START and address < self.RODATA_SECION_START:
-                self.log.trace(f"I {hex(address)} (line# { hex(self.cache.l1_line(address))} )")
+                self.log.trace(f"I {hex(address)} (line# { hex(address // 32)} )")
             else:
-                self.log.trace(f"R {hex(address)} (line# { hex(self.cache.l1_line(address))} )")
+                self.log.trace(f"R {hex(address)} (line# { hex(address // 32)} )")
             if self.mem_mode == 1:
                 data = self.__load(address)
             else:

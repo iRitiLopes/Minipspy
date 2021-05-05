@@ -31,7 +31,7 @@ class LBInstruction(I_BaseFunction):
         rs_register = local_registers.get_register(self.rs_number)
         rs_address = rs_register.get_data_unsigned()
 
-        word = memory.load(rs_address + immediate_value)
+        word = memory.load(rs_address + immediate_value).data
         word = ( ((1 << 8) - 1)  &  (word >> (0) ) )
 
         local_registers.set_register_value(self.rt_number, word)
