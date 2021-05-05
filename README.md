@@ -1,4 +1,4 @@
-# 2021-Arquitetura-Minips-Fase2-iRitiLopes
+# 2021-Arquitetura-Minips-Fase3-iRitiLopes
 
 # MINIPSPY
 A mini emulator of Mips
@@ -71,23 +71,22 @@ SYSCALL
 ```
 
 
-# [Relatorio EP2 em PDF](Relatorio-EP2.pdf)
+# [Relatorio EP3 em PDF](Relatorio-EP3.pdf)
 
 
 ### Nome: Richard da Cruz Lopes
 ### RA: 11122015
-### Link vídeo: https://youtu.be/-5B0i5IyRKU
+### Link vídeo: https://youtu.be/XVwSI-Y3SlI
 
 
-## Projeto Minips - EP2 - Arquitetura de Computadores - UFABC 2021
+## Projeto Minips - EP3 - Arquitetura de Computadores - UFABC 2021
 
-Esta Fase2 seguiu os mesmos princípios usados pela Fase1, portanto não foi necessária refatorações para adequar as novas features. Houve adição de dois novos módulos, o de COProcessador1 e o de Estatísticas que mostra ao final da execução alguns dados sobre a simulação. Continuou sendo bem desafiador.
+Bem, o que as fases 1 e 2 foram esta fase 3 não foi. A facilidade de implementação das instruções ainda foi tranquila e a parte mais difícil com certeza deste projeto começou, a implementação das Caches. Talvez essa dificuldade tenha sido na maneira modelada inicialmente do comportamento da memória no emulador. Até que me deparei com questões de performance, principalmente pela maneira em que resolvia a decodificação e a maneira em que as palavras eram armazenadas, como strings, os métodos de transformação dessas strings estavam sendo bastante custosas ao desempenho, foi verificado que ao executar o código de exemplo 18.naive_dgemm estava demorando muito além do que deveria, cerca de 10 minutos (péssimo) então resolvi paralisar o desenvolvimento da Cache para resolver os problemas de performance.
 
-Quando fui implementar a feature de Branch Delay Slot, não houveram grandes dificuldades, apenas identificar quais instruções eram as que causavam o BDL e fazer a implementação, creio que não seja das mais elegantes a maneira que foi implementada, mas como são instruções específicas, pude aproveitar bem a maneira em que foi implementado.
+Para resolver o problema de performance foi necessário refatorar grande parte do projeto, remover todo e qualquer tipo de tratamento de strings para número, após algum tempo refatorando com auxílio de uma ferramenta chamada cProfile, foi-se identificando em quais pontos acabavam sendo críticos à performance. Após a refatoração a performance melhorou significamente caindo para próximo dos 4 minutos para executar o 18.naive_dgemm, ainda não perfeito porém uma grande melhoria.
 
-Uma dificuldade encontrada foi na implementação dos FP, especificamente a maneira de armazenar e carregar os valores aos registradores, inicialmente, talvez por desatenção, estava armazenando os bits de mais alta ordem nos registrador par da dupla de registradores por exemplo 63..32 no registrador f0 e 31..0 no registrador f1, e isto estava me causando alguns bugs, até que perguntei no canal do Discord e a dúvida foi sanada e a partir daí o bug foi corrigido e praticamente a implementação da fase 2 se encerrara, podendo então partir para a implementação do módulo de estatísticas.
+Após resolver a refatoração de strings matches para o uso de bitmasks e números, foi possível prosseguir, feita a implementação do modo trace e do modo debug. Estes modos por fim acabaram sendo resolvidos utilizando a própria ferramenta de logging da linguagem, alternando o log level dependendo do modo de execução, e por fim chegamos a Cache.
 
-Eu continuo achando que o ponto forte do meu projeto foi a modularização, e a maneira em que organizei as instruções e como elas funcionam, está extremamente fácil a adição de novas instruções, assim como uma correção de alguma, utilizei um design pattern chamado Factory. Creio que essa modularização irá me ajudar na Fase3 da mesma maneira que me ajudou nesta fase.
+Ao deparar com o problema das Caches, havia uma dificuldade inicial devido a maneira com que a memória havia sido implementada, após um bom tempo analisando como poderia ser implementada, por fim iniciei. O código implementado não é dos melhores que este projeto vivenciou, mas passou a funcionar para os exemplos básicos até que deparado com o SURPRESINHA, motivo até do qual perguntei no canal do Discord qual o bug que o Surpresinha pretendia evidenciar, após isso foi corrigido o problemas e pude continuar. Com isso me vi com pouco tempo para finalizar a implementação dos outros modos de configuração das Caches, portanto o modo que funciona é o 2 (unificado, randômico), a maneira em que foi implementado facilita a modificação dessa cache unificada em seu tamanho, tamanho de linha e mapeamento de n vias(para casos de exemplos mais simples funciona). Gostaria muito de ter conseguido implementar totalmente as Caches, mas me vi com pouco tempo para conseguir a partir do momento em que pude iniciar o desenvolvimento das mesmas.
 
-A implementação do minipspy, hoje está executando os 16 binários de teste com sucesso, tanto no modo run  quanto no modo decode, junto com mais um código compilado por mim chamado example que foi bastante utilizado durante a construção das instruções de FP.
-
+Por fim, foi muito divertido esse projeto, pretendo futuramente finalizá-lo mesmo após a entrega. Tive que fazer uso de diversos conhecimentos adquiridos ao longo da graduação até aqui. Vejo que essa dificuldade que existiu na implementação das Caches poderia ter sido minimizado se desde o início tivesse continuado implementando os casos de teste (teria ajudado a manter o código conciso e limpo ao longo das novas implementações), fica de aprendizado aos próximos projetos de escopo semelhante (a nível de detalhamento e tamanho). Muito obrigado.
