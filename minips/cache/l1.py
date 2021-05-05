@@ -51,14 +51,14 @@ class L1Cache:
         else:
             via = self.policy.run(from_n=0 , to_n=self.n_vias - 1, block=block)
             for word in block[via]:
-                if word.valid and word.is_dirty():
+                if word.valid:
                     return True, via
             return False, via
 
     def writeback(self, address, via, *args, **kwargs):
         block_idx = self.block_index(address)
         cache_line = self.cache[block_idx][via]
-        return cache_line, block_idx * 2**self.line_size
+        return cache_line, self.block_address(address)
 
     def parse_address(self, address):
         byte_offset = (((1 << self.nbits_byte_offset) - 1) & (address >> (0)))

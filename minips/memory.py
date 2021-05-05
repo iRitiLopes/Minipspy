@@ -64,8 +64,9 @@ class Memory(object):
         wb_data, wb_address = self.cache.writeback(address, via=via)
         self.log.debug(f"\t\tRAM: write: {hex(address)}")
         self.log.debug(f"\t\tRAM: Hit")
+
         for idx_offset, data in enumerate(wb_data):
-            self.__store(wb_address + idx_offset * 4, data.data)
+            self.__store(data.address, data.data.data)
     
     def __load(self, address) -> Word:
         self.access_count[3] += 1
