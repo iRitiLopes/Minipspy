@@ -62,7 +62,7 @@ class Mipstatics:
             print(f"{instruction_type}: {v}", end=' ')
         print(f"\nTotal: {total}")
         print(f"Simulation time: {elapsed_time} sec")
-        print(f"Average IPS: {total/elapsed_time}")
+        print(f"Average IPS: {total/max(elapsed_time, 1e-6)}")
         print("------------------------------------------\n")
 
         print("Simulated execution times for:")
