@@ -8,9 +8,12 @@
 #ifdef __mips__
 int main();
 
+#ifndef MINIPS_EXTERNAL_START
 void __start() {
     main();
+    asm volatile("li $v0, 10; syscall" : : : "$v0");
 }
+#endif
 #else
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,7 +29,7 @@ void p_int(int x) {
         "syscall;"
         :
         : "r" (x)
-        : "$v0");
+        : "$v0", "$a0");
 #else
     printf("%d", x);
 #endif

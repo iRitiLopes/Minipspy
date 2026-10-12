@@ -45,10 +45,13 @@ class Mipstatics:
         cycles = 0
         memory_access = memory.access_count[3]
         l1_access = memory.access_count[1]
-        cycles += memory_access * 100
+        l2_access = memory.access_count[2]
+        cycles += memory_access * 100 + l2_access * 10 + l1_access
         self.statistics["cycles"] += cycles
         self.statistics["memory_access"] += memory_access
-        self.statistics["l1d_access"] += l1_access
+        self.statistics["l1i_access"] += memory.l1_access_count['instruction']
+        self.statistics["l1d_access"] += memory.l1_access_count['data']
+        self.statistics["l2_access"] += l2_access
 
     def show_statistics(self):
         print("\n------------------------------------------")
@@ -87,4 +90,5 @@ class Mipstatics:
         print("------------------------------------------\n")
         print(f"Memory Access: {self.statistics['memory_access']} | Latency per access: 100")
         print(f"Cache L2 Access: {self.statistics['l2_access']} | Latency per access: 10")
+        print(f"Cache L1I Access: {self.statistics['l1i_access']} | Latency per access: 1")
         print(f"Cache L1D Access: {self.statistics['l1d_access']} | Latency per access: 1")

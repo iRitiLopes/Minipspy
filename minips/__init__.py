@@ -101,10 +101,12 @@ class Minips:
                 return
     def trace_mode(self):
         self.log = Log('trace')
+        self.memory.log = self.log
         self.execute()
     
     def debug_mode(self):
         self.log = Log('debug')
+        self.memory.log = self.log
         self.execute()
 
     def read_instructions(self):

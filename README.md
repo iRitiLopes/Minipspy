@@ -3,6 +3,92 @@
 # MINIPSPY
 A mini emulator of Mips
 
+## Cache modes and regression checks
+
+All six memory modes are supported:
+
+| Mode | Configuration |
+| --- | --- |
+| 1 | RAM only |
+| 2 | Unified 1 KiB L1, 32-byte lines |
+| 3 | Split L1, 512 bytes each, 32-byte lines |
+| 4 | Split fully associative L1, 16 ways per bank, LRU replacement |
+| 5 | Split four-way L1, 512 bytes each, 32-byte lines |
+| 6 | Split four-way L1, 64-byte lines, plus eight-way 2 KiB L2 |
+
+Caches use write-back and write allocation. Invalid ways are filled before
+replacement; only dirty victims are written back. Mode 6 uses a non-inclusive
+L2: an L1 eviction writes to L2, and an L2 eviction writes to RAM. Call
+`emulator.memory.flush()` before inspecting final RAM from Python. An unmapped
+word remains empty on both cache hits and misses, so program decoding terminates
+consistently. Instruction addresses select L1I; other addresses select L1D.
+The supplied self-modifying programs also use L1I for writes to text.
+
+```bash
+python3 main.py run 6 examples/11.surpresinha
+python3 -m pytest tests/ -q
+python3 tools/check_examples.py
+```
+
+The comparison command runs the 17 smaller supplied programs in modes 1–6 with
+fixed input, compares their output to mode 1, and fails on errors or timeouts.
+Matrix multiplication and Mandelbrot take longer; include them explicitly:
+
+```bash
+python3 tools/check_examples.py --all --timeout 900
+```
+
+Access counters count requests to each level, including stores and writebacks;
+RAM transfers of an entire cache line count as one access. Simulated cycle
+estimates include L1, L2, and RAM latency.
+
+## Compile your own C or C++ test programs
+
+Install a little-endian MIPS cross-toolchain on Debian/Ubuntu:
+
+```bash
+sudo apt-get install make gcc-mipsel-linux-gnu g++-mipsel-linux-gnu binutils-mipsel-linux-gnu
+make -f tools/Makefile.mips SOURCE=examples/cache_probe.c
+make -f tools/Makefile.mips SOURCE=examples/cache_probe_cpp.cpp
+```
+
+Alternatively, use the included Docker toolchain from the repository root:
+
+```bash
+docker build -t minipspy-toolchain -f tools/Dockerfile.mips .
+docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/work" minipspy-toolchain \
+  make -f tools/Makefile.mips SOURCE=examples/cache_probe.c
+docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/work" minipspy-toolchain \
+  make -f tools/Makefile.mips SOURCE=examples/cache_probe_cpp.cpp
+```
+
+Run the resulting section files by their shared prefix:
+
+```bash
+python3 main.py run 6 build/mips/cache_probe
+python3 main.py run 6 build/mips/cache_probe_cpp
+python3 tools/check_examples.py build/mips/cache_probe build/mips/cache_probe_cpp
+```
+
+The C sample prints `523776`; the C++ sample prints `32640`. Copy either sample,
+include `minips.h`, implement `main`, and set `SOURCE` to your file. Use `p_int`,
+`p_str`, `p_char`, `p_float`, and `p_double` for output. Returning from `main`
+exits the emulator automatically. `BUILD_DIR` overrides the output directory;
+`CROSS` overrides the toolchain prefix. `.c`, `.cpp`, `.cc`, and `.cxx` are accepted.
+
+This is a freestanding environment without libc or the C++ standard library.
+Use plain arithmetic, arrays, functions, and C++ classes/templates; avoid
+`printf`, iostreams, heap allocation, exceptions, RTTI, and global objects that
+need constructors. The emulator implements a subset of MIPS I, so compiler
+output for more complex programs may require additional instruction support.
+The build uses [GCC's MIPS I/o32 options](https://gcc.gnu.org/onlinedocs/gcc-15.1.0/gcc/MIPS-Options.html),
+places startup code first, and links `.text`, `.rodata`, and `.data` at the
+emulator's fixed addresses. Uninitialized globals are included as zero-filled
+data in the raw binary sections. Build outputs live under ignored `build/`.
+
+The older `examples/Makefile` and binaries are retained; the new build uses
+`tools/Makefile.mips` and `tools/linker.ld`.
+
 This project use pyenv and pipenv as Python dependency as Project Manager
 to install pipenv just
 https://pypi.org/project/pipenv/
@@ -80,6 +166,8 @@ SYSCALL
 
 
 ## Projeto Minips - EP3 - Arquitetura de Computadores - UFABC 2021
+
+The report below describes the original 2021 implementation, before the cache fixes above.
 
 Bem, o que as fases 1 e 2 foram esta fase 3 não foi. A facilidade de implementação das instruções ainda foi tranquila e a parte mais difícil com certeza deste projeto começou, a implementação das Caches. Talvez essa dificuldade tenha sido na maneira modelada inicialmente do comportamento da memória no emulador. Até que me deparei com questões de performance, principalmente pela maneira em que resolvia a decodificação e a maneira em que as palavras eram armazenadas, como strings, os métodos de transformação dessas strings estavam sendo bastante custosas ao desempenho, foi verificado que ao executar o código de exemplo 18.naive_dgemm estava demorando muito além do que deveria, cerca de 10 minutos (péssimo) então resolvi paralisar o desenvolvimento da Cache para resolver os problemas de performance.
 

@@ -1,3 +1,5 @@
-class L2Cache:
-    def __init__(self, size) -> None:
-        super().__init__(size=size)
+from minips.cache.l1 import L1Cache
+
+
+class L2Cache(L1Cache):
+    pass

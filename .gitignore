@@ -5,3 +5,4 @@ __pycache__/
 *.egg-info/
 minips.trace
 examples/minips
+/build/

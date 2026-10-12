@@ -1,0 +1,38 @@
+# Run from the repository root: make -f tools/Makefile.mips SOURCE=examples/cache_probe.c
+SOURCE ?= examples/cache_probe.c
+BUILD_DIR ?= build/mips
+NAME := $(notdir $(basename $(SOURCE)))
+PREFIX := $(BUILD_DIR)/$(NAME)
+CROSS ?= mipsel-linux-gnu-
+CC := $(CROSS)gcc
+CXX := $(CROSS)g++
+OBJCOPY := $(CROSS)objcopy
+FLAGS := -mips1 -mabi=32 -mfp32 -G0 -mno-abicalls -fno-pic -fno-pie \
+    -ffreestanding -fno-stack-protector -fno-builtin -O1 -g -Wall -Wextra \
+    -Iexamples -DMINIPS_EXTERNAL_START
+CXXFLAGS := -fno-exceptions -fno-rtti -fno-threadsafe-statics
+LDFLAGS := -nostdlib -static -no-pie -Wl,--build-id=none -T tools/linker.ld
+
+.PHONY: all check-tools FORCE
+all: $(PREFIX).text $(PREFIX).data $(PREFIX).rodata
+
+check-tools:
+	@command -v $(CC) >/dev/null && command -v $(CXX) >/dev/null && command -v $(OBJCOPY) >/dev/null || \
+	    { echo 'Install gcc-mipsel-linux-gnu g++-mipsel-linux-gnu binutils-mipsel-linux-gnu (see README).'; exit 1; }
+
+FORCE:
+
+$(PREFIX).elf: $(SOURCE) examples/minips.h tools/start.S tools/linker.ld tools/Makefile.mips FORCE | check-tools
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $(FLAGS) -c tools/start.S -o $(PREFIX).start.o
+	$(if $(filter %.cpp %.cc %.cxx,$(SOURCE)),$(CXX) $(CXXFLAGS),$(CC)) $(FLAGS) -c $(SOURCE) -o $(PREFIX).o
+	$(CC) $(FLAGS) $(LDFLAGS) $(PREFIX).start.o $(PREFIX).o -o $@
+
+$(PREFIX).text: $(PREFIX).elf
+	$(OBJCOPY) -O binary --only-section=.text $< $@
+$(PREFIX).data: $(PREFIX).elf
+	$(OBJCOPY) -O binary --only-section=.data $< $@
+$(PREFIX).rodata: $(PREFIX).elf
+	$(OBJCOPY) -O binary --only-section=.rodata $< $@
+
+.SECONDARY:

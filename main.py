@@ -4,7 +4,7 @@ from sys import argv
 def run():
     if len(argv) < 3 or len(argv) > 4:
         raise Exception(
-            "Invalid arguments: main.py <mode[decode, run]> <Memorymode[1,2,3,4], optional> <filepath>")
+            "Usage: main.py <decode|run|trace|debug> [memory mode 1-6] <filepath>")
     mode = argv[1]
     mem_mode = 1
     if len(argv) == 3:

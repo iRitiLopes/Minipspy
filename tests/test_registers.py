@@ -13,7 +13,7 @@ class TestRegisters:
         registers = Registers()
         for x in range(32):
             register_value = registers.get_register_value(x)
-            assert register_value == 0
+            assert register_value.data == 0
 
     def test_get_invalid_register(self):
         registers = Registers()
@@ -26,7 +26,7 @@ class TestRegisters:
         registers = Registers()
         #  register No 4 is register a0
         registers.set_register_value(4, new_value)
-        assert new_value == registers.get_register_value(4)
+        assert new_value == registers.get_register_value(4).data
 
     def test_register_name(self):
         register_name = "$a0"

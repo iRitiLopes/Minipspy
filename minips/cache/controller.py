@@ -1,9 +1,9 @@
-from datetime import datetime
+from time import monotonic
 from minips.word import Word
 
 class CacheSet(list):
     def __init__(self, n_vias, blocks):
-        self.timestamp = datetime.utcnow().timestamp()
+        self.timestamp = monotonic()
         self.vias = blocks * n_vias
 
 
@@ -14,10 +14,10 @@ class CacheData:
         self.address = address
         self.valid = False
         self.dirty = False
-        self.timestamp = datetime.utcnow().timestamp()
+        self.timestamp = monotonic()
     
     def set_time(self):
-        self.timestamp = datetime.utcnow().timestamp()
+        self.timestamp = monotonic()
     
     def dirty_this(self):
         self.dirty = True

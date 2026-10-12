@@ -2,138 +2,123 @@ from minips.cache import Cache
 from minips.word import Word
 
 
-class Memory(object):
-    mem_blocks = {}
+class Memory:
     TEXT_SECTION_START = 0x00400000
     DATA_SECTION_START = 0x10010000
-    RODATA_SECION_START = 0X00800000
+    RODATA_SECION_START = 0x00800000
     STACK_POINTER = 0x7fffeffc
     GLOBAL_POINTER = 0x10008000
 
-    def __init__(self, mem_mode, log) -> None:
-        self.clean()
-        self.log = log
-        self.access_count = {
-            3: 0, # Identificador memoria
-            2: 0, # L2
-            1: 0  # L1
-        }
+    def __init__(self, mem_mode, log):
         self.mem_mode = mem_mode
-        self.l1 = None
-        self.l2 = None
-        self.cache = Cache(config=mem_mode)
+        self.log = log
+        self.clean()
 
-    def clean(self) -> None:
-        """
-        Clean each address of memory with empty words
-        """
-        self.mem_blocks[self.TEXT_SECTION_START] = Word()
-        self.mem_blocks[self.DATA_SECTION_START] = Word()
-        self.mem_blocks[self.STACK_POINTER] = Word()
-        self.mem_blocks[self.GLOBAL_POINTER] = Word()
+    def clean(self):
+        self.mem_blocks = {address: Word() for address in (
+            self.TEXT_SECTION_START, self.DATA_SECTION_START,
+            self.STACK_POINTER, self.GLOBAL_POINTER)}
+        self.access_count = {1: 0, 2: 0, 3: 0}
+        self.l1_access_count = {'instruction': 0, 'data': 0}
+        self.cache = Cache(self.mem_mode)
 
-    def store(self, address, data) -> None:
-        if self.__is_valid_address(address=address):
-            self.log.trace(f"W {hex(address)} (line# {hex(address // 32)})")
-            if self.mem_mode == 1:
-                self.log.debug(f" mem store: {address} {data}")
-                return self.__store(address, data)
-            self.log.debug(f"\tL1: write: {hex(self.cache.l1_line(address))}")
-            hit, via = self.cache.hit(address)
+    def _validate(self, address):
+        if not isinstance(address, int) or not 0 <= address <= 0xfffffffc or address % 4:
+            raise MemoryException("Not valid aligned 32-bit address")
 
-            if hit:
-                self.cache.store(address, data, via=via)
-            else:
-                self.log.debug(f"\tL1: Miss")
-                self.log.debug(f"\t\tRAM: read line# {hex(self.cache.l1_line(address))}")
-                self.__store(address, data)
-                data_line = self.__load_line(address, self.cache.l1.line_size)
-                self.log.debug(f"\t\tRAM: Hit")
-                self.log.debug(f"\tL1: Replace to include line# {hex(self.cache.l1_line(address))}")
-                need_writeback, via = self.cache.need_writeback(address)
-                self.log.debug("\tL1: Random replacement policy. Way#0")
-                if need_writeback:
-                    self.__writeback(address, via)
-                else:
-                    self.log.debug(f"\tL1: Line clean/invalid. No need to write back.")
-                self.cache.store_line(address, data_line, via)
-        else:
-            raise MemoryException("Not valid address")
-    
-    def __writeback(self, address, via):
-        wb_data, wb_address = self.cache.writeback(address, via=via)
-        self.log.debug(f"\t\tRAM: write: {hex(address)}")
-        self.log.debug(f"\t\tRAM: Hit")
-
-        for idx_offset, data in enumerate(wb_data):
-            self.__store(data.address, data.data.data)
-    
-    def __load(self, address) -> Word:
-        self.access_count[3] += 1
-        data = self.mem_blocks.get(address, Word(data=None))
-        return data
-    
-    def __load_line(self, line, line_size):
-        line = (line // line_size) * line_size
-        data_line = []
-        for offset in range(0, line_size, 4):
-            data = self.mem_blocks.get(line + offset, Word()).data
-            data_line.append(data)
-        return data_line
-            
-    
     def init_store(self, address, data):
-        return self.__store(address, data)
-
-    def __store(self, address, data):
+        """Load program sections before execution (bypasses caches)."""
+        self._validate(address)
         self.mem_blocks[address] = Word(data)
 
-    def load(self, address) -> Word:
-        if self.__is_valid_address(address=address):
-            if address >= self.TEXT_SECTION_START and address < self.RODATA_SECION_START:
-                self.log.trace(f"I {hex(address)} (line# { hex(address // 32)} )")
-            else:
-                self.log.trace(f"R {hex(address)} (line# { hex(address // 32)} )")
-            if self.mem_mode == 1:
-                data = self.__load(address)
-            else:
-                data = self.__load_from_cache(address)
-            return data
+    def _ram_line(self, address, size):
+        self.access_count[3] += 1
+        base = address - address % size
+        self.log.debug(f"RAM: read line at {hex(base)}")
+        return [self.mem_blocks.get(base + offset, Word(None)).data
+                for offset in range(0, size, 4)]
 
+    def _ram_writeback(self, line):
+        self.access_count[3] += 1
+        self.log.debug(f"RAM: write line at {hex(line[0].address)}")
+        for word in line:
+            if word.data.data is not None:
+                self.mem_blocks[word.address] = Word(word.data.data)
+            word.clean_this()
+
+    def _l2_line(self, address):
+        l2 = self.cache.l2
+        self.access_count[2] += 1
+        hit, via = l2.hit(address)
+        self.log.debug(f"L2: {'Hit' if hit else 'Miss'} {hex(address)}")
+        if not hit:
+            dirty, via = l2.need_writeback(address)
+            if dirty:
+                self._ram_writeback(l2.writeback(address, via)[0])
+            l2.store_line(address, self._ram_line(address, l2.line_size), via)
+        l2.load(address, via)  # Touch the whole line for replacement policy.
+        return via
+
+    def _lower_writeback(self, line):
+        if self.cache.l2 is None:
+            self._ram_writeback(line)
         else:
-            raise MemoryException("Not valid address")
-    
-    def __load_from_cache(self, address):
-        self.log.debug(f"\tL1: read line# {hex(self.cache.l1_line(address))}")
+            l2 = self.cache.l2
+            via = self._l2_line(line[0].address)
+            for word in line:
+                if word.data.data is not None:
+                    l2.store(word.address, word.data.data, via=via)
+                word.clean_this()
+
+    def _ensure_l1(self, address):
+        self.access_count[1] += 1
+        kind = ('instruction' if self.TEXT_SECTION_START <= address < self.RODATA_SECION_START
+                else 'data')
+        self.l1_access_count[kind] += 1
         hit, via = self.cache.hit(address)
-        if hit:
-            data = self.cache.load(address, via)
-            self.access_count[1] += 1
-            self.log.debug(f"\tL1: Hit")
-        else:
-            self.log.debug(f"\tL1: Miss")
-            data = self.__load(address)
-            data_line = self.__load_line(address, self.cache.l1.line_size)
-            self.log.debug(f"\t\tRAM: read line# {hex(self.cache.l1_line(address))}")
-            self.log.debug(f"\t\tRAM: Hit")
-            self.log.debug(f"\tL1: Replace to include line# {hex(self.cache.l1_line(address))}")
-            need_writeback, via = self.cache.need_writeback(address)
-            self.log.debug("\tL1: Random replacement policy. Way#0")
-
-            if need_writeback:
-                self.__writeback(address, via)
+        self.log.debug(f"L1: {'Hit' if hit else 'Miss'} {hex(address)}")
+        if not hit:
+            dirty, via = self.cache.need_writeback(address)
+            if dirty:
+                self._lower_writeback(self.cache.writeback(address, via)[0])
+            if self.cache.l2 is None:
+                data = self._ram_line(address, self.cache.l1.line_size)
             else:
-                self.log.debug(f"\tL1: Line clean/invalid. No need to write back.")
-            self.cache.store_line(address, data_line, via=via)
-        return data
+                l2_via = self._l2_line(address)
+                data = [w.data.data for w in self.cache.l2.writeback(address, l2_via)[0]]
+            self.cache.store_line(address, data, via)
+        return via
 
-    def __is_valid_address(self, address):
-        return address in self.mem_blocks or address % 4 == 0
+    def load(self, address):
+        self._validate(address)
+        kind = 'I' if self.TEXT_SECTION_START <= address < self.RODATA_SECION_START else 'R'
+        self.log.trace(f"{kind} {hex(address)}")
+        if self.mem_mode == 1:
+            self.access_count[3] += 1
+            return Word(self.mem_blocks.get(address, Word(None)).data)
+        return self.cache.load(address, self._ensure_l1(address))
 
-    def __str__(self) -> str:
+    def store(self, address, data):
+        self._validate(address)
+        self.log.trace(f"W {hex(address)}")
+        if self.mem_mode == 1:
+            self.access_count[3] += 1
+            self.mem_blocks[address] = Word(data)
+        else:
+            self.cache.store(address, data, via=self._ensure_l1(address))
+
+    def flush(self):
+        """Write all dirty levels to RAM, retaining clean cached copies."""
+        if self.cache.l1 is not None:
+            for line in self.cache.l1.dirty_lines():
+                self._lower_writeback(line)
+        if self.cache.l2 is not None:
+            for line in self.cache.l2.dirty_lines():
+                self._ram_writeback(line)
+
+    def __str__(self):
         return str({str(k): str(v) for k, v in self.mem_blocks.items()})
 
 
 class MemoryException(Exception):
-    def __init__(self, *args: object) -> None:
-        super().__init__(*args)
+    pass
