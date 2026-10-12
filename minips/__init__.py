@@ -14,7 +14,8 @@ from helpers.log import Log
 
 
 class Minips:
-    def __init__(self, mem_mode) -> None:
+    def __init__(self, mem_mode, show_statistics=False) -> None:
+        self.show_statistics = show_statistics
         self.log = Log()
         self.memory = Memory(mem_mode=mem_mode, log=self.log)
         self.registers = Registers()
@@ -97,7 +98,8 @@ class Minips:
             if self.program_counter == -1:
                 self.statistics.memory_statistics(self.memory)
                 self.statistics.finish()
-                self.statistics.show_statistics()
+                if self.show_statistics:
+                    self.statistics.show_statistics()
                 return
     def trace_mode(self):
         self.log = Log('trace')

@@ -4,6 +4,7 @@ from minips.instruction.instructions.i_instructions.lhu_instruction import LHUIn
 from minips.instruction.instructions.i_instructions.blez_instruction import BLEZInstruction
 from minips.instruction.instructions.i_instructions.lb_instruction import LBInstruction
 from minips.instruction.instructions.i_instructions.slti_instruction import SLTIInstruction
+from minips.instruction.instructions.i_instructions.sltiu_instruction import SLTIUInstruction
 from typing import Tuple
 
 from minips.instruction.instructions import BaseInstruction
@@ -51,7 +52,7 @@ class I_Instruction(BaseInstruction):
             0x23: LWInstruction(),
             0xd: OriInstruction(),
             0xa: SLTIInstruction(),
-            '001011': {'name': 'SLTIU', 'funct': ''},
+            0xb: SLTIUInstruction(),
             '101000': {'name': 'SB', 'funct': ''},
             '111000': {'name': 'SC', 'funct': ''},
             '101001': {'name': 'SH', 'funct': ''},

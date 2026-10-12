@@ -10,6 +10,7 @@ from helpers.int2bin import Int2Bits
 from minips.instruction.instructions.r_instructions import R_BaseFunction
 from minips.memory import Memory
 from minips.registers import Registers
+from collections import deque
 
 
 class SyscallInstruction(R_BaseFunction):
@@ -24,6 +25,7 @@ class SyscallInstruction(R_BaseFunction):
         self.f1 = 1
         self.f12 = 12
         self.f13 = 13
+        self.input_characters = deque()
     
     def __call__(self, word) -> None:
         return super().__call__(word)
@@ -85,6 +87,14 @@ class SyscallInstruction(R_BaseFunction):
             return local_registers, -1, new_memory, local_co_registers
         elif v0_value == 11:
             print(Bin2Chr.convert(Int2Bits.convert(a0_register.get_data())), end='')
+        elif v0_value == 12:
+            if not self.input_characters:
+                try:
+                    self.input_characters.extend((input() + '\n').encode('utf-8'))
+                except EOFError:
+                    local_registers.set_register_value(self.v0, -1)
+                    return local_registers, new_pc + 4, new_memory, local_co_registers
+            local_registers.set_register_value(self.v0, self.input_characters.popleft())
 
         return local_registers, new_pc + 4, new_memory, local_co_registers
 

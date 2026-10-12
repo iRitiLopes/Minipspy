@@ -26,9 +26,15 @@ The supplied self-modifying programs also use L1I for writes to text.
 
 ```bash
 python3 main.py run 6 examples/11.surpresinha
+python3 main.py run 6 examples/11.surpresinha --stat
 python3 -m pytest tests/ -q
 python3 tools/check_examples.py
 ```
+
+Execution statistics are hidden by default. Add `--stat` to show them in `run`,
+`trace`, or `debug` mode; the flag can appear before or after the positional
+arguments. For the root Makefile, use `make run SOURCE=examples/my_test.c STAT=1`.
+Python callers can use `Minips(mem_mode=6, show_statistics=True)`.
 
 The comparison command runs the 17 smaller supplied programs in modes 1–6 with
 fixed input, compares their output to mode 1, and fails on errors or timeouts.
@@ -43,6 +49,20 @@ RAM transfers of an entire cache line count as one access. Simulated cycle
 estimates include L1, L2, and RAM latency.
 
 ## Compile your own C or C++ test programs
+
+From the repository root, use the root Makefile (Docker required):
+
+```bash
+make build SOURCE=examples/cache_probe.c
+make build SOURCE=examples/cache_probe_cpp.cpp
+make run SOURCE=examples/cache_probe.c MODE=6
+make check SOURCE=examples/cache_probe_cpp.cpp
+```
+
+`make` builds the C sample by default. The compiler image is built automatically
+if missing. Set `DOCKER=0` to use an installed cross-compiler instead, and run
+`make help` for the available commands. Use relative source/output paths under
+the repository when building with Docker.
 
 Install a little-endian MIPS cross-toolchain on Debian/Ubuntu:
 
@@ -89,6 +109,25 @@ data in the raw binary sections. Build outputs live under ignored `build/`.
 The older `examples/Makefile` and binaries are retained; the new build uses
 `tools/Makefile.mips` and `tools/linker.ld`.
 
+### Interactive MD5 example
+
+`examples/md5.cpp` implements streaming MD5 from
+[RFC 1321](https://www.rfc-editor.org/rfc/rfc1321). Compile and run it yourself:
+
+```bash
+make build SOURCE=examples/md5.cpp
+python3 main.py run 6 build/mips/md5
+```
+
+Type your input and press Enter. The program prints a lowercase 32-character
+MD5 hash. Add `--stat` when running to also print execution statistics.
+It hashes the UTF-8 bytes of
+the input, preserving spaces and excluding the terminating newline. Empty input
+and input spanning multiple 64-byte blocks are supported. For `abc`, expect
+`900150983cd24fb0d6963f7d28e17f72`; empty input gives
+`d41d8cd98f00b204e9800998ecf8427e`. The emulator supports syscall 12 for reading
+characters from a line, including Enter; EOF returns -1.
+
 This project use pyenv and pipenv as Python dependency as Project Manager
 to install pipenv just
 https://pypi.org/project/pipenv/
@@ -112,7 +151,7 @@ pip install -e .
 ## Execute
 
 ```bash
-$ minipspy run ./examples/14.flutuantes
+$ minipspy run ./examples/14.flutuantes --stat
 3.1415927410125732
 2.7182817459106445
 3.141592653589793

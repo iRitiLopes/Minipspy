@@ -32,6 +32,5 @@ class NorInstruction(R_BaseFunction):
         rt_register = local_registers.get_register(self.rt_number)
 
         rd = ~(rs_register.to_unsigned_int() | rt_register.to_unsigned_int())
-        rd_bits = Int2Bits.convert(rd)
-        local_registers.set_register_value(self.rd_number, rd_bits)
+        local_registers.set_register_value(self.rd_number, rd & 0xffffffff)
         return local_registers, program_counter + 4, memory, kwargs['coprocessor'].registers
